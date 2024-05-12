@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">MobilePOSe</string>
+
+    <string name="WelcomeTxt">Welcome</string>
+    <string name="LoginBtn">Login</string>
+
+    <string name="usernameTxt">Username</string>
+    <string name="nameTxt">Name</string>
+    <string name="firstnameTxt">Firstname</string>
+    <string name="lastnameTxt">Lastname</string>
+    <string name="passwordTxt">Password</string>
+    <string name="emailTxt">Email</string>
+    <string name="accountTypeTxt">Account Type</string>
+    <string name="contactTxt">Contact</string>
+    <string name="addressTxt">Address</string>
+    <string name="changePassTxt"><u>Change Password</u></string>
+    <string name="changePassTxt2">Change Password</string>
+
+    <string name="oldPassTxt">Old Password</string>
+    <string name="newPassTxt">New Password</string>
+    <string name="confirmNewPassTxt">Confirm New Password</string>
+
+    <string name="saveTxt">Save</string>
+    <string name="cancelTxt">Cancel</string>
+
+
+    <string name="errorTxt">*</string>
+
+    <string name="managerTxt">Manager</string>
+    <string name="cashierTxt">Cashier</string>
+
+    <string name="activateTxt">Activate</string>
+    <string name="deactivateTxt">Deactivate</string>
+
+
+    <string name="couponCodeTxt">Coupon Code</string>
+    <string name="discountPercentageTxt">Percentage/Ammount</string>
+    <string name="statusTxt">Account Status</string>
+    <string name="descriptionTxt">Description</string>
+
+    <string name="personalTxt">Personal Information</string>
+    <string name="employeeTxt">Employee Information</string>
+
+
+    <string name="createBtn">Create</string>
+    <string name="updateBtn">Update</string>
+    <string name="searchBtn">Search</string>
+    <string name="deleteBtn">Delete</string>
+
+    <string name="productInformationTxt">Product Information</string>
+    <string name="couponInformationTxt">Coupon Information</string>
+
+    <string name="productManagementTxt">Product Management</string>
+    <string name="accountManagementTxt">Account Management</string>
+    <string name="CouponManagementTxt">Coupon Management</string>
+    <string name="myAccountTxt">My Account</string>
+
+    <string name="productNameTxt">Product Name</string>
+    <string name="productDescTxt">Description</string>
+    <string name="productPriceTxt">Price</string>
+    <string name="productAvailabiltyTxt">Availability</string>
+    <string name="productCategoryTxt">Category</string>
+
+    <string name="availableTxt">Available</string>
+    <string name="unavailableTxt">Unavailable</string>
+    <string name="addSize">Add Size</string>
+    <string name="addExtra">Add Extra</string>
+
+    <string name="discountType">Discount Type</string>
+    <string name="discountAvailabilty">Availabilty</string>
+
+    <string name="startData">Start Date</string>
+    <string name="endData">End Date</string>
+
+
+
+</resources>
