@@ -89,7 +89,7 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
         params.put("fname", fnameTxt.getText().toString());
         params.put("lname", lnameTxt.getText().toString());
         params.put("password", passTxt.getText().toString());
-        params.put("type", );
+        //params.put("type", );
         params.put("contact", contactTxt.getText().toString());
         params.put("email", emailTxt.getText().toString());
 
