@@ -86,7 +86,7 @@ public class User implements Serializable {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", username);
                 params.put("password", password);
-                db.ManageDatabaseObject("http://192.168.1.13/Android/updateUser.php",context,callback,params);
+                db.ManageDatabaseObject("Android/updateUser.php",context,callback,params);
             }else{
                 Toast.makeText(context, "New password does not match!", Toast.LENGTH_LONG).show();
             }

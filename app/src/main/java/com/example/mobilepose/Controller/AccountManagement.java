@@ -89,16 +89,16 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
         params.put("fname", fnameTxt.getText().toString());
         params.put("lname", lnameTxt.getText().toString());
         params.put("password", passTxt.getText().toString());
-        //params.put("type", );
+        params.put("type", "2");
         params.put("contact", contactTxt.getText().toString());
         params.put("email", emailTxt.getText().toString());
 
         //radio
-        params.put("status", emailTxt.getText().toString());
+        params.put("status", "1");
         params.put("image", "TEST");
 
 
-        db.ManageDatabaseObject("http://192.168.1.13/Android/createUser.php",this,this,params);
+        db.ManageDatabaseObject("Android/createUser.php",this,this,params);
 
         /*
         if(usernameTxt.getText().toString().trim()=="" || passwordTxt.getText().toString().trim()=="" || nameTxt.getText().toString().trim()==""
@@ -152,6 +152,7 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
         try {
             jsonObject=new JSONObject(response);
             Toast.makeText(AccountManagement.this, jsonObject.getString("status"), Toast.LENGTH_LONG).show();
+            System.out.println(jsonObject.getString("status"));
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -19,6 +19,7 @@ import java.util.Map;
 public class DatabaseSingle {
     private RequestQueue rQueue;
     public static DatabaseSingle instance;
+    final String IP="http://192.168.1.13/";
     private DatabaseSingle(){}
 
     public static DatabaseSingle getInstance(){
@@ -57,7 +58,7 @@ public class DatabaseSingle {
     }
 
     public void ManageDatabaseArray(String URL, Context context, final VolleyCallback callback, Map<String, String> params){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, IP+URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -81,7 +82,7 @@ public class DatabaseSingle {
     }
 
     public void ManageDatabaseObject(String URL, Context context, final VolleyCallback callback, Map<String, String> params){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, IP+URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -3,6 +3,7 @@ package com.example.mobilepose.Controller;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Dialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -62,6 +63,12 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
         db.SearchUserInfo(username,"http://192.168.1.13/Android/searchUser.php", MyAccount.this, this);
 
 
+    }
+
+    public void showChangeDialog(){
+        Dialog dialog=new Dialog(this);
+        dialog.setContentView(R.layout.change_password_pop);
+        dialog.show();
     }
 
     public void showChangePassword(View view){
