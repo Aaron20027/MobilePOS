@@ -29,35 +29,7 @@ public class DatabaseSingle {
         return instance;
     }
 
-    public void CheckLoginInfo(String username, String password, String URL, Context context, final VolleyCallback callback){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        rQueue.getCache().clear();
-                        callback.onSuccess(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        callback.onError(error.getMessage());
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", username);
-                params.put("password", password);
-                return params;
-            }
-        };
-        rQueue = Volley.newRequestQueue(context);
-        rQueue.add(stringRequest);
-    }
-
-    public void ManageDatabaseArray(String URL, Context context, final VolleyCallback callback, Map<String, String> params){
+    public void ManageDatabaseObject(String URL, Context context, final VolleyCallback callback, Map<String, String> params){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, IP+URL,
                 new Response.Listener<String>() {
                     @Override
@@ -81,7 +53,7 @@ public class DatabaseSingle {
         rQueue.add(stringRequest);
     }
 
-    public void ManageDatabaseObject(String URL, Context context, final VolleyCallback callback, Map<String, String> params){
+    public void ManageDatabaseArray(String URL, Context context, final VolleyCallback callback, Map<String, String> params){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, IP+URL,
                 new Response.Listener<String>() {
                     @Override

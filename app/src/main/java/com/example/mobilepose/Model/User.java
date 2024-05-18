@@ -30,6 +30,10 @@ public class User implements Serializable {
         return password;
     }
 
+    public String getPasswordProtected() {
+        return password.replaceAll(".","*");
+    }
+
     public String getFname() {
         return fname;
     }
@@ -43,7 +47,7 @@ public class User implements Serializable {
     }
 
     public String getType() {
-        if (status=="1") {
+        if (type.equals("1")) {
             return "Manager";
         }else{
             return "Cashier";
@@ -56,10 +60,10 @@ public class User implements Serializable {
         return address;
     }
     public String getStatus() {
-        if (status=="1") {
-            return "Activate";
+        if (status.equals("1")) {
+            return "Active";
         }else{
-            return "Deactivate";
+            return "Deactive";
         }
     }
     public String getImg() {
@@ -79,19 +83,18 @@ public class User implements Serializable {
         this.img = img;
     }
 
-    public void ChangePassword(String Old, String New, String Confirm, Context context,final VolleyCallback callback){
+    public boolean ChangePassword(String Old, String New, String Confirm, Context context){
         if(Old.equals(password)){
             if(New.equals(Confirm)){
-                DatabaseSingle db=DatabaseSingle.getInstance();
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", username);
-                params.put("password", password);
-                db.ManageDatabaseObject("Android/updateUser.php",context,callback,params);
+                password=New;
+                return true;
             }else{
                 Toast.makeText(context, "New password does not match!", Toast.LENGTH_LONG).show();
+                return false;
             }
         }else{
             Toast.makeText(context, "Old password does not match!", Toast.LENGTH_LONG).show();
+            return false;
         }
     }
 

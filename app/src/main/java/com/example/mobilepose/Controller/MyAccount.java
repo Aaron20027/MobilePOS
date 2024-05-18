@@ -4,15 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobilepose.Model.DatabaseSingle;
 import com.example.mobilepose.Model.User;
@@ -23,10 +27,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MyAccount extends AppCompatActivity implements VolleyCallback {
 
     private TextView usernameTxt,fnameTxt,lnameTxt,passTxt,typeTxt,contactTxt,emailTxt,addressTxt,statusTxt;
     private EditText oldPassEdit, newPassEdit, confirmNewPassEdit;
+
+    private Button cancelBtn,saveBtn;
     ConstraintLayout cons;
 
     DatabaseSingle db=DatabaseSingle.getInstance();
@@ -39,11 +48,6 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
-
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-
-
 
         //User user = (User) getIntent().getSerializableExtra("user");
         String username=getIntent().getStringExtra("username");
@@ -60,21 +64,22 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
 
         cons=findViewById(R.id.popupCons);
 
-        db.SearchUserInfo(username,"http://192.168.1.13/Android/searchUser.php", MyAccount.this, this);
+        //db.SearchUserInfo(username,"http://192.168.1.13/Android/searchUser.php", MyAccount.this, this);
 
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username", username);
+        db.ManageDatabaseArray("Android/searchUser.php",MyAccount.this,MyAccount.this,params);
 
-    }
-
-    public void showChangeDialog(){
-        Dialog dialog=new Dialog(this);
-        dialog.setContentView(R.layout.change_password_pop);
-        dialog.show();
     }
 
     public void showChangePassword(View view){
-        LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+      LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popup=inflater.inflate(R.layout.change_password_pop, null);
-        int width= ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int width=displayMetrics.widthPixels / 2;
         int height= ViewGroup.LayoutParams.MATCH_PARENT;
 
         boolean focusable=true;
@@ -86,15 +91,45 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
                 popupWindow.showAtLocation(cons, Gravity.RIGHT,0,0);
             }
         });
+        System.out.println(user.getPassword());
 
         oldPassEdit=popup.findViewById(R.id.oldPassTxt);
         newPassEdit=popup.findViewById(R.id.newPassTxt);
         confirmNewPassEdit=popup.findViewById(R.id.confirmNewPassTxt);
+        cancelBtn=popup.findViewById(R.id.cancelBtn);
+        saveBtn=popup.findViewById(R.id.saveBtn);
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user.ChangePassword(oldPassEdit.getText().toString(),newPassEdit.getText().toString(),confirmNewPassEdit.getText().toString(),MyAccount.this)){
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("username", user.getUsername());
+                    params.put("password", newPassEdit.getText().toString());
+                    db.ManageDatabaseObject("Android/updateUser.php",MyAccount.this,MyAccount.this,params);
+                    popupWindow.dismiss();
+                }
+            }
+        });
 
     }
 
     @Override
     public void onSuccess(String response) {
+        try {
+            jsonObject=new JSONObject(response);
+            System.out.println(jsonObject.optString("status"));
+            Toast.makeText(MyAccount.this, jsonObject.optString("status") , Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -102,6 +137,7 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
         try {
             jsonArray=new JSONArray(response);
             jsonObject=jsonArray.getJSONObject(0);
+            //System.out.println(jsonObject.getString("acc_Status"));
 
             user=new User(jsonObject.getString("acc_User"),
                     jsonObject.getString("acc_Pass"),jsonObject.getString("acc_Fname"),
@@ -113,7 +149,7 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
             usernameTxt.setText(user.getUsername());
             fnameTxt.setText(user.getFname());
             lnameTxt.setText(user.getLname());
-            passTxt.setText(user.getPassword());
+            passTxt.setText(user.getPasswordProtected());
             typeTxt.setText(user.getType());
             contactTxt.setText(user.getContact());
             emailTxt.setText(user.getEmail());

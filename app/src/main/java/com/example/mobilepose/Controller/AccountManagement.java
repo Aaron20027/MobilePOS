@@ -57,7 +57,6 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
         typeRadio=findViewById(R.id.typeRadio);
         statusRadio=findViewById(R.id.statusRadio);
 
-
         usernameError=findViewById(R.id.userError);
         fnameError=findViewById(R.id.firstError);
         lnameError=findViewById(R.id.lastError);
@@ -67,8 +66,6 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
         addressError=findViewById(R.id.codeError);
         typeError=findViewById(R.id.passTxt);
         statusError=findViewById(R.id.statusError);
-
-
 
         SetErrorState(View.INVISIBLE, usernameError, fnameError,lnameError,passError,contactError,emailError,addressError, typeError, statusError);
     }
@@ -80,8 +77,6 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
         statusRadioBtn=findViewById(selectedIdStatus);
         String typeString=typeRadioBtn.getText().toString();
         String statusString=statusRadioBtn.getText().toString();
-
-
 
 
         Map<String, String> params = new HashMap<String, String>();

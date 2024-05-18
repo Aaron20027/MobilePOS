@@ -47,7 +47,11 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback {
         String username= userTxt.getText().toString().trim();
         String password= passTxt.getText().toString().trim();
 
-        db.CheckLoginInfo(username,password,"http://192.168.1.13/Android/login.php", MainActivity.this, this);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username", username);
+        params.put("password", password);
+
+        db.ManageDatabaseObject("Android/login.php",MainActivity.this,this,params);
     }
 
     @Override
@@ -56,13 +60,13 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback {
             jsonObject=new JSONObject(response);
             String username= userTxt.getText().toString().trim();
 
-            if (jsonObject.optString("status").equals("success")){
-                Intent intent=new Intent(MainActivity.this, AccountManagement.class);
+            if (jsonObject.optString("status").equals("Login Successful!")){
+                Intent intent=new Intent(MainActivity.this, MyAccount.class);
                 intent.putExtra("username",username);
                 startActivity(intent);
 
             }else{
-                Toast.makeText(MainActivity.this, "Invalid Credentials!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, jsonObject.optString("status"), Toast.LENGTH_SHORT).show();
 
             }
 

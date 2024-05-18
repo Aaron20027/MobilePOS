@@ -53,12 +53,14 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
+            android:background="@drawable/circular_image_button"
             app:layout_constraintBottom_toTopOf="@+id/guideline8"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circular"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:srcCompat="@drawable/ic_launcher_foreground"
+            tools:srcCompat="@drawable/ic_launcher_foreground" />
 
         <TextView
             android:id="@+id/passError"
@@ -125,7 +127,7 @@
                     android:fontFamily="@font/poppins"
                     android:text="@string/personalTxt"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/guideline9"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -276,7 +278,7 @@
                     android:fontFamily="@font/poppins"
                     android:text="@string/employeeTxt"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/guideline9"
                     app:layout_constraintTop_toBottomOf="@+id/addressTxt" />
