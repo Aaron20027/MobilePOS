@@ -44,10 +44,29 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent">
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/availabiltyError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:enabled="false"
+                    android:text="@string/errorTxt"
+                    android:textColor="@color/backRed2"
+                    android:textSize="34sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/availabiltyRadio" />
+
+                <TextView
+                    android:id="@+id/textView30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/productAvailabiltyTxt"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/availabiltyRadio"
+                    app:layout_constraintStart_toStartOf="@+id/availabiltyRadio" />
 
                 <TextView
                     android:id="@+id/endError"
@@ -58,8 +77,8 @@
                     android:text="@string/errorTxt"
                     android:textColor="@color/backRed2"
                     android:textSize="34sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextDate1"
-                    app:layout_constraintStart_toEndOf="@+id/editTextDate1" />
+                    app:layout_constraintBottom_toBottomOf="@+id/endEdit"
+                    app:layout_constraintStart_toEndOf="@+id/endEdit" />
 
                 <TextView
                     android:id="@+id/startError"
@@ -70,11 +89,11 @@
                     android:text="@string/errorTxt"
                     android:textColor="@color/backRed2"
                     android:textSize="34sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextDate"
-                    app:layout_constraintStart_toEndOf="@+id/editTextDate" />
+                    app:layout_constraintBottom_toBottomOf="@+id/startEdit"
+                    app:layout_constraintStart_toEndOf="@+id/startEdit" />
 
                 <TextView
-                    android:id="@+id/ammtError"
+                    android:id="@+id/statError"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -82,19 +101,19 @@
                     android:text="@string/errorTxt"
                     android:textColor="@color/backRed2"
                     android:textSize="34sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextText12"
-                    app:layout_constraintStart_toEndOf="@+id/editTextText12" />
+                    app:layout_constraintBottom_toBottomOf="@+id/textInputLayout2"
+                    app:layout_constraintStart_toEndOf="@+id/textInputLayout2" />
 
                 <TextView
-                    android:id="@+id/statError"
+                    android:id="@+id/ammntError"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:text="@string/errorTxt"
                     android:textColor="@color/backRed2"
                     android:textSize="34sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextText14"
-                    app:layout_constraintStart_toEndOf="@+id/editTextText14" />
+                    app:layout_constraintBottom_toBottomOf="@+id/percentageEdit"
+                    app:layout_constraintStart_toEndOf="@+id/percentageEdit" />
 
                 <TextView
                     android:id="@+id/descError"
@@ -104,8 +123,8 @@
                     android:text="@string/errorTxt"
                     android:textColor="@color/backRed2"
                     android:textSize="34sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextText11"
-                    app:layout_constraintStart_toEndOf="@+id/editTextText11" />
+                    app:layout_constraintBottom_toBottomOf="@+id/couponDescEdit"
+                    app:layout_constraintStart_toEndOf="@+id/couponDescEdit" />
 
                 <TextView
                     android:id="@+id/codeError"
@@ -116,8 +135,8 @@
                     android:text="@string/errorTxt"
                     android:textColor="@color/backRed2"
                     android:textSize="34sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextText13"
-                    app:layout_constraintStart_toEndOf="@+id/editTextText13" />
+                    app:layout_constraintBottom_toBottomOf="@+id/couponCodeEdit"
+                    app:layout_constraintStart_toEndOf="@+id/couponCodeEdit" />
 
                 <TextView
                     android:id="@+id/textView32"
@@ -126,8 +145,8 @@
                     android:text="@string/endData"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/editTextDate1"
-                    app:layout_constraintStart_toStartOf="@+id/editTextDate1" />
+                    app:layout_constraintBottom_toTopOf="@+id/endEdit"
+                    app:layout_constraintStart_toStartOf="@+id/endEdit" />
 
                 <TextView
                     android:id="@+id/textView31"
@@ -136,11 +155,11 @@
                     android:text="@string/startData"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/editTextDate"
+                    app:layout_constraintBottom_toTopOf="@+id/startEdit"
                     app:layout_constraintStart_toStartOf="@+id/guideline14" />
 
                 <EditText
-                    android:id="@+id/editTextDate1"
+                    android:id="@+id/endEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -148,13 +167,13 @@
                     android:background="@drawable/rounded_edittext_dirty"
                     android:ems="10"
                     android:inputType="date"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/startEdit"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/editTextDate" />
+                    app:layout_constraintStart_toEndOf="@+id/startEdit" />
 
                 <EditText
-                    android:id="@+id/editTextText11"
+                    android:id="@+id/couponDescEdit"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="48dp"
@@ -162,48 +181,33 @@
                     android:background="@drawable/rounded_edittext"
                     android:ems="10"
                     android:inputType="text"
-                    app:layout_constraintEnd_toStartOf="@+id/editTextText12"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@+id/textInputLayout2"
                     app:layout_constraintStart_toStartOf="@+id/guideline14"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextText13" />
+                    app:layout_constraintTop_toBottomOf="@+id/couponCodeEdit" />
 
                 <EditText
-                    android:id="@+id/editTextText12"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="32dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:ems="10"
-                    android:inputType="text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/editTextText11"
-                    app:layout_constraintTop_toTopOf="@+id/editTextText11" />
-
-                <EditText
-                    android:id="@+id/editTextText13"
+                    android:id="@+id/couponCodeEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
                     android:background="@drawable/rounded_edittext"
                     android:ems="10"
                     android:inputType="text"
-                    app:layout_constraintEnd_toEndOf="@+id/editTextText11"
+                    app:layout_constraintEnd_toEndOf="@+id/couponDescEdit"
                     app:layout_constraintStart_toStartOf="@+id/guideline14"
                     app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
                 <EditText
-                    android:id="@+id/editTextText14"
+                    android:id="@+id/percentageEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
                     android:background="@drawable/rounded_edittext"
                     android:ems="10"
                     android:inputType="text"
-                    app:layout_constraintEnd_toEndOf="@+id/editTextText11"
+                    app:layout_constraintEnd_toEndOf="@+id/couponDescEdit"
                     app:layout_constraintStart_toStartOf="@+id/guideline14"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextText11" />
+                    app:layout_constraintTop_toBottomOf="@+id/couponDescEdit" />
 
                 <TextView
                     android:id="@+id/textView14"
@@ -212,18 +216,18 @@
                     android:text="@string/couponCodeTxt"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/editTextText13"
-                    app:layout_constraintStart_toStartOf="@+id/editTextText13" />
+                    app:layout_constraintBottom_toTopOf="@+id/couponCodeEdit"
+                    app:layout_constraintStart_toStartOf="@+id/couponCodeEdit" />
 
                 <TextView
-                    android:id="@+id/textView30"
+                    android:id="@+id/textView33"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/statusTxt"
+                    android:text="@string/discountStatus"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/editTextText12"
-                    app:layout_constraintStart_toStartOf="@+id/editTextText12" />
+                    app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
+                    app:layout_constraintStart_toStartOf="@+id/textInputLayout2" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -232,8 +236,8 @@
                     android:text="@string/descriptionTxt"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/editTextText11"
-                    app:layout_constraintStart_toStartOf="@+id/editTextText11" />
+                    app:layout_constraintBottom_toTopOf="@+id/couponDescEdit"
+                    app:layout_constraintStart_toStartOf="@+id/couponDescEdit" />
 
                 <TextView
                     android:id="@+id/textView17"
@@ -242,8 +246,8 @@
                     android:text="@string/discountPercentageTxt"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/editTextText14"
-                    app:layout_constraintStart_toStartOf="@+id/editTextText14" />
+                    app:layout_constraintBottom_toTopOf="@+id/percentageEdit"
+                    app:layout_constraintStart_toStartOf="@+id/percentageEdit" />
 
                 <TextView
                     android:id="@+id/textView29"
@@ -266,7 +270,7 @@
                     app:layout_constraintGuide_percent="0.05" />
 
                 <EditText
-                    android:id="@+id/editTextDate"
+                    android:id="@+id/startEdit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
@@ -274,10 +278,55 @@
                     android:background="@drawable/rounded_edittext_dirty"
                     android:ems="10"
                     android:inputType="date"
-                    app:layout_constraintEnd_toStartOf="@+id/editTextDate1"
+                    app:layout_constraintEnd_toStartOf="@+id/endEdit"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/guideline14"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextText14" />
+                    app:layout_constraintTop_toBottomOf="@+id/percentageEdit" />
+
+                <RadioGroup
+                    android:id="@+id/availabiltyRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="@+id/guideline14"
+                    app:layout_constraintTop_toBottomOf="@+id/startEdit">
+
+                    <RadioButton
+                        android:id="@+id/radioButton6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/availableTxt" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unavailableTxt" />
+
+                </RadioGroup>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@drawable/rounded_edittext_dirty"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/couponDescEdit"
+                    app:layout_constraintTop_toTopOf="@+id/couponDescEdit">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

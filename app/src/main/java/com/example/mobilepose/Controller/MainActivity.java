@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback {
             String username= userTxt.getText().toString().trim();
 
             if (jsonObject.optString("status").equals("Login Successful!")){
-                Intent intent=new Intent(MainActivity.this, MyAccount.class);
+                Intent intent=new Intent(MainActivity.this, Home.class);
                 intent.putExtra("username",username);
                 startActivity(intent);
 
