@@ -1,4 +1,6 @@
 package com.example.mobilepose.Model.API;
+
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 
 import retrofit2.Call;
@@ -10,7 +12,11 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface APIInterface {
+
     @FormUrlEncoded
-    @POST("/api/test.php")
-   Call<ResponseBase<String>> test(@Field("name") String name);
+    @POST("/api/auth/login.php")
+    Call<ResponseBase<LoginResponse>> Login(
+            @Field("username") String username,
+            @Field("password") String password
+    );
 }

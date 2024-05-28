@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.DatabaseSingle;
 import com.example.mobilepose.Model.User;
 import com.example.mobilepose.Model.VolleyCallback;
@@ -49,8 +50,8 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
-        //User user = (User) getIntent().getSerializableExtra("user");
-        String username=getIntent().getStringExtra("username");
+        String jsonUserInfo = getIntent().getStringExtra("userinfo");
+        LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
 
         usernameTxt=findViewById(R.id.passError);
         fnameTxt=findViewById(R.id.firstTxt);
@@ -64,11 +65,13 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
 
         cons=findViewById(R.id.popupCons);
 
-        //db.SearchUserInfo(username,"http://192.168.1.13/Android/searchUser.php", MyAccount.this, this);
+        usernameTxt.setText(loginResponse.username);
+        fnameTxt.setText(loginResponse.firstName);
+        lnameTxt.setText(loginResponse.lastName);
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
-        db.ManageDatabaseArray("Android/searchUser.php",MyAccount.this,MyAccount.this,params);
+        //db.SearchUserInfo(username,"http://192.168.1.13/Android/searchUser.php", MyAccount.this, this)
+
+        //db.ManageDatabaseArray("Android/searchUser.php",MyAccount.this,MyAccount.this,params);
 
     }
 

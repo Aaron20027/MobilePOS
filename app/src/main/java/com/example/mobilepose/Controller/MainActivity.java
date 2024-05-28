@@ -3,85 +3,59 @@ package com.example.mobilepose.Controller;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.mobilepose.Model.DatabaseSingle;
-import com.example.mobilepose.Model.User;
-import com.example.mobilepose.Model.VolleyCallback;
+import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.example.mobilepose.Model.API.POSAPISingleton;
 import com.example.mobilepose.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import java.util.HashMap;
-import java.util.Map;
+public class MainActivity extends AppCompatActivity implements Callback<ResponseBase<LoginResponse>> {
 
-public class MainActivity extends AppCompatActivity implements VolleyCallback {
-
-    private EditText userTxt,passTxt;
-    JSONObject jsonObject;
-    DatabaseSingle db=DatabaseSingle.getInstance();
+    private EditText userTxt, passTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userTxt=findViewById(R.id.editTextText);
-        passTxt=findViewById(R.id.editTextTextPassword);
+        userTxt = findViewById(R.id.editTextText);
+        passTxt = findViewById(R.id.editTextTextPassword);
 
     }
 
     public void validateUser(View view) {
-        String username= userTxt.getText().toString().trim();
-        String password= passTxt.getText().toString().trim();
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
-        params.put("password", password);
-
-        db.ManageDatabaseObject("Android/login.php",MainActivity.this,this,params);
+        String username = userTxt.getText().toString().trim();
+        String password = passTxt.getText().toString().trim();
+        String hashedPass = Utils.MD5(password);
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<LoginResponse>> loginCall = api.Login(username, hashedPass);
+        loginCall.enqueue(this);
     }
 
     @Override
-    public void onSuccess(String response) {
-        try {
-            jsonObject=new JSONObject(response);
-            String username= userTxt.getText().toString().trim();
-
-            if (jsonObject.optString("status").equals("Login Successful!")){
-                Intent intent=new Intent(MainActivity.this, MyAccount.class);
-                intent.putExtra("username",username);
+    public void onResponse(Call<ResponseBase<LoginResponse>> call, Response<ResponseBase<LoginResponse>> response) {
+        if (response.isSuccessful()) {
+            ResponseBase<LoginResponse> loginResponse = response.body();
+            if (loginResponse.success) {
+                Intent intent = new Intent(MainActivity.this, MyAccount.class);
+                intent.putExtra("userinfo", Utils.ToJson(loginResponse.data));
                 startActivity(intent);
-
-            }else{
-                Toast.makeText(MainActivity.this, jsonObject.optString("status"), Toast.LENGTH_SHORT).show();
-
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+
+        // TODO: Add error message
     }
 
     @Override
-    public void onSearchSuccess(String response) {
-
-    }
-
-    @Override
-    public void onError(String error) {
-
+    public void onFailure(Call<ResponseBase<LoginResponse>> call, Throwable t) {
+        // TODO: Add error message
     }
 }
