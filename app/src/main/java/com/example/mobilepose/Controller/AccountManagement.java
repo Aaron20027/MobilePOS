@@ -107,25 +107,47 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
     }
     public void SearchUser(View view){
         if(usernameTxt.getText().toString().trim()==""){
+            SetErrorState(View.VISIBLE, usernameError);
             Toast.makeText(AccountManagement.this, "Username field is blank!", Toast.LENGTH_LONG).show();
         }else{
-            db.SearchUserInfo(usernameTxt.getText().toString(),"http://192.168.1.13/Android/searchUser.php", AccountManagement.this, this);
+            SetErrorState(View.INVISIBLE, usernameError);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("username", usernameTxt.getText().toString());
+            db.ManageDatabaseArray("Android/searchUser.php",AccountManagement.this,AccountManagement.this,params);
         }
     }
 
     // Fix update and php
     public void UpdateUser(View view){
         if(usernameTxt.getText().toString().trim()==""){
+            SetErrorState(View.VISIBLE, usernameError);
             Toast.makeText(AccountManagement.this, "Username field is blank!", Toast.LENGTH_LONG).show();
         }else{
-            db.UpdateUserInfo(usernameTxt.getText().toString(),"http://192.168.1.13/Android/searchUser.php", AccountManagement.this, this);
+            SetErrorState(View.INVISIBLE, usernameError);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("username", usernameTxt.getText().toString());
+            params.put("fname", fnameTxt.getText().toString());
+            params.put("lname", lnameTxt.getText().toString());
+            params.put("password", passTxt.getText().toString());
+            params.put("type", "2");
+            params.put("contact", contactTxt.getText().toString());
+            params.put("email", emailTxt.getText().toString());
+            params.put("address", addressTxt.getText().toString());
+            params.put("status", "1");
+            params.put("image", "TEST");
+
+            db.ManageDatabaseObject("Android/updateUser.php",this,this,params);
         }
     }
     public void DeleteUser(View view){
         if(usernameTxt.getText().toString().trim()==""){
+            SetErrorState(View.VISIBLE, usernameError);
             Toast.makeText(AccountManagement.this, "Username field is blank!", Toast.LENGTH_LONG).show();
         }else{
-            db.UpdateUserInfo(usernameTxt.getText().toString(),"http://192.168.1.13/Android/deleteUser.php", AccountManagement.this, this);
+            SetErrorState(View.INVISIBLE, usernameError);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("username", usernameTxt.getText().toString());
+            db.ManageDatabaseObject("Android/deleteUser.php",AccountManagement.this,AccountManagement.this,params);
         }
     }
 
@@ -147,8 +169,6 @@ public class AccountManagement extends AppCompatActivity implements VolleyCallba
         try {
             jsonObject=new JSONObject(response);
             Toast.makeText(AccountManagement.this, jsonObject.getString("status"), Toast.LENGTH_LONG).show();
-            System.out.println(jsonObject.getString("status"));
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

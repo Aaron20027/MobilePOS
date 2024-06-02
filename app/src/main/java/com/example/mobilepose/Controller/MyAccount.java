@@ -77,24 +77,21 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
 
     public void showChangePassword(View view){
       LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View overlay = findViewById(R.id.overlay);
         View popup=inflater.inflate(R.layout.change_password_pop, null);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        int width=displayMetrics.widthPixels / 2;
-        int height= ViewGroup.LayoutParams.MATCH_PARENT;
-
-        boolean focusable=true;
-
-        PopupWindow popupWindow=new PopupWindow(popup,width,height,focusable);
+        PopupWindow popupWindow=new PopupWindow(popup,displayMetrics.widthPixels / 2,ViewGroup.LayoutParams.MATCH_PARENT,true);
+        popupWindow.setOnDismissListener(() -> overlay.setVisibility(View.GONE));
         cons.post(new Runnable() {
             @Override
             public void run() {
                 popupWindow.showAtLocation(cons, Gravity.RIGHT,0,0);
+                overlay.setVisibility(View.VISIBLE);
             }
         });
-        System.out.println(user.getPassword());
 
         oldPassEdit=popup.findViewById(R.id.oldPassTxt);
         newPassEdit=popup.findViewById(R.id.newPassTxt);
