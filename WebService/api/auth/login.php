@@ -1,7 +1,8 @@
 <?php
-include_once ('../Common/Connection.php');
-include_once ('../Common/Utils.php');
+include_once ('../../Common/Connection.php');
+include_once ('../../Common/Utils.php');
 include_once ('../Entities/Response.php');
+include_once ('../../Modules/Session.php');
 include_once ('../Entities/Auth/LoginResponse.php');
 
 $dbInst = RestaurantDB::GetTransient();
@@ -32,7 +33,7 @@ function login_user($db, $username, $password)
     $queryResult = $db->query("SELECT * FROM `accounttbl` WHERE `acc_User` = ?", "s", $username);
 
     if (is_null($queryResult)) {
-        return "Failed executing query!";
+        Utils::error($db);
     }
 
     // Error message reference: https://stackoverflow.com/questions/14922130/which-error-message-is-better-when-users-entered-a-wrong-password
@@ -40,9 +41,19 @@ function login_user($db, $username, $password)
         return "You have entered an invalid username or password.";
     }
 
+    $sessionRespository = new SessionRepository($db);
+    $currentIP = $_SERVER['REMOTE_ADDR'];
+    $hasSession = $sessionRespository->check_session($username);
+    $sessionToken = $sessionRespository->validate_session($username, $currentIP);
+
+    // create or update session if `$hasSession` and `$sessionToken` do not match
+    if ($hasSession != $sessionToken) {
+        $sessionRespository->update_session($sessionToken, $username, $currentIP, $hasSession);
+    }
+
     return new LoginResponse(
         $queryResult["acc_User"],
-        "random session token", // TODO: Implement session system 
+        $sessionToken,
         $queryResult["acc_Fname"],
         $queryResult["acc_Lname"],
         $queryResult["acc_Email"],

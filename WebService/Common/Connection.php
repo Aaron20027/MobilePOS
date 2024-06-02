@@ -34,11 +34,17 @@ class RestaurantDB
 
         if ($stmt->execute()) {
             $result = $stmt->get_result();
-            $data = $result->fetch_assoc();
-            if ($data) {
-                return $data;
+
+            // update queries only returns boolean
+            if (is_bool($result)) {
+                return $result;
             } else {
-                return false;
+                $data = $result->fetch_assoc();
+                if ($data) {
+                    return $data;
+                } else {
+                    return false;
+                }
             }
         }
 

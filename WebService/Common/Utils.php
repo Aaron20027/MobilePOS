@@ -1,4 +1,5 @@
 <?php
+include_once ('../../api/Entities/Response.php');
 class Utils
 {
     public static function GenerateRandomString($length = 10)
@@ -30,9 +31,10 @@ class Utils
         return $arr[$key] == $value;
     }
 
-    public static function GenerateUserToken($userId)
+    public static function GenerateSessionToken($username, $ip)
     {
-        return hash('MD5', $_SERVER['REMOTE_ADDR'] . $userId);
+        $hashContents = $ip . $username . Utils::GenerateRandomString();
+        return hash('MD5', $hashContents);
     }
 
     public static function FixSessionObject($object)
@@ -44,6 +46,13 @@ class Utils
     {
         $number = filter_var($number, FILTER_VALIDATE_INT);
         return ($number !== FALSE);
+    }
+
+    public static function error($db)
+    {
+        Response::CreateFailResponse("Failed executing query!");
+        $db->close();
+        die();
     }
 }
 ?>
