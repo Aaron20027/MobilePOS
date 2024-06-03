@@ -171,7 +171,7 @@
                 app:layout_constraintStart_toEndOf="@+id/textView36" />
 
             <Button
-                android:id="@+id/button10"
+                android:id="@+id/cancelBtn"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="8dp"
@@ -181,13 +181,13 @@
                 android:text="@string/cancelTxt"
                 android:textColor="@color/white"
                 app:cornerRadius="14dp"
-                app:layout_constraintEnd_toStartOf="@+id/button11"
+                app:layout_constraintEnd_toStartOf="@+id/saveBtn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
             <Button
-                android:id="@+id/button11"
+                android:id="@+id/saveBtn"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
@@ -196,10 +196,10 @@
                 android:text="@string/proceedTxt"
                 android:textColor="@color/white"
                 app:cornerRadius="14dp"
-                app:layout_constraintBottom_toBottomOf="@+id/button10"
+                app:layout_constraintBottom_toBottomOf="@+id/cancelBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button10" />
+                app:layout_constraintStart_toEndOf="@+id/cancelBtn" />
 
             <Button
                 android:id="@+id/button15"

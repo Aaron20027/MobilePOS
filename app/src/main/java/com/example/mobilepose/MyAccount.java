@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -29,6 +31,8 @@ public class MyAccount extends Fragment {
     private String mParam2;
 
     private TextView firstname,lastname,password,contact,email,address,acctype,accstatus;
+    private EditText oldPass,newPass,confirmPass;
+    private Button cancelButton,saveButton;
 
     public MyAccount() {
         // Required empty public constructor
@@ -97,6 +101,13 @@ public class MyAccount extends Fragment {
                         R.layout.change_password_pop,
                         (ConstraintLayout) getActivity().findViewById(R.id.changepassword)
                 );
+
+
+        oldPass=bottomSheetView.findViewById(R.id.oldPassEdit);
+        newPass=bottomSheetView.findViewById(R.id.newPassEdit);
+        confirmPass=bottomSheetView.findViewById(R.id.confirmNewPassEdit);
+        cancelButton=bottomSheetView.findViewById(R.id.cancelBtn);
+        saveButton=bottomSheetView.findViewById(R.id.saveBtn);
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
