@@ -109,8 +109,25 @@ public class MyAccount extends Fragment {
         cancelButton=bottomSheetView.findViewById(R.id.cancelBtn);
         saveButton=bottomSheetView.findViewById(R.id.saveBtn);
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePassword();
+            }
+        });
+
+
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
+
+
     }
 
     public void SetInfo(){
