@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <item
+        android:id="@+id/nav_but_acounts"
+        android:icon="@drawable/person_add_icon"
+        android:title="Accounts" />
+    <item
+        android:id="@+id/nav_but_product"
+        android:icon="@drawable/menu_book_icon"
+        android:title="Products" />
+
+    <item
+        android:id="@+id/nav_but_reports"
+        android:icon="@drawable/insert_drive_icon"
+        android:title="Reports" />
+    <item
+        android:id="@+id/nav_but_logout"
+        android:icon="@drawable/logout_icon"
+        android:title="Logout" />
+</menu>

@@ -18,15 +18,18 @@
 
     <style name="Theme.MobilePOSe.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="windowMinWidthMajor">50%</item>
-        <item name="android:windowAnimationStyle">@style/dialogAnim</item>
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 
-    <style name="dialogAnim">
-        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:windowExitAnimation">@anim/slide_in_right</item>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
+
+
+
+
+
 
 
 </resources>
