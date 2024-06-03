@@ -133,8 +133,6 @@ public class homeView extends AppCompatActivity {
     }
 
 
-
-
     public void Logout(View view){
         //code to logout
     }
