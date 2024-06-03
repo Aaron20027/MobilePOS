@@ -26,6 +26,10 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="CustomSearchBar" parent="Widget.Material3.SearchBar">
+        <item name="android:background">@color/material_dynamic_neutral99</item>
+    </style>
+
 
 
 
