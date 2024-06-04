@@ -96,5 +96,8 @@
 
     <string name="Userpicture">picture of user</string>
 
+    <string name="addCategory">Add Category</string>
+    <string name="newCategory">New Category</string>
+
 
 </resources>
