@@ -63,7 +63,6 @@ public class homeView extends AppCompatActivity {
 
 
 
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +84,7 @@ public class homeView extends AppCompatActivity {
                             .addToBackStack("name")
                             .commit();
                 }
-                if (itemId== R.id.nav_accMng) {
+                if (itemId== R.id.nav_accMngCreate) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, AccountManagement.class,null)
@@ -94,7 +93,17 @@ public class homeView extends AppCompatActivity {
                             .commit();
 
                 }
-                if (itemId== R.id.nav_prodMng) {
+
+                if (itemId== R.id.nav_accMngSearch) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, AccountManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+                }
+                if (itemId== R.id.nav_prodMngCreate) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, ProductManagement.class,null)
@@ -104,7 +113,26 @@ public class homeView extends AppCompatActivity {
 
 
                 }
-                if (itemId== R.id.nav_coupMng) {
+                if (itemId== R.id.nav_prodMngSearch) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, ProductManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+
+                }
+                if (itemId== R.id.nav_coupMngCreate) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, CouponManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+                }
+                if (itemId== R.id.nav_coupMngSearch) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, CouponManagement.class,null)
