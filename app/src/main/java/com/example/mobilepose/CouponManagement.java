@@ -4,9 +4,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +29,13 @@ public class CouponManagement extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    String[] couponStatus={"Percentage","Fixed Ammount"};
+    AutoCompleteTextView autoCompleteTextView;
+    ArrayAdapter<String> arrayAdapter;
+
+    TextView discountValueText;
+    EditText discountValueEdit;
 
     public CouponManagement() {
         // Required empty public constructor
@@ -58,8 +71,32 @@ public class CouponManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_coupon_management, container, false);
+        View view=inflater.inflate(R.layout.fragment_coupon_management, container, false);
+
+        autoCompleteTextView=view.findViewById(R.id.autoCompleteTextView2);
+        arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,couponStatus);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+
+        discountValueText=view.findViewById(R.id.textView65);
+        discountValueEdit=view.findViewById(R.id.couponAmmntEdit);
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String item=adapterView.getItemAtPosition(position).toString();
+
+                if (item.equals("Percentage")){
+                    discountValueText.setText("Percentage");
+                    discountValueEdit.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+
+                }else{
+                    discountValueText.setText("Ammount");
+                    discountValueEdit.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                }
+
+            }
+        });
+        return view;
     }
 
     public void CreateCoupon(View view){

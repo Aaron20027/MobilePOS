@@ -8,28 +8,53 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/home_icon"
-            android:title="Home"/>
-        <item
-            android:id="@+id/nav_accMng"
-            android:icon="@drawable/person_add_icon"
-            android:title="Account Management"/>
-        <item
-            android:id="@+id/nav_prodMng"
-            android:icon="@drawable/menu_book_icon"
-            android:title="Product Management"/>
-        <item
-            android:id="@+id/nav_coupMng"
-            android:icon="@drawable/coupon_icon"
-            android:title="Coupon Management"/>
-        <item                                    
-            android:id="@+id/nav_reports"
-            android:icon="@drawable/insert_drive_icon"
-            android:title="Reports"/>
-    </group>
+            android:title="Home" />
 
-    <group android:checkableBehavior="single">
+    <item android:title="Account Management">
+        <menu>
+            <item
+                android:id="@+id/nav_accMngCreate"
+                android:icon="@drawable/person_add_icon"
+                android:title="Create Account"/>
+            <item
+                android:id="@+id/nav_accMngSearch"
+                android:icon="@drawable/person_search"
+                android:title="Search Account"/>
+        </menu>
+    </item>
+    <item android:title="Product Management">
+        <menu>
+            <item
+                android:id="@+id/nav_prodMngCreate"
+                android:icon="@drawable/menu_book_icon"
+                android:title="Create Product"/>
+            <item
+                android:id="@+id/nav_prodMngSearch"
+                android:icon="@drawable/manage_search"
+                android:title="Search Product"/>
+        </menu>
+    </item>
+    <item android:title="Coupon Management">
+        <menu>
+            <item
+                android:id="@+id/nav_coupMngCreate"
+                android:icon="@drawable/coupon_icon"
+                android:title="Create Coupon"/>
+            <item
+                android:id="@+id/nav_coupMngSearch"
+                android:icon="@drawable/search_icon"
+                android:title="Search Coupon"/>
+        </menu>
+    </item>
 
+    <item android:title="Reports" >
+        <menu>
+            <item android:id="@+id/nav_reports"
+                android:icon="@drawable/insert_drive_icon"
+                android:title="Reports"/>
+        </menu>
+    </item>
 
+</group>
 
-    </group>
 </menu>

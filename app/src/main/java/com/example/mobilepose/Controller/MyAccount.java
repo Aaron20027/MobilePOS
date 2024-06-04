@@ -93,12 +93,6 @@ public class MyAccount extends AppCompatActivity implements VolleyCallback {
             }
         });
 
-        oldPassEdit=popup.findViewById(R.id.oldPassTxt);
-        newPassEdit=popup.findViewById(R.id.newPassTxt);
-        confirmNewPassEdit=popup.findViewById(R.id.confirmNewPassTxt);
-        cancelBtn=popup.findViewById(R.id.cancelBtn);
-        saveBtn=popup.findViewById(R.id.saveBtn);
-
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

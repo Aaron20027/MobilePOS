@@ -157,6 +157,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/productPriceEdit" />
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/productCategoryEdit"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="-1dp"
+            android:layout_marginEnd="8dp"
+            android:padding="0dp"
+            app:endIconTint="@color/black"
+            app:hintTextColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView75"
+            app:startIconTint="@color/black">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:inputType="none"
+                android:text="@string/select"
+                android:textColor="@color/black"
+                android:textColorLink="@android:color/transparent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--
         <EditText
             android:id="@+id/productCategoryEdit"
             android:layout_width="0dp"
@@ -173,6 +202,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView75" />
+            -->
 
         <TextView
             android:id="@+id/textView76"

@@ -5,24 +5,21 @@ import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProductManagement#newInstance} factory method to
+ * Use the {@link MyAccount#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProductManagement extends Fragment {
+public class MyAccount extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,13 +30,11 @@ public class ProductManagement extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    String[] productCategory={"Add New Category"};
-    AutoCompleteTextView autoCompleteTextView;
-    ArrayAdapter<String> arrayAdapter;
-    Button cancelButton,saveButton;
-    EditText newCatEdit;
+    private TextView firstname,lastname,password,contact,email,address,acctype,accstatus;
+    private EditText oldPass,newPass,confirmPass;
+    private Button cancelButton,saveButton;
 
-    public ProductManagement() {
+    public MyAccount() {
         // Required empty public constructor
     }
 
@@ -49,11 +44,11 @@ public class ProductManagement extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProductManagement.
+     * @return A new instance of fragment MyAccount.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProductManagement newInstance(String param1, String param2) {
-        ProductManagement fragment = new ProductManagement();
+    public static MyAccount newInstance(String param1, String param2) {
+        MyAccount fragment = new MyAccount();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,60 +68,46 @@ public class ProductManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_product_management, container, false);
 
-        autoCompleteTextView=view.findViewById(R.id.autoCompleteTextView3);
-        arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,productCategory);
-        autoCompleteTextView.setAdapter(arrayAdapter);
+        View view = inflater.inflate(R.layout.fragment_my_account, container, false);
+        TextView textView= view.findViewById(R.id.textView92);
 
+        //add image
+        firstname= view.findViewById(R.id.firstnameTxt);;
+        lastname= view.findViewById(R.id.lastnameTxt);;
+        password= view.findViewById(R.id.passwordTxt);;
+        contact= view.findViewById(R.id.contactTxt);;
+        email= view.findViewById(R.id.emailTxt);;
+        address= view.findViewById(R.id.addressTxt);;
+        acctype= view.findViewById(R.id.typeTxt);
+        accstatus= view.findViewById(R.id.statusTxt);;
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String item=adapterView.getItemAtPosition(position).toString();
-
-                if (item.equals("Add New Category")){
-                    ShowAddCategory();
-                }else{
-
-                }
-
+            public void onClick(View v) {
+                ShowChangePassword();
             }
         });
 
         return view;
     }
 
-    public void CreateProduct(View view){
-        //code to ADD Product to database
-    }
-    public void UpdateProduct(View view){
-        //code to UPDATE Product to database
-    }
-    public void SearchProduct(View view){
-        //code to SEARCH Product to database
-    }
-    public void DeleteProduct(View view){
-        //code to DELETE Product to database
-    }
-
-    public void AddNewCategory(){
-        //code to add category to database
-    }
-
-    public void ShowAddCategory(){
+    public void ShowChangePassword(){
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
                 requireContext(), R.style.BottomSheetDialogTheme
         );
         View bottomSheetView = LayoutInflater.from(requireContext())
                 .inflate(
-                        R.layout.add_category_pop,
-                        (ConstraintLayout) getActivity().findViewById(R.id.addCategory)
+                        R.layout.change_password_pop,
+                        (ConstraintLayout) getActivity().findViewById(R.id.changepassword)
                 );
 
-        newCatEdit=bottomSheetView.findViewById(R.id.newCatEdit);
-        cancelButton=bottomSheetView.findViewById(R.id.cancelCatBtn);
-        saveButton=bottomSheetView.findViewById(R.id.saveCatBtn);
+
+        oldPass=bottomSheetView.findViewById(R.id.oldPassEdit);
+        newPass=bottomSheetView.findViewById(R.id.newPassEdit);
+        confirmPass=bottomSheetView.findViewById(R.id.confirmNewPassEdit);
+        cancelButton=bottomSheetView.findViewById(R.id.cancelBtn);
+        saveButton=bottomSheetView.findViewById(R.id.saveBtn);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +119,7 @@ public class ProductManagement extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddNewCategory();
+                changePassword();
             }
         });
 
@@ -146,6 +127,22 @@ public class ProductManagement extends Fragment {
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
 
+
+    }
+
+    public void SetInfo(){
+        //code to set info of my account
+
+    }
+
+    public void changePassword(){
+        //code to change password in database
+
+    }
+
+    public void validatePassword(){
+        //code to check if oldd password is same as current old passord
+        //check if new password same as confirmpasserd
 
     }
 }

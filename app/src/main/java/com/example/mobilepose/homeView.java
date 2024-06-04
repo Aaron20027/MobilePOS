@@ -3,6 +3,8 @@ package com.example.mobilepose;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -17,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.mobilepose.Controller.MainActivity;
 import com.example.mobilepose.Model.Coupon;
 import com.google.android.material.navigation.NavigationView;
 
@@ -47,8 +50,18 @@ public class homeView extends AppCompatActivity {
         drawerLayout=findViewById(R.id.drawer_layout);
         navigation=findViewById(R.id.nav_view);
 
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.logo);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.inflateMenu(R.menu.tool_menu);
+
+
+
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +84,7 @@ public class homeView extends AppCompatActivity {
                             .addToBackStack("name")
                             .commit();
                 }
-                if (itemId== R.id.nav_accMng) {
+                if (itemId== R.id.nav_accMngCreate) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, AccountManagement.class,null)
@@ -80,7 +93,17 @@ public class homeView extends AppCompatActivity {
                             .commit();
 
                 }
-                if (itemId== R.id.nav_prodMng) {
+
+                if (itemId== R.id.nav_accMngSearch) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, AccountManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+                }
+                if (itemId== R.id.nav_prodMngCreate) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, ProductManagement.class,null)
@@ -90,7 +113,26 @@ public class homeView extends AppCompatActivity {
 
 
                 }
-                if (itemId== R.id.nav_coupMng) {
+                if (itemId== R.id.nav_prodMngSearch) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, ProductManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+
+                }
+                if (itemId== R.id.nav_coupMngCreate) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, CouponManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+                }
+                if (itemId== R.id.nav_coupMngSearch) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, CouponManagement.class,null)
@@ -108,6 +150,22 @@ public class homeView extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.tool_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.logout) {
+            Intent intent=new Intent(homeView.this, Login.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static void OpenDrawer(DrawerLayout drawerLayout){
@@ -131,8 +189,6 @@ public class homeView extends AppCompatActivity {
         super.onPause();
         CloseDrawer(drawerLayout);
     }
-
-
 
 
     public void Logout(View view){
