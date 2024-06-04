@@ -57,7 +57,9 @@
         app:headerLayout="@layout/nav_header"
         app:itemTextColor="@color/blackcream"
         app:itemIconTint="@color/blackcream"
-        app:menu="@menu/menu" />
+        app:menu="@menu/menu"
+        app:subheaderTextAppearance="@style/CustomNavigationViewSubText"
+        app:itemTextAppearance="@style/CustomNavigationViewText"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
 
