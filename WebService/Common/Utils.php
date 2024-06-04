@@ -1,5 +1,5 @@
 <?php
-include_once ('../../api/Entities/Response.php');
+include_once ('../Entities/Response.php');
 class Utils
 {
     public static function GenerateRandomString($length = 10)
@@ -20,7 +20,7 @@ class Utils
 
     public static function GetPostOrNull($key)
     {
-        return $_POST[$key] ?? "";
+        return $_POST[$key] ?? null;
     }
 
     public static function ArrayHasKeyAndEqualTo($arr, $key, $value)

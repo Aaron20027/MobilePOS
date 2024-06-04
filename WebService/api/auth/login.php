@@ -1,9 +1,9 @@
 <?php
 include_once ('../../Common/Connection.php');
 include_once ('../../Common/Utils.php');
-include_once ('../Entities/Response.php');
+include_once ('../../Entities/Response.php');
 include_once ('../../Modules/Session.php');
-include_once ('../Entities/Auth/LoginResponse.php');
+include_once ('../../Entities/Auth/LoginResponse.php');
 
 $dbInst = RestaurantDB::GetTransient();
 
@@ -31,10 +31,6 @@ try {
 function login_user($db, $username, $password)
 {
     $queryResult = $db->query("SELECT * FROM `accounttbl` WHERE `acc_User` = ?", "s", $username);
-
-    if (is_null($queryResult)) {
-        Utils::error($db);
-    }
 
     // Error message reference: https://stackoverflow.com/questions/14922130/which-error-message-is-better-when-users-entered-a-wrong-password
     if ($queryResult === false || !Utils::ArrayHasKeyAndEqualTo($queryResult, "acc_Pass", $password)) {

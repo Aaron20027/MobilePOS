@@ -1,5 +1,6 @@
 package com.example.mobilepose.Model.API;
 
+import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 
@@ -18,5 +19,11 @@ public interface APIInterface {
     Call<ResponseBase<LoginResponse>> Login(
             @Field("username") String username,
             @Field("password") String password
+    );
+
+    @FormUrlEncoded
+    @POST("/api/products/get.php")
+    Call<ResponseBase<FetchProductResponse[]>> GetProducts(
+            @Field("category_id") String categoryId
     );
 }

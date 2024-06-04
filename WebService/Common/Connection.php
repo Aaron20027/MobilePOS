@@ -39,17 +39,28 @@ class RestaurantDB
             if (is_bool($result)) {
                 return $result;
             } else {
-                $data = $result->fetch_assoc();
-                if ($data) {
-                    return $data;
-                } else {
+                $dataArr = [];
+                while ($data = $result->fetch_assoc())
+                {
+                    $dataArr[] = $data;
+                }
+
+                if (count($dataArr) === 0)
+                {
                     return false;
+                }
+                else if (count($dataArr) === 1)
+                {
+                    return $dataArr[0];
+                }
+                else
+                {
+                    return $dataArr;
                 }
             }
         }
 
-        // return null if execution failed
-        return null;
+        Utils::error($this);
     }
 
     public function close()
