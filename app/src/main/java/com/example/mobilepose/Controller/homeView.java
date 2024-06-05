@@ -1,9 +1,8 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Controller;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mobilepose.Controller.MainActivity;
-import com.example.mobilepose.Model.Coupon;
+import com.example.mobilepose.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class homeView extends AppCompatActivity {
@@ -97,7 +95,7 @@ public class homeView extends AppCompatActivity {
                 if (itemId== R.id.nav_accMngSearch) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, AccountManagement.class,null)
+                            .replace(R.id.fragmentContainerView, SearchUser.class,null)
                             .setReorderingAllowed(true)
                             .addToBackStack("name")
                             .commit();
@@ -116,7 +114,7 @@ public class homeView extends AppCompatActivity {
                 if (itemId== R.id.nav_prodMngSearch) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, ProductManagement.class,null)
+                            .replace(R.id.fragmentContainerView, SearchProduct.class,null)
                             .setReorderingAllowed(true)
                             .addToBackStack("name")
                             .commit();
@@ -135,7 +133,7 @@ public class homeView extends AppCompatActivity {
                 if (itemId== R.id.nav_coupMngSearch) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, CouponManagement.class,null)
+                            .replace(R.id.fragmentContainerView, SearchCoupon.class,null)
                             .setReorderingAllowed(true)
                             .addToBackStack("name")
                             .commit();
@@ -162,7 +160,7 @@ public class homeView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.logout) {
-            Intent intent=new Intent(homeView.this, Login.class);
+           Intent intent=new Intent(homeView.this, MainActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -177,12 +175,6 @@ public class homeView extends AppCompatActivity {
         }
     }
 
-    public static void RedirectActivity(Activity activity, Class secondActivity){
-        Intent intent=new Intent(activity,secondActivity);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
-        activity.finish();
-    }
 
     @Override
     protected void onPause() {

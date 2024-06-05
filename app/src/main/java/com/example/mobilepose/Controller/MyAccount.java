@@ -1,162 +1,149 @@
 package com.example.mobilepose.Controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mobilepose.Model.API.Entities.LoginResponse;
-import com.example.mobilepose.Model.DatabaseSingle;
-import com.example.mobilepose.Model.User;
-import com.example.mobilepose.Model.VolleyCallback;
 import com.example.mobilepose.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link MyAccount#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class MyAccount extends Fragment {
 
-import java.util.HashMap;
-import java.util.Map;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-public class MyAccount extends AppCompatActivity implements VolleyCallback {
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
-    private TextView usernameTxt,fnameTxt,lnameTxt,passTxt,typeTxt,contactTxt,emailTxt,addressTxt,statusTxt;
-    private EditText oldPassEdit, newPassEdit, confirmNewPassEdit;
+    private TextView firstname,lastname,password,contact,email,address,acctype,accstatus;
+    private EditText oldPass,newPass,confirmPass;
+    private Button cancelButton,saveButton;
 
-    private Button cancelBtn,saveBtn;
-    ConstraintLayout cons;
+    public MyAccount() {
+        // Required empty public constructor
+    }
 
-    DatabaseSingle db=DatabaseSingle.getInstance();
-    JSONObject jsonObject;
-    JSONArray jsonArray;
-    User user;
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment MyAccount.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static MyAccount newInstance(String param1, String param2) {
+        MyAccount fragment = new MyAccount();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_account);
-
-        String jsonUserInfo = getIntent().getStringExtra("userinfo");
-        LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
-
-        usernameTxt=findViewById(R.id.passError);
-        fnameTxt=findViewById(R.id.firstTxt);
-        lnameTxt=findViewById(R.id.lastTxt);
-        passTxt=findViewById(R.id.passTxt);
-        typeTxt=findViewById(R.id.typeTxt);
-        contactTxt=findViewById(R.id.contactTxt);
-        emailTxt=findViewById(R.id.emailTxt);
-        addressTxt=findViewById(R.id.addressTxt);
-        statusTxt=findViewById(R.id.statusTxt);
-
-        cons=findViewById(R.id.popupCons);
-
-        usernameTxt.setText(loginResponse.username);
-        fnameTxt.setText(loginResponse.firstName);
-        lnameTxt.setText(loginResponse.lastName);
-
-        //db.SearchUserInfo(username,"http://192.168.1.13/Android/searchUser.php", MyAccount.this, this)
-
-        //db.ManageDatabaseArray("Android/searchUser.php",MyAccount.this,MyAccount.this,params);
-
-    }
-
-    public void showChangePassword(View view){
-      LayoutInflater inflater= (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View overlay = findViewById(R.id.overlay);
-        View popup=inflater.inflate(R.layout.change_password_pop, null);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        PopupWindow popupWindow=new PopupWindow(popup,displayMetrics.widthPixels / 2,ViewGroup.LayoutParams.MATCH_PARENT,true);
-        popupWindow.setOnDismissListener(() -> overlay.setVisibility(View.GONE));
-        cons.post(new Runnable() {
-            @Override
-            public void run() {
-                popupWindow.showAtLocation(cons, Gravity.RIGHT,0,0);
-                overlay.setVisibility(View.VISIBLE);
-            }
-        });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user.ChangePassword(oldPassEdit.getText().toString(),newPassEdit.getText().toString(),confirmNewPassEdit.getText().toString(),MyAccount.this)){
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("username", user.getUsername());
-                    params.put("password", newPassEdit.getText().toString());
-                    db.ManageDatabaseObject("Android/updateUser.php",MyAccount.this,MyAccount.this,params);
-                    popupWindow.dismiss();
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onSuccess(String response) {
-        try {
-            jsonObject=new JSONObject(response);
-            System.out.println(jsonObject.optString("status"));
-            Toast.makeText(MyAccount.this, jsonObject.optString("status") , Toast.LENGTH_SHORT).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
-    public void onSearchSuccess(String response) {
-        try {
-            jsonArray=new JSONArray(response);
-            jsonObject=jsonArray.getJSONObject(0);
-            //System.out.println(jsonObject.getString("acc_Status"));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-            user=new User(jsonObject.getString("acc_User"),
-                    jsonObject.getString("acc_Pass"),jsonObject.getString("acc_Fname"),
-                    jsonObject.getString("acc_Lname"),jsonObject.getString("acc_Type"),
-                    jsonObject.getString("acc_Contact"), jsonObject.getString("acc_Email"),
-                    jsonObject.getString("acc_Address"), jsonObject.getString("acc_Status"),
-                    jsonObject.getString("acc_Image"));
+        View view = inflater.inflate(R.layout.fragment_my_account, container, false);
+        TextView textView= view.findViewById(R.id.textView92);
 
-            usernameTxt.setText(user.getUsername());
-            fnameTxt.setText(user.getFname());
-            lnameTxt.setText(user.getLname());
-            passTxt.setText(user.getPasswordProtected());
-            typeTxt.setText(user.getType());
-            contactTxt.setText(user.getContact());
-            emailTxt.setText(user.getEmail());
-            addressTxt.setText(user.getAddress());
-            statusTxt.setText(user.getStatus());
+        //add image
+        firstname= view.findViewById(R.id.firstnameTxt);;
+        lastname= view.findViewById(R.id.lastnameTxt);;
+        password= view.findViewById(R.id.passwordTxt);;
+        contact= view.findViewById(R.id.contactTxt);;
+        email= view.findViewById(R.id.emailTxt);;
+        address= view.findViewById(R.id.addressTxt);;
+        acctype= view.findViewById(R.id.typeTxt);
+        accstatus= view.findViewById(R.id.statusTxt);;
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowChangePassword();
+            }
+        });
+
+        return view;
+    }
+
+    public void ShowChangePassword(){
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+                requireContext(), R.style.BottomSheetDialogTheme
+        );
+        View bottomSheetView = LayoutInflater.from(requireContext())
+                .inflate(
+                        R.layout.change_password_pop,
+                        (ConstraintLayout) getActivity().findViewById(R.id.changepassword)
+                );
+
+
+        oldPass=bottomSheetView.findViewById(R.id.oldPassEdit);
+        newPass=bottomSheetView.findViewById(R.id.newPassEdit);
+        confirmPass=bottomSheetView.findViewById(R.id.confirmNewPassEdit);
+        cancelButton=bottomSheetView.findViewById(R.id.cancelBtn);
+        saveButton=bottomSheetView.findViewById(R.id.saveBtn);
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changePassword();
+            }
+        });
+
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+
 
     }
 
-    @Override
-    public void onError(String error) {
+    public void SetInfo(){
+        //code to set info of my account
+
+    }
+
+    public void changePassword(){
+        //code to change password in database
+
+    }
+
+    public void validatePassword(){
+        //code to check if oldd password is same as current old passord
+        //check if new password same as confirmpasserd
+
     }
 }

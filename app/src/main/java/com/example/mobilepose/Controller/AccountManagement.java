@@ -1,212 +1,80 @@
 package com.example.mobilepose.Controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mobilepose.Model.DatabaseSingle;
-import com.example.mobilepose.Model.User;
-import com.example.mobilepose.Model.VolleyCallback;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.example.mobilepose.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link AccountManagement#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class AccountManagement extends Fragment {
 
-import java.util.HashMap;
-import java.util.Map;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-public class AccountManagement extends AppCompatActivity implements VolleyCallback {
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
-    JSONObject jsonObject;
-    JSONArray jsonArray;
-    DatabaseSingle db=DatabaseSingle.getInstance();
-    private EditText usernameTxt, fnameTxt,lnameTxt,passTxt,contactTxt,emailTxt,addressTxt;
-    private TextView usernameError, fnameError,lnameError,passError,contactError,emailError,addressError, typeError, statusError;
-    private RadioGroup typeRadio,statusRadio;
-    private RadioButton typeRadioBtn,statusRadioBtn;
+    public AccountManagement() {
+        // Required empty public constructor
+    }
 
-    String path;
-    Uri uri;
-    private ImageView captureImg;
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment AccountManagement.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static AccountManagement newInstance(String param1, String param2) {
+        AccountManagement fragment = new AccountManagement();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_management);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        usernameTxt=findViewById(R.id.userEdit);
-        fnameTxt=findViewById(R.id.firstEdit);
-        lnameTxt=findViewById(R.id.lastEdit);
-        passTxt=findViewById(R.id.passEdit);
-        contactTxt=findViewById(R.id.contactEdit);
-        emailTxt=findViewById(R.id.emailEdit);
-        addressTxt=findViewById(R.id.addressEdit);
-
-        typeRadio=findViewById(R.id.typeRadio);
-        statusRadio=findViewById(R.id.statusRadio);
-
-        usernameError=findViewById(R.id.userError);
-        fnameError=findViewById(R.id.firstError);
-        lnameError=findViewById(R.id.lastError);
-        passError=findViewById(R.id.passError);
-        contactError=findViewById(R.id.contactError);
-        emailError=findViewById(R.id.emailError);
-        addressError=findViewById(R.id.codeError);
-        typeError=findViewById(R.id.passTxt);
-        statusError=findViewById(R.id.statusError);
-
-        SetErrorState(View.INVISIBLE, usernameError, fnameError,lnameError,passError,contactError,emailError,addressError, typeError, statusError);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_account_management, container, false);
     }
 
     public void CreateUser(View view){
-        int selectedIdType = typeRadio.getCheckedRadioButtonId();
-        int selectedIdStatus = statusRadio.getCheckedRadioButtonId();
-        typeRadioBtn=findViewById(selectedIdType);
-        statusRadioBtn=findViewById(selectedIdStatus);
-        String typeString=typeRadioBtn.getText().toString();
-        String statusString=statusRadioBtn.getText().toString();
-
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("username", usernameTxt.getText().toString());
-        params.put("fname", fnameTxt.getText().toString());
-        params.put("lname", lnameTxt.getText().toString());
-        params.put("password", passTxt.getText().toString());
-        params.put("type", "2");
-        params.put("contact", contactTxt.getText().toString());
-        params.put("email", emailTxt.getText().toString());
-
-        //radio
-        params.put("status", "1");
-        params.put("image", "TEST");
-
-
-        db.ManageDatabaseObject("Android/createUser.php",this,this,params);
-
-        /*
-        if(usernameTxt.getText().toString().trim()=="" || passwordTxt.getText().toString().trim()=="" || nameTxt.getText().toString().trim()==""
-        || accountTypeTxt.getText().toString().trim()=="" || contactTxt.getText().toString().trim()=="" || addressTxt.getText().toString().trim()==""){
-            Toast.makeText(AccountManagement.this, "Some required fields are blank.!", Toast.LENGTH_LONG).show();
-        }else{
-            db.SearchUserInfo(usernameTxt.getText().toString(),"http://192.168.1.13/Android/createUser.php", AccountManagement.this, this);
-        }
-
-         */
+        //code to ADD user to database
+    }
+    public void UpdateUser(View view){
+        //code to UPDATE user to database
     }
     public void SearchUser(View view){
-        if(usernameTxt.getText().toString().trim()==""){
-            SetErrorState(View.VISIBLE, usernameError);
-            Toast.makeText(AccountManagement.this, "Username field is blank!", Toast.LENGTH_LONG).show();
-        }else{
-            SetErrorState(View.INVISIBLE, usernameError);
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("username", usernameTxt.getText().toString());
-            db.ManageDatabaseArray("Android/searchUser.php",AccountManagement.this,AccountManagement.this,params);
-        }
-    }
-
-    // Fix update and php
-    public void UpdateUser(View view){
-        if(usernameTxt.getText().toString().trim()==""){
-            SetErrorState(View.VISIBLE, usernameError);
-            Toast.makeText(AccountManagement.this, "Username field is blank!", Toast.LENGTH_LONG).show();
-        }else{
-            SetErrorState(View.INVISIBLE, usernameError);
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("username", usernameTxt.getText().toString());
-            params.put("fname", fnameTxt.getText().toString());
-            params.put("lname", lnameTxt.getText().toString());
-            params.put("password", passTxt.getText().toString());
-            params.put("type", "2");
-            params.put("contact", contactTxt.getText().toString());
-            params.put("email", emailTxt.getText().toString());
-            params.put("address", addressTxt.getText().toString());
-            params.put("status", "1");
-            params.put("image", "TEST");
-
-            db.ManageDatabaseObject("Android/updateUser.php",this,this,params);
-        }
+        //code to SEARCH user to database
     }
     public void DeleteUser(View view){
-        if(usernameTxt.getText().toString().trim()==""){
-            SetErrorState(View.VISIBLE, usernameError);
-            Toast.makeText(AccountManagement.this, "Username field is blank!", Toast.LENGTH_LONG).show();
-        }else{
-            SetErrorState(View.INVISIBLE, usernameError);
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("username", usernameTxt.getText().toString());
-            db.ManageDatabaseObject("Android/deleteUser.php",AccountManagement.this,AccountManagement.this,params);
-        }
+        //code to DELETE user to database
     }
 
-    public void AddUserImage(View view){
-
-
-    }
-
-
-    public void SetErrorState(int view, TextView... texts){
-        for(TextView text : texts){
-            text.setVisibility(view);
-        }
-
-    }
-
-    @Override
-    public void onSuccess(String response) {
-        try {
-            jsonObject=new JSONObject(response);
-            Toast.makeText(AccountManagement.this, jsonObject.getString("status"), Toast.LENGTH_LONG).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void onSearchSuccess(String response) {
-        try {
-            jsonArray=new JSONArray(response);
-            jsonObject=jsonArray.getJSONObject(0);
-
-            User user=new User(jsonObject.getString("acc_User"),
-                    jsonObject.getString("acc_Pass"),jsonObject.getString("acc_Fname"),
-                    jsonObject.getString("acc_Lname"),jsonObject.getString("acc_Type"),
-                    jsonObject.getString("acc_Contact"), jsonObject.getString("acc_Email"),
-                    jsonObject.getString("acc_Address"), jsonObject.getString("acc_Status"),
-                    jsonObject.getString("acc_Image"));
-
-            usernameTxt.setText(user.getUsername());
-            fnameTxt.setText(user.getFname());
-            lnameTxt.setText(user.getLname());
-            passTxt.setText(user.getPassword());
-            contactTxt.setText(user.getContact());
-            emailTxt.setText(user.getEmail());
-            addressTxt.setText(user.getAddress());
-
-            //typeRadio.check();
-            //statusTxt.setText(user.getStatus());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void onError(String error) {
-
-    }
 }
