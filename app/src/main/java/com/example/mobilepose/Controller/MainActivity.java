@@ -3,8 +3,10 @@ package com.example.mobilepose.Controller;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,29 +16,39 @@ import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
+import com.example.mobilepose.Model.DatabaseSingle;
+import com.example.mobilepose.Model.VolleyCallback;
 import com.example.mobilepose.R;
 
-import retrofit2.Call;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
 
-    private EditText userTxt, passTxt;
+public class MainActivity extends AppCompatActivity implements VolleyCallback {
+
+    private EditText userTxt,passTxt;
+    JSONObject jsonObject;
+    DatabaseSingle db=DatabaseSingle.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userTxt = findViewById(R.id.editTextText);
-        passTxt = findViewById(R.id.editTextTextPassword);
+        userTxt=findViewById(R.id.editTextText);
+        passTxt=findViewById(R.id.editTextTextPassword);
 
     }
 
     public void validateUser(View view) {
-        String username = userTxt.getText().toString().trim();
-        String password = passTxt.getText().toString().trim();
-        String hashedPass = Utils.MD5(password);
-        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        String username= userTxt.getText().toString().trim();
+        String password= passTxt.getText().toString().trim();
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username", username);
+        params.put("password", password);
 
         Call<ResponseBase<LoginResponse>> loginCall = api.Login(username, hashedPass);
         loginCall.enqueue(new APICallback<>(
@@ -50,5 +62,15 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();
                 }
         ));
+    }
+
+    @Override
+    public void onSearchSuccess(String response) {
+
+    }
+
+    @Override
+    public void onError(String error) {
+
     }
 }

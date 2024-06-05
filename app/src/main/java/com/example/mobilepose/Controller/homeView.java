@@ -1,5 +1,6 @@
 package com.example.mobilepose.Controller;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,9 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mobilepose.AccountManagement;
-import com.example.mobilepose.CouponManagement;
-import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
 import com.google.android.material.navigation.NavigationView;
 
@@ -84,7 +82,7 @@ public class homeView extends AppCompatActivity {
                             .addToBackStack("name")
                             .commit();
                 }
-                if (itemId== R.id.nav_accMng) {
+                if (itemId== R.id.nav_accMngCreate) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, AccountManagement.class,null)
@@ -94,7 +92,16 @@ public class homeView extends AppCompatActivity {
 
                 }
 
-                if (itemId== R.id.nav_prodMng) {
+                if (itemId== R.id.nav_accMngSearch) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, SearchUser.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+                }
+                if (itemId== R.id.nav_prodMngCreate) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, ProductManagement.class,null)
@@ -104,10 +111,29 @@ public class homeView extends AppCompatActivity {
 
 
                 }
-                if (itemId== R.id.nav_coupMng) {
+                if (itemId== R.id.nav_prodMngSearch) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, SearchProduct.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+
+                }
+                if (itemId== R.id.nav_coupMngCreate) {
                     FragmentManager fragmentmanger=getSupportFragmentManager();
                     fragmentmanger.beginTransaction()
                             .replace(R.id.fragmentContainerView, CouponManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
+
+                }
+                if (itemId== R.id.nav_coupMngSearch) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, SearchCoupon.class,null)
                             .setReorderingAllowed(true)
                             .addToBackStack("name")
                             .commit();

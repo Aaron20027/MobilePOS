@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Controller;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mobilepose.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CouponManagement#newInstance} factory method to
+ * Use the {@link AccountManagement#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CouponManagement extends Fragment {
+public class AccountManagement extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class CouponManagement extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CouponManagement() {
+    public AccountManagement() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class CouponManagement extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CouponManagement.
+     * @return A new instance of fragment AccountManagement.
      */
     // TODO: Rename and change types and number of parameters
-    public static CouponManagement newInstance(String param1, String param2) {
-        CouponManagement fragment = new CouponManagement();
+    public static AccountManagement newInstance(String param1, String param2) {
+        AccountManagement fragment = new AccountManagement();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,20 @@ public class CouponManagement extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_coupon_management, container, false);
+        return inflater.inflate(R.layout.fragment_account_management, container, false);
     }
+
+    public void CreateUser(View view){
+        //code to ADD user to database
+    }
+    public void UpdateUser(View view){
+        //code to UPDATE user to database
+    }
+    public void SearchUser(View view){
+        //code to SEARCH user to database
+    }
+    public void DeleteUser(View view){
+        //code to DELETE user to database
+    }
+
 }
