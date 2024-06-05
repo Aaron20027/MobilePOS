@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/material_dynamic_neutral99"
     android:fillViewport="true"
-    tools:context=".Home">
+    tools:context=".Controller.Home">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -250,6 +250,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
+                android:background="@color/white"
                 android:queryHint="Search Product"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

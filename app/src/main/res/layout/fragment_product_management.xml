@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="10dp"
-    tools:context=".ProductManagement">
+    tools:context=".Controller.ProductManagement">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -32,10 +32,9 @@
             android:layout_height="200dp"
             android:layout_margin="15dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/corner_image"
+            android:background="@drawable/rounded_edges_box"
             android:contentDescription="User picture"
             android:elevation="10dp"
-            android:onClick="AddUserImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView70"
@@ -233,6 +232,7 @@
                 android:buttonTint="@color/black"
                 android:text="@string/availableTxt"
                 android:textColor="@color/black"
+                android:textColorLink="@color/black"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -243,6 +243,7 @@
                 android:buttonTint="@color/black"
                 android:text="@string/unavailableTxt"
                 android:textColor="@color/black"
+                android:textColorLink="@color/black"
                 android:textSize="16sp" />
         </RadioGroup>
 

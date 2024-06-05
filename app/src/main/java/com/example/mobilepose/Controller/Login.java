@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Controller;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.mobilepose.R;
 
 public class Login extends AppCompatActivity {
 

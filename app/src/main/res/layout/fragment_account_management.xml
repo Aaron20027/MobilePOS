@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AccountManagement">
+    tools:context=".Controller.AccountManagement">
 
 
 
@@ -50,7 +50,6 @@
                     android:background="@drawable/circular_image_button"
                     android:contentDescription="User picture"
                     android:elevation="10dp"
-                    android:onClick="AddUserImage"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -325,6 +324,7 @@
                     android:buttonTint="@color/black"
                     android:text="@string/managerTxt"
                     android:textColor="@color/black"
+                    android:textColorLink="@color/black"
                     android:textSize="16sp" />
 
                 <RadioButton
@@ -335,6 +335,7 @@
                     android:buttonTint="@color/black"
                     android:text="@string/cashierTxt"
                     android:textColor="@color/black"
+                    android:textColorLink="@color/black"
                     android:textSize="16sp" />
             </RadioGroup>
 
@@ -367,6 +368,7 @@
                     android:buttonTint="@color/black"
                     android:text="@string/activateTxt"
                     android:textColor="@color/black"
+                    android:textColorLink="@color/black"
                     android:textSize="16sp" />
 
                 <RadioButton
@@ -377,6 +379,7 @@
                     android:buttonTint="@color/black"
                     android:text="@string/deactivateTxt"
                     android:textColor="@color/black"
+                    android:textColorLink="@color/black"
                     android:textSize="16sp" />
             </RadioGroup>
 

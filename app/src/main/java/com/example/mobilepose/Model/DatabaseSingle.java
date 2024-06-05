@@ -19,7 +19,7 @@ import java.util.Map;
 public class DatabaseSingle {
     private RequestQueue rQueue;
     public static DatabaseSingle instance;
-    final String IP="http://192.168.1.13/";
+    final String IP="http://192.168.2.203/";
     private DatabaseSingle(){}
 
     public static DatabaseSingle getInstance(){

@@ -22,31 +22,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".homeView"
-            android:exported="false" />
-        <activity
-            android:name=".Controller.Home"
+            android:name=".Controller.homeView"
             android:exported="false"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".Controller.CouponManagement"
+            android:name=".Controller.Login"
             android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".Controller.MyAccount"
-            android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".Controller.ProductManagement"
-            android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".Controller.AccountManagement"
-            android:exported="false"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".Controller.MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

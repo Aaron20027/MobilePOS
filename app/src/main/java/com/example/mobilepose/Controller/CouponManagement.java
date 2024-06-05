@@ -1,133 +1,116 @@
 package com.example.mobilepose.Controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mobilepose.Model.DatabaseSingle;
-import com.example.mobilepose.Model.VolleyCallback;
+import androidx.fragment.app.Fragment;
+
+import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import com.example.mobilepose.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link CouponManagement#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class CouponManagement extends Fragment {
 
-import java.util.HashMap;
-import java.util.Map;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-public class CouponManagement extends AppCompatActivity implements VolleyCallback {
-    JSONObject jsonObject;
-    JSONArray jsonArray;
-    DatabaseSingle db=DatabaseSingle.getInstance();
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
-    EditText codeEdit,descEdit,statusEdit,percEdit,startEdit,endEdit;
-    TextView codeError,descError,statusError,PercError,startError,endError,availabiltyError;
-    RadioGroup availabiltyGRP;
+    String[] couponStatus={"Percentage","Fixed Ammount"};
+    AutoCompleteTextView autoCompleteTextView;
+    ArrayAdapter<String> arrayAdapter;
+
+    TextView discountValueText;
+    EditText discountValueEdit;
+
+    public CouponManagement() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment CouponManagement.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static CouponManagement newInstance(String param1, String param2) {
+        CouponManagement fragment = new CouponManagement();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coupon_management);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
-        codeEdit=findViewById(R.id.couponCodeEdit);
-        descEdit=findViewById(R.id.couponDescEdit);
-        //statusEdit=findViewById(R.id.discountStatusEdit);
-        percEdit=findViewById(R.id.percentageEdit);
-        startEdit=findViewById(R.id.startEdit);
-        endEdit=findViewById(R.id.endEdit);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.fragment_coupon_management, container, false);
 
-        codeError=findViewById(R.id.codeError);
-        descError=findViewById(R.id.descError);
-        statusError=findViewById(R.id.statError);
-        PercError=findViewById(R.id.ammntError);
-        startError=findViewById(R.id.startError);
-        endError=findViewById(R.id.endError);
-        availabiltyError=findViewById(R.id.availabiltyError);
+        autoCompleteTextView=view.findViewById(R.id.autoCompleteTextView2);
+        arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,couponStatus);
+        autoCompleteTextView.setAdapter(arrayAdapter);
 
-        SetErrorState(View.INVISIBLE,codeError,descError,statusError,PercError,startError,endError,availabiltyError);
+        discountValueText=view.findViewById(R.id.textView65);
+        discountValueEdit=view.findViewById(R.id.couponAmmntEdit);
 
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String item=adapterView.getItemAtPosition(position).toString();
+
+                if (item.equals("Percentage")){
+                    discountValueText.setText("Percentage");
+                    discountValueEdit.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+
+                }else{
+                    discountValueText.setText("Ammount");
+                    discountValueEdit.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                }
+
+            }
+        });
+        return view;
     }
 
     public void CreateCoupon(View view){
-
+        //code to ADD Coupon to database
     }
-
-    public void SearchCoupon(View view){
-        if(codeEdit.getText().toString().trim()==""){
-            SetErrorState(View.VISIBLE, codeError);
-            Toast.makeText(CouponManagement.this, "Coupon Code field is blank!", Toast.LENGTH_LONG).show();
-        }else{
-            SetErrorState(View.INVISIBLE, codeError);
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("couponcode", codeEdit.getText().toString());
-            db.ManageDatabaseObject("Android/searchCoupon.php",CouponManagement.this,CouponManagement.this,params);
-        }
-
-    }
-
     public void UpdateCoupon(View view){
-        if(codeEdit.getText().toString().trim()==""){
-            SetErrorState(View.VISIBLE, codeError);
-            Toast.makeText(CouponManagement.this, "Coupon Code field is blank!", Toast.LENGTH_LONG).show();
-        }else{
-            SetErrorState(View.INVISIBLE, codeError);
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("couponcode", codeEdit.getText().toString());
-            params.put("coupondesc", descEdit.getText().toString());
-            params.put("couponstatus", statusEdit.getText().toString());
-            params.put("couponpercent", percEdit.getText().toString());
-            params.put("couponstart", startEdit.getText().toString());
-            params.put("couponend", endEdit.getText().toString());
-            params.put("couponavail", "");
-
-            db.ManageDatabaseObject("Android/updateCoupon.php",this,this,params);
-        }
-
+        //code to UPDATE Coupon to database
     }
-
+    public void SearchCoupon(View view){
+        //code to SEARCH Coupon to database
+    }
     public void DeleteCoupon(View view){
-        if(codeEdit.getText().toString().trim()==""){
-            SetErrorState(View.VISIBLE, codeError);
-            Toast.makeText(CouponManagement.this, "Coupon Code field is blank!", Toast.LENGTH_LONG).show();
-        }else{
-            SetErrorState(View.INVISIBLE, codeError);
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("couponcode", codeEdit.getText().toString());
-            db.ManageDatabaseObject("Android/deleteCoupon.php",CouponManagement.this,CouponManagement.this,params);
-        }
-
-    }
-
-    public void SetErrorState(int view, TextView... texts){
-        for(TextView text : texts){
-            text.setVisibility(view);
-        }
-
-    }
-
-    @Override
-    public void onSuccess(String response) {
-        try {
-            jsonObject=new JSONObject(response);
-            Toast.makeText(CouponManagement.this, jsonObject.getString("status"), Toast.LENGTH_LONG).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void onSearchSuccess(String response) {
-
-    }
-
-    @Override
-    public void onError(String error) {
-
+        //code to DELETE Coupon to database
     }
 }
