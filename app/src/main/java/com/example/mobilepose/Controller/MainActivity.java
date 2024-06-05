@@ -3,21 +3,12 @@ package com.example.mobilepose.Controller;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.mobilepose.Model.DatabaseSingle;
-import com.example.mobilepose.Model.User;
 import com.example.mobilepose.Model.VolleyCallback;
 import com.example.mobilepose.R;
 
@@ -61,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback {
             String username= userTxt.getText().toString().trim();
 
             if (jsonObject.optString("status").equals("Login Successful!")){
-                Intent intent=new Intent(MainActivity.this, Home.class);
+                Intent intent=new Intent(MainActivity.this, homeView.class);
                 intent.putExtra("username",username);
                 startActivity(intent);
 

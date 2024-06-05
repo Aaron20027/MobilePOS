@@ -24,7 +24,6 @@
     <string name="cancelTxt">Cancel</string>
 
 
-    <string name="errorTxt">*</string>
 
     <string name="managerTxt">Manager</string>
     <string name="cashierTxt">Cashier</string>
@@ -98,6 +97,10 @@
 
     <string name="addCategory">Add Category</string>
     <string name="newCategory">New Category</string>
+
+    <string name="searchProduct">Search Product</string>
+    <string name="searchUser">Search User</string>
+    <string name="searchCoupon">Search Coupon</string>
 
 
 </resources>
