@@ -21,8 +21,8 @@ class RestaurantDB
         return !$this->conn->connect_error;
     }
 
-    // returns null if query failed
-    // returns false if no result
+    // returns data if there's data
+    // returns boolean if no result
     public function query($statement, $types = "", ...$qArgs)
     {
         $stmt = $this->conn->prepare($statement);
@@ -34,27 +34,20 @@ class RestaurantDB
 
         if ($stmt->execute()) {
             $result = $stmt->get_result();
-
             // update queries only returns boolean
-            if (is_bool($result)) {
-                return $result;
+            if ($result === false) {
+                return $stmt->affected_rows > 0;
             } else {
                 $dataArr = [];
-                while ($data = $result->fetch_assoc())
-                {
+                while ($data = $result->fetch_assoc()) {
                     $dataArr[] = $data;
                 }
 
-                if (count($dataArr) === 0)
-                {
+                if (count($dataArr) === 0) {
                     return false;
-                }
-                else if (count($dataArr) === 1)
-                {
+                } else if (count($dataArr) === 1) {
                     return $dataArr[0];
-                }
-                else
-                {
+                } else {
                     return $dataArr;
                 }
             }

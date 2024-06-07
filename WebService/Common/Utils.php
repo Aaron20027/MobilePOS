@@ -1,5 +1,5 @@
 <?php
-include_once ('../Entities/Response.php');
+include_once ('../../Entities/Response.php');
 class Utils
 {
     public static function GenerateRandomString($length = 10)

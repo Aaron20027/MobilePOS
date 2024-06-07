@@ -1,5 +1,5 @@
 <?php
-class FetchProductResponse
+class ProductResponse
 {
     public function __construct(
         public readonly int $productId,
@@ -8,6 +8,7 @@ class FetchProductResponse
         public readonly float $price,
         public readonly int $productCategory,
         public readonly string $productImage, // base64
+        public readonly int $available
     ) {
     }
 }
