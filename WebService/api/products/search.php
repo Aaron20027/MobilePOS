@@ -2,7 +2,7 @@
 include_once ('../../Common/Connection.php');
 include_once ('../../Common/Utils.php');
 include_once ('../../Entities/Response.php');
-include_once ('../../Modules/Products.php');
+include_once ('../../Modules/ProductRepository.php');
 include_once ('../../Entities/Products/ProductResponse.php');
 
 /*
@@ -30,7 +30,7 @@ try {
 
 function search_product($db, $name)
 {
-    $productModule = new Products($db);
+    $productModule = new ProductRepository($db);
     $search_result = $productModule->search_product($name);
     if ($search_result === false) {
         return [];

@@ -7,7 +7,7 @@ enum ProductCategory: int
     case BEVERAGES = 2;
 }
 
-class Products
+class ProductRepository
 {
     private $db;
     public function __construct($db)

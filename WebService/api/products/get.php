@@ -3,7 +3,7 @@ include_once ('../../Common/Connection.php');
 include_once ('../../Common/Utils.php');
 include_once ('../../Entities/Response.php');
 include_once ('../../Entities/Products/ProductResponse.php');
-include_once ('../../Modules/Products.php');
+include_once ('../../Modules/ProductRepository.php');
 
 /*
  * POST - /api/products/get.php
@@ -28,7 +28,7 @@ try {
 
 function fetch_products($db, $categoryId)
 {
-    $productModule = new Products($db);
+    $productModule = new ProductRepository($db);
     $productItemsDB = $productModule->get_products_by_category($categoryId, true); // Available value set to true by default
     if ($productItemsDB === false) {
         return [];

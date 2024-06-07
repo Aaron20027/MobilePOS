@@ -2,7 +2,7 @@
 include_once ('../../Common/Connection.php');
 include_once ('../../Common/Utils.php');
 include_once ('../../Entities/Response.php');
-include_once ('../../Modules/Products.php');
+include_once ('../../Modules/ProductRepository.php');
 
 /*
  * POST - /api/products/create.php
@@ -42,7 +42,7 @@ try {
 
 function create_product($db, $name, $description, $price, $categoryId, $image, $size)
 {
-    $productModule = new Products($db);
+    $productModule = new ProductRepository($db);
     $result = $productModule->create_product($name, $description, $price, $categoryId, $image, $size);
     return $result;
 }

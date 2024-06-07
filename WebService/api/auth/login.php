@@ -2,7 +2,7 @@
 include_once ('../../Common/Connection.php');
 include_once ('../../Common/Utils.php');
 include_once ('../../Entities/Response.php');
-include_once ('../../Modules/Session.php');
+include_once ('../../Modules/SessionRepository.php');
 include_once ('../../Entities/Auth/LoginResponse.php');
 
 $dbInst = RestaurantDB::GetTransient();
