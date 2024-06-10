@@ -1,4 +1,4 @@
-package com.example.mobilepose.Controller;
+package com.example.mobilepose;
 
 import android.os.Bundle;
 
@@ -8,14 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mobilepose.R;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchProduct#newInstance} factory method to
+ * Use the {@link AccountManagement#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchProduct extends Fragment {
+public class AccountManagement extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +24,7 @@ public class SearchProduct extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SearchProduct() {
+    public AccountManagement() {
         // Required empty public constructor
     }
 
@@ -36,11 +34,11 @@ public class SearchProduct extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchProduct.
+     * @return A new instance of fragment AccountManagement.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchProduct newInstance(String param1, String param2) {
-        SearchProduct fragment = new SearchProduct();
+    public static AccountManagement newInstance(String param1, String param2) {
+        AccountManagement fragment = new AccountManagement();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +59,6 @@ public class SearchProduct extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_product, container, false);
+        return inflater.inflate(R.layout.fragment_account_management, container, false);
     }
 }
