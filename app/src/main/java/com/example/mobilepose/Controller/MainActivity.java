@@ -8,71 +8,47 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.mobilepose.Model.DatabaseSingle;
-import com.example.mobilepose.Model.VolleyCallback;
+import com.example.mobilepose.Model.API.APICallback;
+import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.example.mobilepose.Model.API.POSAPISingleton;
 import com.example.mobilepose.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
 
-import java.util.HashMap;
-import java.util.Map;
+public class MainActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity implements VolleyCallback {
-
-    private EditText userTxt,passTxt;
-    JSONObject jsonObject;
-    DatabaseSingle db=DatabaseSingle.getInstance();
+    private EditText userTxt, passTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userTxt=findViewById(R.id.editTextText);
-        passTxt=findViewById(R.id.editTextTextPassword);
+        userTxt = findViewById(R.id.editTextText);
+        passTxt = findViewById(R.id.editTextTextPassword);
 
     }
 
     public void validateUser(View view) {
-        String username= userTxt.getText().toString().trim();
-        String password= passTxt.getText().toString().trim();
+        String username = userTxt.getText().toString().trim();
+        String password = passTxt.getText().toString().trim();
+        String hashedPass = Utils.MD5(password);
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
-        params.put("password", password);
-
-        db.ManageDatabaseObject("Android/login.php",MainActivity.this,this,params);
-    }
-
-    @Override
-    public void onSuccess(String response) {
-        try {
-            jsonObject=new JSONObject(response);
-            String username= userTxt.getText().toString().trim();
-
-            if (jsonObject.optString("status").equals("Login Successful!")){
-                Intent intent=new Intent(MainActivity.this, homeView.class);
-                intent.putExtra("username",username);
-                startActivity(intent);
-
-            }else{
-                Toast.makeText(MainActivity.this, jsonObject.optString("status"), Toast.LENGTH_SHORT).show();
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onSearchSuccess(String response) {
-
-    }
-
-    @Override
-    public void onError(String error) {
-
+        Call<ResponseBase<LoginResponse>> loginCall = api.Login(username, hashedPass);
+        loginCall.enqueue(new APICallback<>(
+                response ->
+                {
+                    Intent intent = new Intent(MainActivity.this, MyAccount.class);
+                    intent.putExtra("userinfo", Utils.ToJson(response));
+                    startActivity(intent);
+                },
+                error -> {
+                    Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();
+                }
+        ));
     }
 }
