@@ -1,15 +1,11 @@
 package com.example.mobilepose.Model;
 
 import android.content.Context;
-import android.provider.MediaStore;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.mobilepose.Controller.MainActivity;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class User implements Serializable {
     private String username;

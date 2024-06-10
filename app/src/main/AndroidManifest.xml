@@ -22,16 +22,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Controller.homeView"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".Controller.Login"
             android:exported="false"
             android:screenOrientation="portrait"/>
-
         <activity
-            android:name=".Controller.MainActivity"
+            android:name=".Controller.homeView"
             android:exported="true"
             android:screenOrientation="portrait"
            >
