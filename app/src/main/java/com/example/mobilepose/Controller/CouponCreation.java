@@ -3,6 +3,7 @@ package com.example.mobilepose.Controller;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -14,14 +15,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.mobilepose.AccountManagement;
+import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CouponManagement#newInstance} factory method to
+ * Use the {@link CouponCreation#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CouponManagement extends Fragment {
+public class CouponCreation extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,10 +39,10 @@ public class CouponManagement extends Fragment {
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> arrayAdapter;
 
-    TextView discountValueText;
+    TextView discountValueText, backBtn;
     EditText discountValueEdit;
 
-    public CouponManagement() {
+    public CouponCreation() {
         // Required empty public constructor
     }
 
@@ -52,8 +55,8 @@ public class CouponManagement extends Fragment {
      * @return A new instance of fragment CouponManagement.
      */
     // TODO: Rename and change types and number of parameters
-    public static CouponManagement newInstance(String param1, String param2) {
-        CouponManagement fragment = new CouponManagement();
+    public static CouponCreation newInstance(String param1, String param2) {
+        CouponCreation fragment = new CouponCreation();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,7 +76,20 @@ public class CouponManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_coupon_management, container, false);
+        View view=inflater.inflate(R.layout.fragment_coupon_creation, container, false);
+
+        backBtn=view.findViewById(R.id.backCouponBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentmanger= getActivity().getSupportFragmentManager();
+                fragmentmanger.beginTransaction()
+                        .replace(R.id.fragmentContainerView, CouponManagement.class,null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+            }
+        });
 
         autoCompleteTextView=view.findViewById(R.id.autoCompleteTextView2);
         arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,couponStatus);
