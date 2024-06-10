@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +14,18 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProductManagement#newInstance} factory method to
+ * Use the {@link ProductCreation#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProductManagement extends Fragment {
+public class ProductCreation extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,7 +42,9 @@ public class ProductManagement extends Fragment {
     Button cancelButton,saveButton;
     EditText newCatEdit;
 
-    public ProductManagement() {
+    TextView backBtn;
+
+    public ProductCreation() {
         // Required empty public constructor
     }
 
@@ -52,8 +57,8 @@ public class ProductManagement extends Fragment {
      * @return A new instance of fragment ProductManagement.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProductManagement newInstance(String param1, String param2) {
-        ProductManagement fragment = new ProductManagement();
+    public static ProductCreation newInstance(String param1, String param2) {
+        ProductCreation fragment = new ProductCreation();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,7 +78,20 @@ public class ProductManagement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_product_management, container, false);
+        View view= inflater.inflate(R.layout.fragment_product_creation, container, false);
+
+        backBtn=view.findViewById(R.id.backProductBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentmanger= getActivity().getSupportFragmentManager();
+                fragmentmanger.beginTransaction()
+                        .replace(R.id.fragmentContainerView, ProductManagement.class,null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+            }
+        });
 
         autoCompleteTextView=view.findViewById(R.id.autoCompleteTextView3);
         arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,productCategory);

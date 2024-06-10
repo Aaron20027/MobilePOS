@@ -1,21 +1,23 @@
-package com.example.mobilepose.Controller;
+package com.example.mobilepose;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mobilepose.R;
+import com.example.mobilepose.Controller.ProductCreation;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SearchUser#newInstance} factory method to
+ * Use the {@link ProductManagement#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchUser extends Fragment {
+public class ProductManagement extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,8 +27,9 @@ public class SearchUser extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FloatingActionButton createProductBtn;
 
-    public SearchUser() {
+    public ProductManagement() {
         // Required empty public constructor
     }
 
@@ -36,11 +39,11 @@ public class SearchUser extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchUser.
+     * @return A new instance of fragment ProductManagement.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchUser newInstance(String param1, String param2) {
-        SearchUser fragment = new SearchUser();
+    public static ProductManagement newInstance(String param1, String param2) {
+        ProductManagement fragment = new ProductManagement();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -60,7 +63,25 @@ public class SearchUser extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_user, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_product_management, container, false);
+
+        createProductBtn=(view).findViewById(R.id.createProductFab);
+
+        createProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentmanger= getActivity().getSupportFragmentManager();
+                fragmentmanger.beginTransaction()
+                        .replace(R.id.fragmentContainerView, ProductCreation.class,null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
+
+            }
+        });
+
+
+        return view;
     }
 }
