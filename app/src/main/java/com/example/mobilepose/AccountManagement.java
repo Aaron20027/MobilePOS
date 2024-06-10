@@ -1,4 +1,4 @@
-package com.example.mobilepose.Controller;
+package com.example.mobilepose;
 
 import android.os.Bundle;
 
@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.mobilepose.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,18 +61,4 @@ public class AccountManagement extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_account_management, container, false);
     }
-
-    public void CreateUser(View view){
-        //code to ADD user to database
-    }
-    public void UpdateUser(View view){
-        //code to UPDATE user to database
-    }
-    public void SearchUser(View view){
-        //code to SEARCH user to database
-    }
-    public void DeleteUser(View view){
-        //code to DELETE user to database
-    }
-
 }

@@ -13,37 +13,25 @@
     <item android:title="Account Management">
         <menu>
             <item
-                android:id="@+id/nav_accMngCreate"
+                android:id="@+id/nav_accMng"
                 android:icon="@drawable/person_add_icon"
-                android:title="Create Account"/>
-            <item
-                android:id="@+id/nav_accMngSearch"
-                android:icon="@drawable/person_search"
-                android:title="Search Account"/>
+                android:title="Accoun Management"/>
         </menu>
     </item>
     <item android:title="Product Management">
         <menu>
             <item
-                android:id="@+id/nav_prodMngCreate"
+                android:id="@+id/nav_prodMng"
                 android:icon="@drawable/menu_book_icon"
-                android:title="Create Product"/>
-            <item
-                android:id="@+id/nav_prodMngSearch"
-                android:icon="@drawable/manage_search"
-                android:title="Search Product"/>
+                android:title="Product Management"/>
         </menu>
     </item>
     <item android:title="Coupon Management">
         <menu>
             <item
-                android:id="@+id/nav_coupMngCreate"
+                android:id="@+id/nav_coupMng"
                 android:icon="@drawable/coupon_icon"
-                android:title="Create Coupon"/>
-            <item
-                android:id="@+id/nav_coupMngSearch"
-                android:icon="@drawable/search_icon"
-                android:title="Search Coupon"/>
+                android:title="Coupon Management"/>
         </menu>
     </item>
 
