@@ -12,6 +12,14 @@ import android.view.ViewGroup;
 import com.example.mobilepose.Controller.ProductCreation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProductManagement#newInstance} factory method to
@@ -66,6 +74,29 @@ public class ProductManagement extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_product_management, container, false);
 
+
+        RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
+
+        // Initialise the Linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        // Pass the arguments
+        // to the parentItemAdapter.
+        // These arguments are passed
+        // using a method ParentItemList()
+        ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList());
+
+        // Set the layout manager
+        // and adapter for items
+        // of the parent recyclerview
+        ParentRecyclerViewItem.setAdapter(parentItemAdapter);
+        ParentRecyclerViewItem.setLayoutManager(layoutManager);
+
+
+
+
+
+
         createProductBtn=(view).findViewById(R.id.createProductFab);
 
         createProductBtn.setOnClickListener(new View.OnClickListener() {
@@ -84,4 +115,51 @@ public class ProductManagement extends Fragment {
 
         return view;
     }
+
+    private List<ParentItem> ParentItemList()
+    {
+        List<ParentItem> itemList
+                = new ArrayList<>();
+
+        ParentItem item
+                = new ParentItem(
+                "Title 1",
+                ChildItemList());
+        itemList.add(item);
+        ParentItem item1
+                = new ParentItem(
+                "Title 2",
+                ChildItemList());
+        itemList.add(item1);
+        ParentItem item2
+                = new ParentItem(
+                "Title 3",
+                ChildItemList());
+        itemList.add(item2);
+        ParentItem item3
+                = new ParentItem(
+                "Title 4",
+                ChildItemList());
+        itemList.add(item3);
+
+        return itemList;
+    }
+
+    // Method to pass the arguments
+    // for the elements
+    // of child RecyclerView
+    private List<ChildItem> ChildItemList()
+    {
+        List<ChildItem> ChildItemList
+                = new ArrayList<>();
+
+        ChildItemList.add(new ChildItem("Card 1","1"));
+        ChildItemList.add(new ChildItem("Card 2","1"));
+        ChildItemList.add(new ChildItem("Card 3","1"));
+        ChildItemList.add(new ChildItem("Card 4","1"));
+
+        return ChildItemList;
+    }
+
+
 }
