@@ -1,15 +1,12 @@
 <?php
-class LoginResponse
+class AccountResponse
 {
     public function __construct(
         public readonly string $username,
-        public readonly string $sessionToken,
         public readonly string $firstName,
         public readonly string $lastName,
-        public readonly string $email,
         public readonly int $accountType,
-        public readonly string $address,
-        public readonly string $profileImage // base64 string
+        public readonly int $status
     ) {
     }
 }

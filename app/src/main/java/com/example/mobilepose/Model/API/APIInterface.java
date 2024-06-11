@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 public interface APIInterface {
 
     @FormUrlEncoded
-    @POST("/api/auth/login.php")
+    @POST("/api/accounts/login.php")
     Call<ResponseBase<LoginResponse>> Login(
             @Field("username") String username,
             @Field("password") String password

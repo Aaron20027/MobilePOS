@@ -11,12 +11,6 @@ public class LoginResponse {
     public String firstName;
     @SerializedName("lastName")
     public String lastName;
-    @SerializedName("email")
-    public String email;
     @SerializedName("accountType")
     public UserAccountType accountType;
-    @SerializedName("address")
-    public String address;
-    @SerializedName("profileImage")
-    public String profileImage; // base64 string
 }

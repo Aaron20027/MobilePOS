@@ -3,7 +3,15 @@ include_once ('../../Common/Connection.php');
 include_once ('../../Common/Utils.php');
 include_once ('../../Entities/Response.php');
 include_once ('../../Modules/SessionRepository.php');
-include_once ('../../Entities/Auth/LoginResponse.php');
+include_once ('../../Entities/Account/LoginResponse.php');
+
+/*
+ * POST - /api/accounts/login.php
+ * @username: str - [required]
+ * @password: str - [required and hashed using MD5]
+ * 
+ * Return: [LoginResponse(Base)]
+ */
 
 $dbInst = RestaurantDB::GetTransient();
 
@@ -37,6 +45,8 @@ function login_user($db, $username, $password)
         return "You have entered an invalid username or password.";
     }
 
+    //TODO: Check if account is enabled or disabled
+
     $sessionRespository = new SessionRepository($db);
     $currentIP = $_SERVER['REMOTE_ADDR'];
     $hasSession = $sessionRespository->check_session($username);
@@ -52,10 +62,7 @@ function login_user($db, $username, $password)
         $sessionToken,
         $queryResult["acc_Fname"],
         $queryResult["acc_Lname"],
-        $queryResult["acc_Email"],
-        $queryResult["acc_Type"],
-        $queryResult["acc_Address"],
-        $queryResult["acc_Image"]
+        $queryResult["acc_Type"]
     );
 }
 

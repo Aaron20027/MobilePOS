@@ -48,9 +48,9 @@ class Utils
         return ($number !== FALSE);
     }
 
-    public static function error($db)
+    public static function error($db, $msg = "Failed executing query!")
     {
-        Response::CreateFailResponse("Failed executing query!");
+        Response::CreateFailResponse($msg);
         $db->close();
         die();
     }
