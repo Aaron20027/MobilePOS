@@ -28,6 +28,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/searchbar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="6dp"
+            android:background="@color/white"
+            android:queryHint="Search Product"
+            app:layout_constraintBottom_toBottomOf="@+id/createProductFab"
+            app:layout_constraintEnd_toStartOf="@+id/createProductFab"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/createProductFab"
+            app:layout_constraintVertical_bias="1.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/createProductFab"
