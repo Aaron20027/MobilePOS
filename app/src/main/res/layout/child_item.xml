@@ -8,6 +8,7 @@
     <!--CardView that holds the elements
         of the child RecyclerView -->
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

@@ -2,18 +2,23 @@ package com.example.mobilepose;
 
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.mobilepose.Controller.ProductCreation;
+import com.example.mobilepose.Controller.Utils;
+import com.example.mobilepose.Model.API.APICallback;
+import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
+import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +30,7 @@ import java.util.List;
  * Use the {@link ProductManagement#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProductManagement extends Fragment {
+public class ProductManagement extends Fragment implements SelectItemListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,28 +82,13 @@ public class ProductManagement extends Fragment {
 
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
 
-        // Initialise the Linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
-        // Pass the arguments
-        // to the parentItemAdapter.
-        // These arguments are passed
-        // using a method ParentItemList()
-        ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList());
-
-        // Set the layout manager
-        // and adapter for items
-        // of the parent recyclerview
+        ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList(),this);
         ParentRecyclerViewItem.setAdapter(parentItemAdapter);
         ParentRecyclerViewItem.setLayoutManager(layoutManager);
 
 
-
-
-
-
         createProductBtn=(view).findViewById(R.id.createProductFab);
-
         createProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,9 +135,6 @@ public class ProductManagement extends Fragment {
         return itemList;
     }
 
-    // Method to pass the arguments
-    // for the elements
-    // of child RecyclerView
     private List<ChildItem> ChildItemList()
     {
         List<ChildItem> ChildItemList
@@ -161,5 +148,19 @@ public class ProductManagement extends Fragment {
         return ChildItemList;
     }
 
+    @Override
+    public void onItemClick(ChildItem childitem) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+                requireContext(), R.style.BottomSheetDialogTheme
+        );
+        View bottomSheetView = LayoutInflater.from(requireContext())
+                .inflate(
+                        R.layout.product_details_pop,
+                        (ConstraintLayout) getActivity().findViewById(R.id.productDetails)
+                );
 
+
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
+    }
 }
