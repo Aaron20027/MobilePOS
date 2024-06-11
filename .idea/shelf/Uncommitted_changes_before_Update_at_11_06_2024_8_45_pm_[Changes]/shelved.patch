@@ -1,0 +1,401 @@
+Index: app/src/main/java/com/example/mobilepose/ParentItem.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mobilepose;\r\n\r\nimport com.example.mobilepose.ChildItem;\r\n\r\nimport java.util.List;\r\n\r\npublic class ParentItem {\r\n\r\n    // Declaration of the variables\r\n    private String ParentItemTitle;\r\n    private List<ChildItem> ChildItemList;\r\n\r\n    // Constructor of the class\r\n    // to initialize the variables\r\n    public ParentItem(String ParentItemTitle, List<ChildItem> ChildItemList)\r\n    {\r\n        this.ParentItemTitle = ParentItemTitle;\r\n        this.ChildItemList = ChildItemList;\r\n    }\r\n\r\n    // Getter and Setter methods\r\n    // for each parameter\r\n    public String getParentItemTitle()\r\n    {\r\n        return ParentItemTitle;\r\n    }\r\n\r\n    public void setParentItemTitle(String parentItemTitle)\r\n    {\r\n        ParentItemTitle = parentItemTitle;\r\n    }\r\n\r\n    public List<ChildItem> getChildItemList()\r\n    {\r\n        return ChildItemList;\r\n    }\r\n\r\n    public void setChildItemList(List<ChildItem> childItemList)\r\n    {\r\n        ChildItemList = childItemList;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mobilepose/ParentItem.java b/app/src/main/java/com/example/mobilepose/ParentItem.java
+--- a/app/src/main/java/com/example/mobilepose/ParentItem.java	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/java/com/example/mobilepose/ParentItem.java	(date 1718109766967)
+@@ -5,21 +5,14 @@
+ import java.util.List;
+ 
+ public class ParentItem {
+-
+-    // Declaration of the variables
+     private String ParentItemTitle;
+     private List<ChildItem> ChildItemList;
+ 
+-    // Constructor of the class
+-    // to initialize the variables
+     public ParentItem(String ParentItemTitle, List<ChildItem> ChildItemList)
+     {
+         this.ParentItemTitle = ParentItemTitle;
+         this.ChildItemList = ChildItemList;
+     }
+-
+-    // Getter and Setter methods
+-    // for each parameter
+     public String getParentItemTitle()
+     {
+         return ParentItemTitle;
+Index: app/src/main/java/com/example/mobilepose/ChildItemAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mobilepose;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.TextView;\r\n\r\n\r\nimport java.util.List;\r\n\r\npublic class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.ChildViewHolder> {\r\n    private List<ChildItem> ChildItemList;\r\n\r\n    // Constructor \r\n    ChildItemAdapter(List<ChildItem> childItemList)\r\n    {\r\n        this.ChildItemList = childItemList;\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public ChildViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)\r\n    {\r\n\r\n        // Here we inflate the corresponding \r\n        // layout of the child item \r\n        View view = LayoutInflater\r\n                .from(viewGroup.getContext())\r\n                .inflate(\r\n                        R.layout.child_item,\r\n                        viewGroup, false);\r\n\r\n        return new ChildViewHolder(view);\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull ChildViewHolder childViewHolder, int position)\r\n    {\r\n\r\n        // Create an instance of the ChildItem \r\n        // class for the given position \r\n        ChildItem childItem\r\n                = ChildItemList.get(position);\r\n\r\n        // For the created instance, set title. \r\n        // No need to set the image for \r\n        // the ImageViews because we have \r\n        // provided the source for the images \r\n        // in the layout file itself \r\n        childViewHolder\r\n                .ChildItemTitle\r\n                .setText(childItem.getChildItemTitle());\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount()\r\n    {\r\n\r\n        // This method returns the number \r\n        // of items we have added \r\n        // in the ChildItemList \r\n        // i.e. the number of instances \r\n        // of the ChildItemList \r\n        // that have been created \r\n        return ChildItemList.size();\r\n    }\r\n\r\n    // This class is to initialize \r\n    // the Views present \r\n    // in the child RecyclerView \r\n    class ChildViewHolder extends RecyclerView.ViewHolder {\r\n\r\n        TextView ChildItemTitle;\r\n\r\n        ChildViewHolder(View itemView)\r\n        {\r\n            super(itemView);\r\n            ChildItemTitle\r\n                    = itemView.findViewById(\r\n                    R.id.child_item_title);\r\n        }\r\n    }\r\n} 
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mobilepose/ChildItemAdapter.java b/app/src/main/java/com/example/mobilepose/ChildItemAdapter.java
+--- a/app/src/main/java/com/example/mobilepose/ChildItemAdapter.java	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/java/com/example/mobilepose/ChildItemAdapter.java	(date 1718109767022)
+@@ -13,7 +13,6 @@
+ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.ChildViewHolder> {
+     private List<ChildItem> ChildItemList;
+ 
+-    // Constructor 
+     ChildItemAdapter(List<ChildItem> childItemList)
+     {
+         this.ChildItemList = childItemList;
+@@ -23,9 +22,6 @@
+     @Override
+     public ChildViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+     {
+-
+-        // Here we inflate the corresponding 
+-        // layout of the child item 
+         View view = LayoutInflater
+                 .from(viewGroup.getContext())
+                 .inflate(
+@@ -38,17 +34,8 @@
+     @Override
+     public void onBindViewHolder(@NonNull ChildViewHolder childViewHolder, int position)
+     {
+-
+-        // Create an instance of the ChildItem 
+-        // class for the given position 
+         ChildItem childItem
+                 = ChildItemList.get(position);
+-
+-        // For the created instance, set title. 
+-        // No need to set the image for 
+-        // the ImageViews because we have 
+-        // provided the source for the images 
+-        // in the layout file itself 
+         childViewHolder
+                 .ChildItemTitle
+                 .setText(childItem.getChildItemTitle());
+@@ -57,19 +44,9 @@
+     @Override
+     public int getItemCount()
+     {
+-
+-        // This method returns the number 
+-        // of items we have added 
+-        // in the ChildItemList 
+-        // i.e. the number of instances 
+-        // of the ChildItemList 
+-        // that have been created 
+         return ChildItemList.size();
+     }
+ 
+-    // This class is to initialize 
+-    // the Views present 
+-    // in the child RecyclerView 
+     class ChildViewHolder extends RecyclerView.ViewHolder {
+ 
+         TextView ChildItemTitle;
+Index: app/src/main/java/com/example/mobilepose/ProductManagement.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mobilepose;\r\n\r\nimport android.os.Bundle;\r\n\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.fragment.app.FragmentManager;\r\n\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\n\r\nimport com.example.mobilepose.Controller.ProductCreation;\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport android.os.Bundle;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n/**\r\n * A simple {@link Fragment} subclass.\r\n * Use the {@link ProductManagement#newInstance} factory method to\r\n * create an instance of this fragment.\r\n */\r\npublic class ProductManagement extends Fragment {\r\n\r\n    // TODO: Rename parameter arguments, choose names that match\r\n    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER\r\n    private static final String ARG_PARAM1 = \"param1\";\r\n    private static final String ARG_PARAM2 = \"param2\";\r\n\r\n    // TODO: Rename and change types of parameters\r\n    private String mParam1;\r\n    private String mParam2;\r\n    private FloatingActionButton createProductBtn;\r\n\r\n    public ProductManagement() {\r\n        // Required empty public constructor\r\n    }\r\n\r\n    /**\r\n     * Use this factory method to create a new instance of\r\n     * this fragment using the provided parameters.\r\n     *\r\n     * @param param1 Parameter 1.\r\n     * @param param2 Parameter 2.\r\n     * @return A new instance of fragment ProductManagement.\r\n     */\r\n    // TODO: Rename and change types and number of parameters\r\n    public static ProductManagement newInstance(String param1, String param2) {\r\n        ProductManagement fragment = new ProductManagement();\r\n        Bundle args = new Bundle();\r\n        args.putString(ARG_PARAM1, param1);\r\n        args.putString(ARG_PARAM2, param2);\r\n        fragment.setArguments(args);\r\n        return fragment;\r\n    }\r\n\r\n    @Override\r\n    public void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        if (getArguments() != null) {\r\n            mParam1 = getArguments().getString(ARG_PARAM1);\r\n            mParam2 = getArguments().getString(ARG_PARAM2);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n\r\n        View view = inflater.inflate(R.layout.fragment_product_management, container, false);\r\n\r\n\r\n        RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);\r\n\r\n        // Initialise the Linear layout manager\r\n        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());\r\n\r\n        // Pass the arguments\r\n        // to the parentItemAdapter.\r\n        // These arguments are passed\r\n        // using a method ParentItemList()\r\n        ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList());\r\n\r\n        // Set the layout manager\r\n        // and adapter for items\r\n        // of the parent recyclerview\r\n        ParentRecyclerViewItem.setAdapter(parentItemAdapter);\r\n        ParentRecyclerViewItem.setLayoutManager(layoutManager);\r\n\r\n\r\n\r\n\r\n\r\n\r\n        createProductBtn=(view).findViewById(R.id.createProductFab);\r\n\r\n        createProductBtn.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                FragmentManager fragmentmanger= getActivity().getSupportFragmentManager();\r\n                fragmentmanger.beginTransaction()\r\n                        .replace(R.id.fragmentContainerView, ProductCreation.class,null)\r\n                        .setReorderingAllowed(true)\r\n                        .addToBackStack(\"name\")\r\n                        .commit();\r\n\r\n            }\r\n        });\r\n\r\n\r\n        return view;\r\n    }\r\n\r\n    private List<ParentItem> ParentItemList()\r\n    {\r\n        List<ParentItem> itemList\r\n                = new ArrayList<>();\r\n\r\n        ParentItem item\r\n                = new ParentItem(\r\n                \"Title 1\",\r\n                ChildItemList());\r\n        itemList.add(item);\r\n        ParentItem item1\r\n                = new ParentItem(\r\n                \"Title 2\",\r\n                ChildItemList());\r\n        itemList.add(item1);\r\n        ParentItem item2\r\n                = new ParentItem(\r\n                \"Title 3\",\r\n                ChildItemList());\r\n        itemList.add(item2);\r\n        ParentItem item3\r\n                = new ParentItem(\r\n                \"Title 4\",\r\n                ChildItemList());\r\n        itemList.add(item3);\r\n\r\n        return itemList;\r\n    }\r\n\r\n    // Method to pass the arguments\r\n    // for the elements\r\n    // of child RecyclerView\r\n    private List<ChildItem> ChildItemList()\r\n    {\r\n        List<ChildItem> ChildItemList\r\n                = new ArrayList<>();\r\n\r\n        ChildItemList.add(new ChildItem(\"Card 1\",\"1\"));\r\n        ChildItemList.add(new ChildItem(\"Card 2\",\"1\"));\r\n        ChildItemList.add(new ChildItem(\"Card 3\",\"1\"));\r\n        ChildItemList.add(new ChildItem(\"Card 4\",\"1\"));\r\n\r\n        return ChildItemList;\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mobilepose/ProductManagement.java b/app/src/main/java/com/example/mobilepose/ProductManagement.java
+--- a/app/src/main/java/com/example/mobilepose/ProductManagement.java	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/java/com/example/mobilepose/ProductManagement.java	(date 1718109906597)
+@@ -10,10 +10,9 @@
+ import android.view.ViewGroup;
+ 
+ import com.example.mobilepose.Controller.ProductCreation;
++import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
+ import com.google.android.material.floatingactionbutton.FloatingActionButton;
+ 
+-import androidx.appcompat.app.AppCompatActivity;
+-import android.os.Bundle;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
+ 
+@@ -77,26 +76,12 @@
+ 
+         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
+ 
+-        // Initialise the Linear layout manager
+         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+-
+-        // Pass the arguments
+-        // to the parentItemAdapter.
+-        // These arguments are passed
+-        // using a method ParentItemList()
+         ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList());
+-
+-        // Set the layout manager
+-        // and adapter for items
+-        // of the parent recyclerview
+         ParentRecyclerViewItem.setAdapter(parentItemAdapter);
+         ParentRecyclerViewItem.setLayoutManager(layoutManager);
+ 
+ 
+-
+-
+-
+-
+         createProductBtn=(view).findViewById(R.id.createProductFab);
+ 
+         createProductBtn.setOnClickListener(new View.OnClickListener() {
+@@ -145,9 +130,6 @@
+         return itemList;
+     }
+ 
+-    // Method to pass the arguments
+-    // for the elements
+-    // of child RecyclerView
+     private List<ChildItem> ChildItemList()
+     {
+         List<ChildItem> ChildItemList
+@@ -161,5 +143,22 @@
+         return ChildItemList;
+     }
+ 
++    private void getProducts(){
++
++        Call<ResponseBase<FetchProductResponse[]>> prod = api.GetProducts(""); // 0, 1, 2, or null
++        prod.enqueue(new APICallback<>(
++                response ->
++                {
++                    Toast.makeText(this, Utils.ToJson(response), Toast.LENGTH_SHORT).show();
++                },
++                error ->
++                {
++                    Toast.makeText(this, Utils.ToJson(error.toString()), Toast.LENGTH_SHORT).show();
++
++                }
++        ));
++    }
++
++
+ 
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/mobilepose/ParentItemAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mobilepose;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.TextView;\r\n\r\nimport java.util.List;\r\n\r\npublic class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.ParentViewHolder> {\r\n\r\n    // An object of RecyclerView.RecycledViewPool \r\n    // is created to share the Views \r\n    // between the child and \r\n    // the parent RecyclerViews \r\n    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();\r\n    private List<ParentItem> itemList;\r\n\r\n    ParentItemAdapter(List<ParentItem> itemList)\r\n    {\r\n        this.itemList = itemList;\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public ParentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)\r\n    {\r\n        // Here we inflate the corresponding \r\n        // layout of the parent item \r\n        View view = LayoutInflater\r\n                .from(viewGroup.getContext())\r\n                .inflate(\r\n                        R.layout.parent_item,\r\n                        viewGroup, false);\r\n\r\n        return new ParentViewHolder(view);\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull ParentViewHolder parentViewHolder, int position)\r\n    {\r\n\r\n        // Create an instance of the ParentItem \r\n        // class for the given position \r\n        ParentItem parentItem\r\n                = itemList.get(position);\r\n\r\n        // For the created instance, \r\n        // get the title and set it \r\n        // as the text for the TextView \r\n        parentViewHolder\r\n                .ParentItemTitle\r\n                .setText(parentItem.getParentItemTitle());\r\n\r\n        // Create a layout manager \r\n        // to assign a layout \r\n        // to the RecyclerView. \r\n\r\n        // Here we have assigned the layout \r\n        // as LinearLayout with vertical orientation \r\n        LinearLayoutManager layoutManager\r\n                = new LinearLayoutManager(\r\n                parentViewHolder\r\n                        .ChildRecyclerView\r\n                        .getContext(),\r\n                LinearLayoutManager.HORIZONTAL,\r\n                false);\r\n\r\n        // Since this is a nested layout, so \r\n        // to define how many child items \r\n        // should be prefetched when the \r\n        // child RecyclerView is nested \r\n        // inside the parent RecyclerView, \r\n        // we use the following method \r\n        layoutManager.setInitialPrefetchItemCount(parentItem.getChildItemList().size());\r\n\r\n        // Create an instance of the child \r\n        // item view adapter and set its \r\n        // adapter, layout manager and RecyclerViewPool \r\n        ChildItemAdapter childItemAdapter = new ChildItemAdapter(parentItem.getChildItemList());\r\n        parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);\r\n        parentViewHolder.ChildRecyclerView.setAdapter(childItemAdapter);\r\n        parentViewHolder.ChildRecyclerView.setRecycledViewPool(viewPool);\r\n    }\r\n\r\n    // This method returns the number \r\n    // of items we have added in the \r\n    // ParentItemList i.e. the number \r\n    // of instances we have created \r\n    // of the ParentItemList \r\n    @Override\r\n    public int getItemCount()\r\n    {\r\n\r\n        return itemList.size();\r\n    }\r\n\r\n    // This class is to initialize \r\n    // the Views present in \r\n    // the parent RecyclerView \r\n    class ParentViewHolder\r\n            extends RecyclerView.ViewHolder {\r\n\r\n        private TextView ParentItemTitle;\r\n        private RecyclerView ChildRecyclerView;\r\n\r\n        ParentViewHolder(final View itemView)\r\n        {\r\n            super(itemView);\r\n\r\n            ParentItemTitle = itemView.findViewById(R.id.parent_item_title);\r\n            ChildRecyclerView = itemView.findViewById(R.id.child_recyclerview);\r\n        }\r\n    }\r\n} 
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mobilepose/ParentItemAdapter.java b/app/src/main/java/com/example/mobilepose/ParentItemAdapter.java
+--- a/app/src/main/java/com/example/mobilepose/ParentItemAdapter.java	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/java/com/example/mobilepose/ParentItemAdapter.java	(date 1718109766983)
+@@ -12,10 +12,6 @@
+ 
+ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.ParentViewHolder> {
+ 
+-    // An object of RecyclerView.RecycledViewPool 
+-    // is created to share the Views 
+-    // between the child and 
+-    // the parent RecyclerViews 
+     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+     private List<ParentItem> itemList;
+ 
+@@ -28,8 +24,6 @@
+     @Override
+     public ParentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+     {
+-        // Here we inflate the corresponding 
+-        // layout of the parent item 
+         View view = LayoutInflater
+                 .from(viewGroup.getContext())
+                 .inflate(
+@@ -43,24 +37,11 @@
+     public void onBindViewHolder(@NonNull ParentViewHolder parentViewHolder, int position)
+     {
+ 
+-        // Create an instance of the ParentItem 
+-        // class for the given position 
+         ParentItem parentItem
+                 = itemList.get(position);
+-
+-        // For the created instance, 
+-        // get the title and set it 
+-        // as the text for the TextView 
+         parentViewHolder
+                 .ParentItemTitle
+                 .setText(parentItem.getParentItemTitle());
+-
+-        // Create a layout manager 
+-        // to assign a layout 
+-        // to the RecyclerView. 
+-
+-        // Here we have assigned the layout 
+-        // as LinearLayout with vertical orientation 
+         LinearLayoutManager layoutManager
+                 = new LinearLayoutManager(
+                 parentViewHolder
+@@ -68,29 +49,13 @@
+                         .getContext(),
+                 LinearLayoutManager.HORIZONTAL,
+                 false);
+-
+-        // Since this is a nested layout, so 
+-        // to define how many child items 
+-        // should be prefetched when the 
+-        // child RecyclerView is nested 
+-        // inside the parent RecyclerView, 
+-        // we use the following method 
+         layoutManager.setInitialPrefetchItemCount(parentItem.getChildItemList().size());
+-
+-        // Create an instance of the child 
+-        // item view adapter and set its 
+-        // adapter, layout manager and RecyclerViewPool 
+         ChildItemAdapter childItemAdapter = new ChildItemAdapter(parentItem.getChildItemList());
+         parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);
+         parentViewHolder.ChildRecyclerView.setAdapter(childItemAdapter);
+         parentViewHolder.ChildRecyclerView.setRecycledViewPool(viewPool);
+     }
+ 
+-    // This method returns the number 
+-    // of items we have added in the 
+-    // ParentItemList i.e. the number 
+-    // of instances we have created 
+-    // of the ParentItemList 
+     @Override
+     public int getItemCount()
+     {
+@@ -98,9 +63,6 @@
+         return itemList.size();
+     }
+ 
+-    // This class is to initialize 
+-    // the Views present in 
+-    // the parent RecyclerView 
+     class ParentViewHolder
+             extends RecyclerView.ViewHolder {
+ 
+Index: app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mobilepose.Model.API;\r\n\r\nimport okhttp3.OkHttpClient;\r\nimport okhttp3.logging.HttpLoggingInterceptor;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class POSAPISingleton {\r\n    private static APIInterface apiInstance = null;\r\n    final static String API_HOST =\"http://192.168.254.108/\";\r\n    public static APIInterface getOrCreateInstance() {\r\n        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();\r\n        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);\r\n        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();\r\n        if(apiInstance == null)\r\n        {\r\n            Retrofit retrofit = new Retrofit.Builder()\r\n                    .baseUrl(API_HOST)\r\n                    .addConverterFactory(GsonConverterFactory.create())\r\n                    .client(client)\r\n                    .build();\r\n\r\n            apiInstance = retrofit.create(APIInterface.class);\r\n        }\r\n\r\n        return apiInstance;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java b/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java
+--- a/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java	(date 1718035802411)
+@@ -7,7 +7,7 @@
+ 
+ public class POSAPISingleton {
+     private static APIInterface apiInstance = null;
+-    final static String API_HOST ="http://192.168.254.108/";
++    final static String API_HOST ="http://192.168.2.203/";
+     public static APIInterface getOrCreateInstance() {
+         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+Index: app/src/main/java/com/example/mobilepose/ChildItem.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mobilepose;\r\n\r\npublic class ChildItem {\r\n\r\n    // Declaration of the variable\r\n    private String ChildItemTitle;\r\n    private String ChildItemPrice;\r\n\r\n    // Constructor of the class\r\n    // to initialize the variable*\r\n    public ChildItem(String childItemTitle, String childItemPrice)\r\n    {\r\n        this.ChildItemTitle = childItemTitle;\r\n        this. ChildItemPrice= childItemPrice;\r\n    }\r\n\r\n    // Getter and Setter method\r\n    // for the parameter\r\n    public String getChildItemTitle()\r\n    {\r\n        return ChildItemTitle;\r\n    }\r\n\r\n    public void setChildItemTitle(\r\n            String childItemTitle)\r\n    {\r\n        ChildItemTitle = childItemTitle;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mobilepose/ChildItem.java b/app/src/main/java/com/example/mobilepose/ChildItem.java
+--- a/app/src/main/java/com/example/mobilepose/ChildItem.java	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/java/com/example/mobilepose/ChildItem.java	(date 1718109767014)
+@@ -2,20 +2,15 @@
+ 
+ public class ChildItem {
+ 
+-    // Declaration of the variable
+     private String ChildItemTitle;
+     private String ChildItemPrice;
+ 
+-    // Constructor of the class
+-    // to initialize the variable*
+     public ChildItem(String childItemTitle, String childItemPrice)
+     {
+         this.ChildItemTitle = childItemTitle;
+         this. ChildItemPrice= childItemPrice;
+     }
+ 
+-    // Getter and Setter method
+-    // for the parameter
+     public String getChildItemTitle()
+     {
+         return ChildItemTitle;
+Index: app/src/main/res/layout/fragment_product_management.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.core.widget.NestedScrollView xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:fillViewport=\"true\"\r\n    tools:context=\".ProductManagement\">\r\n\r\n\r\n    <androidx.constraintlayout.widget.ConstraintLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:background=\"@color/material_dynamic_neutral99\"\r\n        android:layout_height=\"wrap_content\">\r\n\r\n        <TextView\r\n            android:id=\"@+id/textView44\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginTop=\"16dp\"\r\n            android:fontFamily=\"@font/poppins\"\r\n            android:text=\"@string/productManagementTxt\"\r\n            android:textColor=\"@color/black\"\r\n            android:textSize=\"24sp\"\r\n            android:textStyle=\"bold\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n\r\n\r\n        <com.google.android.material.floatingactionbutton.FloatingActionButton\r\n            android:id=\"@+id/createProductFab\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginTop=\"16dp\"\r\n            android:layout_marginEnd=\"8dp\"\r\n            android:clickable=\"true\"\r\n            android:src=\"@drawable/add_icon\"\r\n            app:backgroundTint=\"@color/black\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/textView44\"\r\n            app:tint=\"@android:color/white\" />\r\n\r\n        <androidx.recyclerview.widget.RecyclerView\r\n            android:id=\"@+id/parentRecycle\"\r\n            android:layout_width=\"0dp\"\r\n            android:layout_height=\"630dp\"\r\n            android:layout_marginStart=\"8dp\"\r\n            android:layout_marginEnd=\"8dp\"\r\n            app:layout_constraintBottom_toBottomOf=\"parent\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/createProductFab\" />\r\n\r\n    </androidx.constraintlayout.widget.ConstraintLayout>\r\n</androidx.core.widget.NestedScrollView>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_product_management.xml b/app/src/main/res/layout/fragment_product_management.xml
+--- a/app/src/main/res/layout/fragment_product_management.xml	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/res/layout/fragment_product_management.xml	(date 1718043278639)
+@@ -28,6 +28,20 @@
+             app:layout_constraintTop_toTopOf="parent" />
+ 
+ 
++        <com.google.android.material.search.SearchBar
++            android:id="@+id/searchbar"
++            android:layout_width="0dp"
++            android:layout_height="50dp"
++            android:layout_marginStart="8dp"
++            android:layout_marginBottom="6dp"
++            android:background="@color/white"
++            android:queryHint="Search Product"
++            app:layout_constraintBottom_toBottomOf="@+id/createProductFab"
++            app:layout_constraintEnd_toStartOf="@+id/createProductFab"
++            app:layout_constraintHorizontal_bias="0.0"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="@+id/createProductFab"
++            app:layout_constraintVertical_bias="1.0" />
+ 
+         <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:id="@+id/createProductFab"
+Index: app/src/main/res/layout/product_details_pop.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/productDetails\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"500dp\"\r\n    android:layout_gravity=\"bottom\"\r\n    android:background=\"@drawable/corner_image\">\r\n    <ScrollView\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.0\">\r\n\r\n        <androidx.constraintlayout.widget.ConstraintLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\">\r\n\r\n\r\n            <ImageView\r\n                android:id=\"@+id/imageView3\"\r\n                android:layout_width=\"0dp\"\r\n                android:layout_height=\"250dp\"\r\n                android:layout_marginStart=\"8dp\"\r\n                android:layout_marginEnd=\"8dp\"\r\n                android:background=\"@drawable/corner_image\"\r\n                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                app:layout_constraintHorizontal_bias=\"1.0\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toBottomOf=\"@+id/textView111\"\r\n                app:srcCompat=\"@drawable/ic_launcher_foreground\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView110\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginEnd=\"28dp\"\r\n                android:drawableLeft=\"@drawable/updatesize\"\r\n                app:layout_constraintBottom_toBottomOf=\"@+id/textView111\"\r\n                app:layout_constraintEnd_toEndOf=\"parent\"\r\n                app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView111\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginEnd=\"8dp\"\r\n                android:drawableLeft=\"@drawable/trashsize\"\r\n                android:textSize=\"34sp\"\r\n                app:layout_constraintEnd_toStartOf=\"@+id/textView110\"\r\n                app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView112\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginStart=\"8dp\"\r\n                android:layout_marginTop=\"24dp\"\r\n                android:fontFamily=\"@font/poppins\"\r\n                android:text=\"@string/productNameTxt\"\r\n                android:textColor=\"@color/black\"\r\n                android:textSize=\"24sp\"\r\n                android:textStyle=\"bold\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toBottomOf=\"@+id/imageView3\" />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textView113\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:layout_marginStart=\"8dp\"\r\n                android:fontFamily=\"@font/poppins\"\r\n                android:text=\"@string/productDescTxt\"\r\n                android:textColor=\"@color/black\"\r\n                android:textSize=\"20sp\"\r\n                app:layout_constraintStart_toStartOf=\"parent\"\r\n                app:layout_constraintTop_toBottomOf=\"@+id/textView112\" />\r\n\r\n        </androidx.constraintlayout.widget.ConstraintLayout>\r\n\r\n\r\n    </ScrollView>\r\n\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/product_details_pop.xml b/app/src/main/res/layout/product_details_pop.xml
+--- a/app/src/main/res/layout/product_details_pop.xml	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/app/src/main/res/layout/product_details_pop.xml	(date 1718083909985)
+@@ -29,6 +29,7 @@
+                 android:layout_marginStart="8dp"
+                 android:layout_marginEnd="8dp"
+                 android:background="@drawable/corner_image"
++                android:elevation="10dp"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintHorizontal_bias="1.0"
+                 app:layout_constraintStart_toStartOf="parent"
+@@ -39,7 +40,7 @@
+                 android:id="@+id/textView110"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+-                android:layout_marginEnd="28dp"
++                android:layout_marginEnd="8dp"
+                 android:drawableLeft="@drawable/updatesize"
+                 app:layout_constraintBottom_toBottomOf="@+id/textView111"
+                 app:layout_constraintEnd_toEndOf="parent"
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"#GRADLE_LOCAL_JAVA_HOME\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n        <option name=\"resolveExternalAnnotations\" value=\"false\" />\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 92cc1cc6ae10cf4c908cc846cc97ce421ba47cd9)
++++ b/.idea/gradle.xml	(date 1718080626477)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
