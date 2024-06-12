@@ -118,15 +118,6 @@ public class ProductCreation extends Fragment {
     public void CreateProduct(View view){
         //code to ADD Product to database
     }
-    public void UpdateProduct(View view){
-        //code to UPDATE Product to database
-    }
-    public void SearchProduct(View view){
-        //code to SEARCH Product to database
-    }
-    public void DeleteProduct(View view){
-        //code to DELETE Product to database
-    }
 
     public void AddNewCategory(){
         //code to add category to database
