@@ -1,14 +1,24 @@
 package com.example.mobilepose;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobilepose.Controller.ProductCreation;
@@ -41,6 +51,10 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     private String mParam1;
     private String mParam2;
     private FloatingActionButton createProductBtn;
+
+    String[] productCategory={"Testing"};
+    AutoCompleteTextView autoCompleteTextView;
+    ArrayAdapter<String> arrayAdapter;
 
     public ProductManagement() {
         // Required empty public constructor
@@ -159,8 +173,110 @@ public class ProductManagement extends Fragment implements SelectItemListener{
                         (ConstraintLayout) getActivity().findViewById(R.id.productDetails)
                 );
 
+        TextView updateBtn=bottomSheetView.findViewById(R.id.updateBtn);
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Group editGroup=bottomSheetView.findViewById(R.id.editgroup);
+                Group textGroup=bottomSheetView.findViewById(R.id.textgroup);
+
+                editGroup.setVisibility(View.VISIBLE);
+                textGroup.setVisibility(View.GONE);
+
+                EditText prodDesc=bottomSheetView.findViewById(R.id.productDescEdit);
+                prodDesc.getText().clear();
+                EditText prodPrice=bottomSheetView.findViewById(R.id.productPriceEdit);
+                prodPrice.getText().clear();
+
+
+                autoCompleteTextView=bottomSheetView.findViewById(R.id.autoCompleteTextView3);
+                autoCompleteTextView.setText("Select Item");
+
+                arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,productCategory);
+                autoCompleteTextView.setAdapter(arrayAdapter);
+
+
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        String item=adapterView.getItemAtPosition(position).toString();
+
+                        if (item.equals("Testing")){
+
+                        }else{
+
+                        }
+
+                    }
+                });
+
+                //avialabilty
+
+                Button cancelBtn=bottomSheetView.findViewById(R.id.cancelProductBtn);
+                Button saveBtn=bottomSheetView.findViewById(R.id.saveProductBtn);
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editGroup.setVisibility(View.GONE);
+                        textGroup.setVisibility(View.VISIBLE);
+                    }
+                });
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateProduct();
+                    }
+                });
+            }
+        });
+
+
+        TextView deleteBtn=bottomSheetView.findViewById(R.id.deleteBtn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(getActivity());
+                dialog.setContentView(R.layout.delete_pop);
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
+                Button cancelDeleteBtn=dialog.findViewById(R.id.cancelDeleteBtn);
+                cancelDeleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Button deleteBtn=dialog.findViewById(R.id.deleteProductBtn);
+                deleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteProduct();
+                    }
+                });
+
+
+
+            }
+        });
+
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
     }
+
+    private void updateProduct(){
+        //code to update product
+    }
+
+    private void deleteProduct(){
+        //code to delete product
+    }
+
+    private void searchProduct(){
+        //code to search product
+    }
+
 }
