@@ -22,7 +22,7 @@ class ProductRepository
             $q = $this->db->query("SELECT * FROM `product_tbl` WHERE `Availability` = ?", "i", $available);
         } else {
             $q = $this->db->query(
-                "SELECT * FROM `product_tbl` WHERE `ProductCategory` = ? AND WHERE `Availability` = ?",
+                "SELECT * FROM `product_tbl` WHERE `ProductCategory` = ? AND `Availability` = ?",
                 "ii",
                 $categoryId,
                 $available
