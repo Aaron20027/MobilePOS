@@ -56,7 +56,6 @@ class ProductRepository
         return $q;
     }
 
-    //TODO: Create API
     public function update_product($id, $name, $description, $price, $categoryId, $image, $size, $availability)
     {
         $queryStr = "UPDATE `product_tbl` SET ";
