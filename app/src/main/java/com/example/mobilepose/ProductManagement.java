@@ -19,13 +19,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mobilepose.Controller.ProductCreation;
-import com.example.mobilepose.Controller.Utils;
-import com.example.mobilepose.Model.API.APICallback;
-import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
-import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.example.mobilepose.Model.Product;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -55,6 +51,9 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     String[] productCategory={"Testing"};
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> arrayAdapter;
+
+    View bottomSheetView;
+    BottomSheetDialog bottomSheetDialog;
 
     public ProductManagement() {
         // Required empty public constructor
@@ -93,10 +92,11 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
         View view = inflater.inflate(R.layout.fragment_product_management, container, false);
 
-
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+
         ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList(),this);
         ParentRecyclerViewItem.setAdapter(parentItemAdapter);
         ParentRecyclerViewItem.setLayoutManager(layoutManager);
@@ -122,28 +122,21 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
     private List<ParentItem> ParentItemList()
     {
-        List<ParentItem> itemList
-                = new ArrayList<>();
+        List<ParentItem> itemList = new ArrayList<>();
 
-        ParentItem item
-                = new ParentItem(
-                "Title 1",
-                ChildItemList());
+       // List<Product> products=Product.getProducts("1",getActivity());
+
+
+        ParentItem item = new ParentItem("Title 1", ChildItemList());
         itemList.add(item);
-        ParentItem item1
-                = new ParentItem(
-                "Title 2",
-                ChildItemList());
+
+        ParentItem item1 = new ParentItem("Title 2", ChildItemList());
         itemList.add(item1);
-        ParentItem item2
-                = new ParentItem(
-                "Title 3",
-                ChildItemList());
+
+        ParentItem item2 = new ParentItem("Title 3", ChildItemList());
         itemList.add(item2);
-        ParentItem item3
-                = new ParentItem(
-                "Title 4",
-                ChildItemList());
+
+        ParentItem item3 = new ParentItem("Title 4", ChildItemList());
         itemList.add(item3);
 
         return itemList;
@@ -151,82 +144,50 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
     private List<ChildItem> ChildItemList()
     {
-        List<ChildItem> ChildItemList
-                = new ArrayList<>();
+        List<ChildItem> ChildItemList = new ArrayList<>();
 
-        ChildItemList.add(new ChildItem("Card 1","1"));
-        ChildItemList.add(new ChildItem("Card 2","1"));
-        ChildItemList.add(new ChildItem("Card 3","1"));
-        ChildItemList.add(new ChildItem("Card 4","1"));
+
+
+        ChildItem item = new ChildItem(new Product("1","Food1","500","Delicous Food","1","1"));
+        ChildItemList.add(item);
+        ChildItem item2 = new ChildItem(new Product("2","Food2","500","Delicous Food","1","1"));
+        ChildItemList.add(item2);
+        ChildItem item3 = new ChildItem(new Product("3","Food3","500","Delicous Food","1","1"));
+        ChildItemList.add(item3);
+        ChildItem item4 = new ChildItem(new Product("4","Food4","500","Delicous Food","1","1"));
+        ChildItemList.add(item4);
+
+        List<Product> products=Product.getProducts();
+
+        for(int i = 0; i < products.size(); i++){
+            ChildItemList.add(new ChildItem(products.get(i)));
+        }
 
         return ChildItemList;
     }
 
     @Override
     public void onItemClick(ChildItem childitem) {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+        bottomSheetDialog = new BottomSheetDialog(
                 requireContext(), R.style.BottomSheetDialogTheme
         );
-        View bottomSheetView = LayoutInflater.from(requireContext())
+        bottomSheetView = LayoutInflater.from(requireContext())
                 .inflate(
                         R.layout.product_details_pop,
                         (ConstraintLayout) getActivity().findViewById(R.id.productDetails)
                 );
 
+
+
+        TextView prodDescTxt=bottomSheetView.findViewById(R.id.prodDescTxt);
+        prodDescTxt.setText(childitem.getChildItemTitle());
+
         TextView updateBtn=bottomSheetView.findViewById(R.id.updateBtn);
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Group editGroup=bottomSheetView.findViewById(R.id.editgroup);
-                Group textGroup=bottomSheetView.findViewById(R.id.textgroup);
+                showUpdatePopup();
 
-                editGroup.setVisibility(View.VISIBLE);
-                textGroup.setVisibility(View.GONE);
-
-                EditText prodDesc=bottomSheetView.findViewById(R.id.productDescEdit);
-                prodDesc.getText().clear();
-                EditText prodPrice=bottomSheetView.findViewById(R.id.productPriceEdit);
-                prodPrice.getText().clear();
-
-
-                autoCompleteTextView=bottomSheetView.findViewById(R.id.autoCompleteTextView3);
-                autoCompleteTextView.setText("Select Item");
-
-                arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,productCategory);
-                autoCompleteTextView.setAdapter(arrayAdapter);
-
-
-                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                        String item=adapterView.getItemAtPosition(position).toString();
-
-                        if (item.equals("Testing")){
-
-                        }else{
-
-                        }
-
-                    }
-                });
-
-                //avialabilty
-
-                Button cancelBtn=bottomSheetView.findViewById(R.id.cancelProductBtn);
-                Button saveBtn=bottomSheetView.findViewById(R.id.saveProductBtn);
-                cancelBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        editGroup.setVisibility(View.GONE);
-                        textGroup.setVisibility(View.VISIBLE);
-                    }
-                });
-                saveBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        updateProduct();
-                    }
-                });
             }
         });
 
@@ -235,36 +196,88 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dialog dialog = new Dialog(getActivity());
-                dialog.setContentView(R.layout.delete_pop);
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-
-                Button cancelDeleteBtn=dialog.findViewById(R.id.cancelDeleteBtn);
-                cancelDeleteBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                Button deleteBtn=dialog.findViewById(R.id.deleteProductBtn);
-                deleteBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteProduct();
-                    }
-                });
-
-
-
+                showDeletePopup();
             }
         });
 
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
+    }
+    private void showUpdatePopup(){
+        Group editGroup=bottomSheetView.findViewById(R.id.editgroup);
+        Group textGroup=bottomSheetView.findViewById(R.id.textgroup);
+
+        editGroup.setVisibility(View.VISIBLE);
+        textGroup.setVisibility(View.GONE);
+
+        EditText prodDesc=bottomSheetView.findViewById(R.id.productDescEdit);
+        prodDesc.getText().clear();
+        EditText prodPrice=bottomSheetView.findViewById(R.id.productPriceEdit);
+        prodPrice.getText().clear();
+
+
+        autoCompleteTextView=bottomSheetView.findViewById(R.id.autoCompleteTextView3);
+        autoCompleteTextView.setText("Select Item");
+
+        arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,productCategory);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String item=adapterView.getItemAtPosition(position).toString();
+            }
+        });
+
+        //avialabilty
+
+        Button cancelBtn=bottomSheetView.findViewById(R.id.cancelProductBtn);
+        Button saveBtn=bottomSheetView.findViewById(R.id.saveProductBtn);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editGroup.setVisibility(View.GONE);
+                textGroup.setVisibility(View.VISIBLE);
+            }
+        });
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProduct();
+            }
+        });
+    }
+
+
+
+    private void showDeletePopup(){
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.delete_pop);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        TextView deleteTxt=dialog.findViewById(R.id.couponcode);
+        deleteTxt.setText("Do you want to delete this product?");
+
+        Button cancelDeleteBtn=dialog.findViewById(R.id.cancelDeleteBtn);
+        cancelDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button deleteBtn=dialog.findViewById(R.id.deleteProductBtn);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteProduct();
+            }
+        });
+
     }
 
     private void updateProduct(){

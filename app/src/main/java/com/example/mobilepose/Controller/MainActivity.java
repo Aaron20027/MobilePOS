@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, MyAccount.class);
                     intent.putExtra("userinfo", Utils.ToJson(response));
                     startActivity(intent);
+
+                    Toast.makeText(this, Utils.ToJson(response).toString(), Toast.LENGTH_SHORT).show();
                 },
                 error -> {
                     Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();

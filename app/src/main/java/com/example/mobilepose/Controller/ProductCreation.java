@@ -116,7 +116,7 @@ public class ProductCreation extends Fragment {
     }
 
     public void CreateProduct(View view){
-        //code to ADD Product to database
+        //code to ADD com.example.mobilepose.Model.Product to database
     }
 
     public void AddNewCategory(){

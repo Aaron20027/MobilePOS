@@ -134,7 +134,7 @@ public class homeView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.logout) {
-           Intent intent=new Intent(homeView.this, MainActivity.class);
+           Intent intent=new Intent(homeView.this, Login.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

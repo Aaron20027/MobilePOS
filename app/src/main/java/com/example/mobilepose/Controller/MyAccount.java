@@ -73,8 +73,8 @@ public class MyAccount extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String jsonUserInfo = getActivity().getIntent().getStringExtra("userinfo");
-        LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
+        //String jsonUserInfo = getActivity().getIntent().getStringExtra("userinfo");
+        //LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
 
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
         TextView textView= view.findViewById(R.id.textView92);
@@ -90,9 +90,9 @@ public class MyAccount extends Fragment {
         acctype= view.findViewById(R.id.typeTxt);
         accstatus= view.findViewById(R.id.statusTxt);;
 
-        username.setText(loginResponse.username);
-        firstname.setText(loginResponse.firstName);
-        lastname.setText(loginResponse.lastName);
+        //username.setText(loginResponse.username);
+        //firstname.setText(loginResponse.firstName);
+        //lastname.setText(loginResponse.lastName);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
