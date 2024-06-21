@@ -1,31 +1,30 @@
 package com.example.mobilepose;
 
+import com.example.mobilepose.Model.Product;
+
 public class ChildItem {
+    private Product product;
 
-    private String ChildItemTitle;
-    private String ChildItemPrice;
-
-    public ChildItem(String childItemTitle, String childItemPrice)
+    public ChildItem(Product product)
     {
-        this.ChildItemTitle = childItemTitle;
-        this. ChildItemPrice= childItemPrice;
+        this.product = product;
     }
 
     public String getChildItemTitle()
     {
-        return ChildItemTitle;
+        return product.getProductName();
     }
 
     public void setChildItemTitle(String childItemTitle)
     {
-        ChildItemTitle = childItemTitle;
+
     }
 
     public String getChildItemPrice() {
-        return ChildItemPrice;
+        return product.getProductPrice();
     }
 
     public void setChildItemPrice(String childItemPrice) {
-        ChildItemPrice = childItemPrice;
+
     }
 }

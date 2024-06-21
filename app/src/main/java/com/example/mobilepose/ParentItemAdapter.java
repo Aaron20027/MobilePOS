@@ -45,18 +45,9 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
     public void onBindViewHolder(@NonNull ParentViewHolder parentViewHolder, int position)
     {
 
-        ParentItem parentItem
-                = itemList.get(position);
-        parentViewHolder
-                .ParentItemTitle
-                .setText(parentItem.getParentItemTitle());
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(
-                parentViewHolder
-                        .ChildRecyclerView
-                        .getContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false);
+        ParentItem parentItem = itemList.get(position);
+        parentViewHolder.ParentItemTitle.setText(parentItem.getParentItemTitle());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(parentViewHolder.ChildRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         layoutManager.setInitialPrefetchItemCount(parentItem.getChildItemList().size());
         ChildItemAdapter childItemAdapter = new ChildItemAdapter(parentItem.getChildItemList(),listener);
         parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);
@@ -72,8 +63,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
     }
 
 
-    class ParentViewHolder
-            extends RecyclerView.ViewHolder {
+    class ParentViewHolder extends RecyclerView.ViewHolder {
 
         private TextView ParentItemTitle;
         private RecyclerView ChildRecyclerView;
