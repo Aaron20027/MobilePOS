@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -31,7 +34,7 @@ public class MyAccount extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private TextView firstname,lastname,password,contact,email,address,acctype,accstatus;
+    private TextView username,firstname,lastname,password,contact,email,address,acctype,accstatus;
     private EditText oldPass,newPass,confirmPass;
     private Button cancelButton,saveButton;
 
@@ -70,10 +73,14 @@ public class MyAccount extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //String jsonUserInfo = getActivity().getIntent().getStringExtra("userinfo");
+        //LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
+
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
         TextView textView= view.findViewById(R.id.textView92);
 
         //add image
+        username= view.findViewById(R.id.usernameTxt);;
         firstname= view.findViewById(R.id.firstnameTxt);;
         lastname= view.findViewById(R.id.lastnameTxt);;
         password= view.findViewById(R.id.passwordTxt);;
@@ -82,6 +89,10 @@ public class MyAccount extends Fragment {
         address= view.findViewById(R.id.addressTxt);;
         acctype= view.findViewById(R.id.typeTxt);
         accstatus= view.findViewById(R.id.statusTxt);;
+
+        //username.setText(loginResponse.username);
+        //firstname.setText(loginResponse.firstName);
+        //lastname.setText(loginResponse.lastName);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
