@@ -50,20 +50,12 @@ public class MainActivity extends AppCompatActivity implements VolleyCallback {
         params.put("username", username);
         params.put("password", password);
 
-        Call<ResponseBase<LoginResponse>> loginCall = api.Login(username, hashedPass);
-        loginCall.enqueue(new APICallback<>(
-                response ->
-                {
-                    Intent intent = new Intent(MainActivity.this, MyAccount.class);
-                    intent.putExtra("userinfo", Utils.ToJson(response));
-                    startActivity(intent);
 
-                    Toast.makeText(this, Utils.ToJson(response).toString(), Toast.LENGTH_SHORT).show();
-                },
-                error -> {
-                    Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();
-                }
-        ));
+    }
+
+    @Override
+    public void onSuccess(String response) {
+
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.example.mobilepose.AccountManagement;
 import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
+import com.example.mobilepose.ReportsManagement;
 import com.google.android.material.navigation.NavigationView;
 
 public class homeView extends AppCompatActivity {
@@ -115,6 +116,12 @@ public class homeView extends AppCompatActivity {
                 }
 
                 if (itemId== R.id.nav_reports) {
+                    FragmentManager fragmentmanger=getSupportFragmentManager();
+                    fragmentmanger.beginTransaction()
+                            .replace(R.id.fragmentContainerView, ReportsManagement.class,null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("name")
+                            .commit();
 
                 }
                 drawerLayout.close();
