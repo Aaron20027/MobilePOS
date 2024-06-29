@@ -100,8 +100,11 @@
     <string name="searchProduct">Search Product</string>
     <string name="searchUser">Search User</string>
     <string name="searchCoupon">Search Coupon</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="totalSale">Total Sales</string>
+    <string name="totalTrans">Total Transaction</string>
+    <string name="avgTrans">Average Transactions</string>
 
 
 </resources>

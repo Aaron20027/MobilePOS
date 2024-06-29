@@ -4,6 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/backOrange"
-    android:gravity="bottom"
-    android:padding="16dp">
+    android:gravity="center_vertical"
+    android:paddingLeft="16dp"
+    >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/poppins"
+        android:text="Paparonie Pizza"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+
+        android:textStyle="bold" />
 </LinearLayout>
