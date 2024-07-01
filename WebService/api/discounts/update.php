@@ -13,6 +13,7 @@ include_once ('../../Modules/DiscountRepository.php');
  * @desc: str - [optional]
  * @type: int - [optional]
  * @value: int - [optional]
+ * @code: str - [optional]
  * 
  * Return: [Response(Base)]
  */
@@ -29,7 +30,7 @@ try {
             return Response::CreateFailResponse("One or more arguments are invalid!");
         }
 
-        $update_result = update_discount($dbInst, $reqArgs[0], $reqArgs[1], $reqArgs[2], $reqArgs[3], $reqArgs[4]);
+        $update_result = update_discount($dbInst, $reqArgs[0], $reqArgs[1], $reqArgs[2], $reqArgs[3], $reqArgs[4], $reqArgs[5]);
         if ($update_result) {
             return Response::CreateSuccessResponse("Successfully updated discount!");
         } else {
@@ -42,10 +43,10 @@ try {
     $dbInst->close();
 }
 
-function update_discount($db, $id, $title, $desc, $t, $va)
+function update_discount($db, $id, $title, $desc, $t, $va, $code)
 {
     $discountModule = new DiscountRepository($db);
-    $result = $discountModule->update_discount($id, $title, $desc, $t, $va);
+    $result = $discountModule->update_discount($id, $title, $desc, $t, $va, $code);
     return $result;
 }
 ?>

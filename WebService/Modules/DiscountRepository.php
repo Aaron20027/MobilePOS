@@ -9,7 +9,7 @@ class DiscountRepository
         $this->db = $db;
     }
 
-    public function create_discount($title, $desc, $t, $val)
+    public function create_discount($title, $desc, $t, $val, $code)
     {
         $createQuery = $this->db->query(
             "INSERT INTO `discount_tbl` VALUES (?, ?, ?, ?, ?)",
@@ -24,7 +24,7 @@ class DiscountRepository
         return $createQuery;
     }
 
-    public function update_discount($id, $title, $desc, $t, $val)
+    public function update_discount($id, $title, $desc, $t, $val, $code)
     {
         $queryStr = "UPDATE `discount_tbl` SET ";
         $queryCmds = [];
@@ -59,6 +59,13 @@ class DiscountRepository
             $queryCmds[] = "`value`=?";
             $queryArgs[] = $val;
             $queryDataTypes .= "i";
+        }
+
+        // discount code
+        if (!is_null($code)) {
+            $queryCmds[] = "`code`=?";
+            $queryArgs[] = $val;
+            $queryDataTypes .= "s";
         }
 
         if (count($queryArgs) > 0) {

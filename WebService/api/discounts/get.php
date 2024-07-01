@@ -40,7 +40,8 @@ function fetch_discounts($db)
             $discount["title"],
             $discount["description"],
             $discount["type"],
-            $discount["value"]
+            $discount["value"],
+            $discount["code"]
         ), $discounts);
 }
 

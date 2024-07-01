@@ -10,12 +10,13 @@ include_once ('../../Modules/DiscountRepository.php');
  * @desc: str - [required]
  * @type: int - [required]
  * @value: int - [required]
+ * @code: str - [required]
  * 
  * Return: [Response(Base)]
  */
 
 $dbInst = RestaurantDB::GetTransient();
-$postArgsIds = ["title", "desc", "type", "value"];
+$postArgsIds = ["title", "desc", "type", "value", "code"];
 
 try {
     if (Utils::InitCheck($dbInst)) {
@@ -24,7 +25,7 @@ try {
             return Response::CreateFailResponse("One or more arguments are missing!");
         }
 
-        if (create_discount($dbInst, $reqArgs[0], $reqArgs[1], $reqArgs[2], $reqArgs[3])) {
+        if (create_discount($dbInst, $reqArgs[0], $reqArgs[1], $reqArgs[2], $reqArgs[3], $reqArgs[4])) {
             return Response::CreateSuccessResponse("Successfully created discount!");
         } else {
             return Response::CreateFailResponse("Failed creating discount!");
@@ -36,10 +37,10 @@ try {
     $dbInst->close();
 }
 
-function create_discount($db, $title, $desc, $t, $val)
+function create_discount($db, $title, $desc, $t, $val, $code)
 {
     $discountModule = new DiscountRepository($db);
-    return $discountModule->create_discount($title, $desc, $t, $val);
+    return $discountModule->create_discount($title, $desc, $t, $val, $code);
 }
 
 ?>
