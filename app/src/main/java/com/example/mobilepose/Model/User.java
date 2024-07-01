@@ -13,11 +13,7 @@ public class User implements Serializable {
     private String fname;
     private String lname;
     private String type;
-    private String contact;
-    private String email;
-    private String address;
     private String status;
-    private String img;
 
     public String getUsername() {
         return username;
@@ -38,9 +34,7 @@ public class User implements Serializable {
         return lname;
     }
 
-    public String getEmail() {
-        return email;
-    }
+
 
     public String getType() {
         if (type.equals("1")) {
@@ -49,12 +43,6 @@ public class User implements Serializable {
             return "Cashier";
         }
     }
-    public String getContact() {
-        return contact;
-    }
-    public String getAddress() {
-        return address;
-    }
     public String getStatus() {
         if (status.equals("1")) {
             return "Active";
@@ -62,21 +50,14 @@ public class User implements Serializable {
             return "Deactive";
         }
     }
-    public String getImg() {
-        return img;
-    }
 
-    public User(String username, String password, String fname, String lname, String type, String contact, String email, String address, String status, String img) {
+    public User(String username, String password, String fname, String lname, String type, String status) {
         this.username = username;
         this.password = password;
         this.fname = fname;
         this.lname = lname;
         this.type = type;
-        this.contact = contact;
-        this.email = email;
-        this.address = address;
         this.status = status;
-        this.img = img;
     }
 
     public boolean ChangePassword(String Old, String New, String Confirm, Context context){

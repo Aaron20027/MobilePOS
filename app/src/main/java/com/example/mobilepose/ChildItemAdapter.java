@@ -38,8 +38,8 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     public void onBindViewHolder(@NonNull ChildViewHolder childViewHolder, int position)
     {
         ChildItem childItem = ChildItemList.get(position);
-        childViewHolder.ChildItemTitle.setText(childItem.getChildItemTitle());
-        childViewHolder.ChildItemPrice.setText(childItem.getChildItemPrice());
+        childViewHolder.ChildItemTitle.setText(childItem.getProduct().getProductName());
+        childViewHolder.ChildItemPrice.setText(String.valueOf(childItem.getProduct().getProductPrice()));
         childViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

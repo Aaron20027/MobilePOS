@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
@@ -42,6 +43,7 @@ public class Login extends AppCompatActivity {
             return insets;
         });
 
+
         userTxt = findViewById(R.id.usernameEdit);
         passTxt = findViewById(R.id.passwordEdit);
 
@@ -58,11 +60,12 @@ public class Login extends AppCompatActivity {
         loginCall.enqueue(new APICallback<>(
                 response ->
                 {
-                    Intent intent = new Intent(Login.this, MyAccount.class);
+                    Intent intent = new Intent(Login.this, homeView.class);
                     intent.putExtra("userinfo", Utils.ToJson(response));
                     startActivity(intent);
                 },
                 error -> {
+
                     Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();
                 }
         ));

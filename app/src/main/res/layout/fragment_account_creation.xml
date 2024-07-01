@@ -38,38 +38,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/frameLayout2"
-                android:layout_width="0dp"
-                android:layout_height="220dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/rouded_button"
-                android:elevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView44">
-
-                <ImageButton
-                    android:id="@+id/imageButton3"
-                    android:layout_width="199dp"
-                    android:layout_height="189dp"
-                    android:layout_margin="15dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/circular_image_button"
-                    android:contentDescription="User picture"
-                    android:elevation="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/ic_menu_camera" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <EditText
                 android:id="@+id/usernameEdit"
                 android:layout_width="0dp"
@@ -98,7 +66,7 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/textView44" />
 
             <TextView
                 android:id="@+id/textView46"
@@ -204,96 +172,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
             <TextView
-                android:id="@+id/textView50"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins"
-                android:text="@string/contactTxt"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passwordEdit" />
-
-            <EditText
-                android:id="@+id/contactEdit"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:elevation="10dp"
-                android:fontFamily="@font/poppins"
-                android:inputType="number"
-                android:textColor="@color/black"
-                android:textColorHint="@color/blackcream"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView50" />
-
-            <TextView
-                android:id="@+id/textView51"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins"
-                android:text="@string/emailTxt"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contactEdit" />
-
-            <EditText
-                android:id="@+id/emailEdit"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:elevation="10dp"
-                android:fontFamily="@font/poppins"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                android:textColorHint="@color/blackcream"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView51" />
-
-            <TextView
-                android:id="@+id/textView52"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/poppins"
-                android:text="@string/addressTxt"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailEdit" />
-
-            <EditText
-                android:id="@+id/addressEdit"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:elevation="10dp"
-                android:fontFamily="@font/poppins"
-                android:inputType="textMultiLine"
-                android:textColor="@color/black"
-                android:textColorHint="@color/blackcream"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView52" />
-
-            <TextView
                 android:id="@+id/textView53"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -305,7 +183,7 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addressEdit" />
+                app:layout_constraintTop_toBottomOf="@+id/passwordEdit" />
 
             <TextView
                 android:id="@+id/textView54"

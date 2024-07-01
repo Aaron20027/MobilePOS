@@ -19,10 +19,15 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.mobilepose.AccountManagement;
 import com.example.mobilepose.CouponManagement;
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.User;
 import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
 import com.example.mobilepose.ReportsManagement;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class homeView extends AppCompatActivity {
 
@@ -40,6 +45,13 @@ public class homeView extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Intent intent = getIntent();
+        String jsonUserInfo = intent.getStringExtra("userinfo");
+
+        LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);;
+
+
 
         FragmentManager fragmentmanger=getSupportFragmentManager();
         fragmentmanger.beginTransaction()
@@ -59,10 +71,6 @@ public class homeView extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.inflateMenu(R.menu.tool_menu);
-
-
-
-
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,8 +171,4 @@ public class homeView extends AppCompatActivity {
         CloseDrawer(drawerLayout);
     }
 
-
-    public void Logout(View view){
-        //code to logout
-    }
 }

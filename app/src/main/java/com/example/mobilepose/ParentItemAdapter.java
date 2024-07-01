@@ -22,9 +22,8 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
 
     SelectItemListener listener;
 
-    ParentItemAdapter(List<ParentItem> itemList,SelectItemListener listener)
-    {
-        this.listener=listener;
+    ParentItemAdapter(List<ParentItem> itemList, SelectItemListener listener) {
+        this.listener = listener;
         this.itemList = itemList;
     }
 

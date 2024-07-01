@@ -22,6 +22,11 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
 
     SelectCouponListener listener;
 
+    public void setFilteredList(List<Coupon> filteredList){
+        this.coupons=filteredList;
+        notifyDataSetChanged();
+    }
+
     public CouponAdapter(List<Coupon> coupons,SelectCouponListener listener) {
         this.coupons = coupons;
         this.listener=listener;

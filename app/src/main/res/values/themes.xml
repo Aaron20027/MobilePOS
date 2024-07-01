@@ -29,10 +29,6 @@
     </style>
 
 
-    <style name="CustomSearchBar" parent="Widget.Material3.SearchBar">
-        <item name="android:background">@color/material_dynamic_neutral99</item>
-    </style>
-
     <style name="CustomNavigationViewText" parent="TextAppearance.AppCompat.Body1">
         <item name="fontFamily">@font/poppins</item>
         <item name="android:textSize">16sp</item>
@@ -47,7 +43,10 @@
         <item name="android:textColor">#000000</item>
     </style>
 
-
+    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/black</item>
+    </style>
 
 
 

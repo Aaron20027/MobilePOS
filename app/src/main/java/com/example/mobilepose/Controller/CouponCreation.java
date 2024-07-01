@@ -13,26 +13,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CouponCreation#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CouponCreation extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     String[] couponStatus={"Percentage","Fixed Ammount"};
     AutoCompleteTextView autoCompleteTextView;
@@ -41,36 +28,9 @@ public class CouponCreation extends Fragment {
     TextView discountValueText, backBtn;
     EditText discountValueEdit;
 
-    public CouponCreation() {
-        // Required empty public constructor
-    }
+    TextView couponCodeTxt,couponDescTxt,couponStatTxt,couponAmtTxt,couponStartTxt,couponEndTxt;
+    RadioGroup availabiltyGrp;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CouponManagement.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CouponCreation newInstance(String param1, String param2) {
-        CouponCreation fragment = new CouponCreation();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,6 +49,14 @@ public class CouponCreation extends Fragment {
                         .commit();
             }
         });
+
+        couponCodeTxt=view.findViewById(R.id.couponCodeEdit);
+        couponDescTxt=view.findViewById(R.id.couponDescEdit);
+        //autto complete view text
+        //couponStatTxt=view.findViewById(R.id.couponStatusEdit);
+        couponAmtTxt=view.findViewById(R.id.couponAmmntEdit);
+        couponStartTxt=view.findViewById(R.id.couponStartEdit);
+        couponEndTxt=view.findViewById(R.id.couponEndEdit);
 
         autoCompleteTextView=view.findViewById(R.id.autoCompleteTextView2);
         arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,couponStatus);
@@ -119,13 +87,5 @@ public class CouponCreation extends Fragment {
     public void CreateCoupon(View view){
         //code to ADD Coupon to database
     }
-    public void UpdateCoupon(View view){
-        //code to UPDATE Coupon to database
-    }
-    public void SearchCoupon(View view){
-        //code to SEARCH Coupon to database
-    }
-    public void DeleteCoupon(View view){
-        //code to DELETE Coupon to database
-    }
+
 }
