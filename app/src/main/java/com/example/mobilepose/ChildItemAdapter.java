@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.example.mobilepose.Model.Coupon;
+
 import java.util.List;
 
 public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.ChildViewHolder> {
@@ -19,6 +21,11 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     {
         this.ChildItemList = childItemList;
         this.listener=listener;
+    }
+
+    public void setFilteredList(List<ChildItem> filteredList){
+        this.ChildItemList=filteredList;
+        notifyDataSetChanged();
     }
 
     @NonNull

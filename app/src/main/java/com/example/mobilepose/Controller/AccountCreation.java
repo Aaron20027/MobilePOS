@@ -8,13 +8,20 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobilepose.AccountManagement;
+import com.example.mobilepose.Model.User;
 import com.example.mobilepose.R;
 
+import java.sql.SQLOutput;
+
 public class AccountCreation extends Fragment {
+    Button createBtn;
     TextView backBtn;
 
     TextView usernameTxt,firstnameTxt,lastnameTxt,passwordTxt;
@@ -39,6 +46,14 @@ public class AccountCreation extends Fragment {
             }
         });
 
+        createBtn=view.findViewById(R.id.createUserBtn);
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateUser(view);
+            }
+        });
+
         usernameTxt=view.findViewById(R.id.usernameEdit);
         firstnameTxt=view.findViewById(R.id.firstnameEdit);
         lastnameTxt=view.findViewById(R.id.lastnameEdit);
@@ -50,7 +65,27 @@ public class AccountCreation extends Fragment {
     }
 
     public void CreateUser(View view){
-        //code to ADD user to database
+
+        int typeid=accountTypGrp.getCheckedRadioButtonId();
+        RadioButton radioButton = view.findViewById(typeid);
+        System.out.println(radioButton.getText().toString());
+
+        User.addAccount(new User(usernameTxt.getText().toString(),
+                passwordTxt.getText().toString(),
+                firstnameTxt.getText().toString(),
+                lastnameTxt.getText().toString(),
+                radioButton.getText().toString(),
+                "1"),getActivity());
+
+        usernameTxt.setText("");
+        firstnameTxt.setText("");
+        lastnameTxt.setText("");
+        passwordTxt.setText("");
+        accountTypGrp.clearCheck();
+        AccountStatGrp.clearCheck();
+
+        Toast.makeText(view.getContext(), "User has been added!", Toast.LENGTH_SHORT).show();
+
     }
 
 }

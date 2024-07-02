@@ -85,6 +85,27 @@ public class Product {
         ));
     }
 
+
+    public static void addProducts(Product product,Context context) {
+
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> prod = api.PostProducts(product.getProductName(),
+                product.getProductDescription(),
+                String.valueOf(product.getProductPrice()),
+                String.valueOf(product.getProductCategory()),
+                product.getProductImage(),
+                String.valueOf(product.getProductID()));
+
+        prod.enqueue(new APICallback<>(
+                response -> {
+
+                },
+                error -> {
+                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                }
+        ));
+    }
+
     private static void getCategories(){
 
         //loop through categories
@@ -95,6 +116,8 @@ public class Product {
         //return array
 
     }
+
+
 
 
 }

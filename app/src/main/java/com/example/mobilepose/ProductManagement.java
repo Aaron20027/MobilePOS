@@ -20,11 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.mobilepose.Controller.ProductCreation;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.ProductCategory;
+import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.Model.ProductCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -37,21 +39,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductManagement extends Fragment implements SelectItemListener{
-    private String mParam1;
-    private String mParam2;
+
     private FloatingActionButton createProductBtn;
+    ParentItemAdapter parentItemAdapter;
+
+    List<String> categories=new ArrayList<>();
 
     String[] productCategory={"Testing"};
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> arrayAdapter;
-
     View bottomSheetView;
     BottomSheetDialog bottomSheetDialog;
-
-    public ProductManagement() {
-        // Required empty public constructor
-    }
-
+    SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,17 +58,35 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
         View view = inflater.inflate(R.layout.fragment_product_management, container, false);
 
-
+        searchView = view.findViewById(R.id.searchbar);
 
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
+        categories.add("Pizza");
+        categories.add("Doughnouts");
+        categories.add("Drinks");
 
+
+        //get categories first cause need categoires that get products in the parent list method
         Product.getProducts(new ProductCallback() {
             @Override
             public void onProductsFetched(List<Product> products) {
-                ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList(products), ProductManagement.this);
+                parentItemAdapter = new ParentItemAdapter(ParentItemList(products,categories), ProductManagement.this);
                 ParentRecyclerViewItem.setAdapter(parentItemAdapter);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 ParentRecyclerViewItem.setLayoutManager(layoutManager);
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        filterList(newText, products,categories);
+                        return true;
+                    }
+                });
             }
 
             @Override
@@ -105,24 +122,36 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         return view;
     }
 
-    private List<ParentItem> ParentItemList(List<Product> products)
+
+
+    private void filterList(String newText, List<Product> products,List<String> categories) {
+        List<ParentItem> filteredParentItemList = new ArrayList<>();
+
+        for (String category : categories) {
+            List<ChildItem> filteredChildItemList = new ArrayList<>();
+            for (Product product : products) {
+                if (product.getProductName().toLowerCase().contains(newText.toLowerCase())) {
+                    filteredChildItemList.add(new ChildItem(product));
+                }
+            }
+        }
+
+        parentItemAdapter.setFilteredList(filteredParentItemList);
+
+    }
+
+
+
+    private List<ParentItem> ParentItemList(List<Product> products,List<String> categories)
     {
         List<ParentItem> itemList = new ArrayList<>();
 
-       // List<Product> products=Product.getProducts("1",getActivity());
-
-
-        ParentItem item = new ParentItem("Title 1", ChildItemList(products));
-        itemList.add(item);
-
-        ParentItem item1 = new ParentItem("Title 2", ChildItemList(products));
-        itemList.add(item1);
-
-        ParentItem item2 = new ParentItem("Title 3", ChildItemList(products));
-        itemList.add(item2);
-
-        ParentItem item3 = new ParentItem("Title 4", ChildItemList(products));
-        itemList.add(item3);
+        for (String category : categories) {
+            if (!products.isEmpty()) {
+                ParentItem item = new ParentItem(category, ChildItemList(products));
+                itemList.add(item);
+            }
+        }
 
         return itemList;
     }

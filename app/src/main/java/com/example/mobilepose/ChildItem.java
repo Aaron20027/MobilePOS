@@ -1,6 +1,9 @@
 package com.example.mobilepose;
 
+import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
+
+import java.util.List;
 
 public class ChildItem {
     private Product product;
@@ -9,6 +12,7 @@ public class ChildItem {
     {
         this.product = product;
     }
+
 
     public Product getProduct() {
         return product;

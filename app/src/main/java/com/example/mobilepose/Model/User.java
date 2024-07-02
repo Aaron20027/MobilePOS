@@ -4,8 +4,20 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.example.mobilepose.Controller.MainActivity;
+import com.example.mobilepose.Controller.Utils;
+import com.example.mobilepose.Model.API.APICallback;
+import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
+import com.example.mobilepose.Model.API.Entities.FetchUserResponse;
+import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.example.mobilepose.Model.API.POSAPISingleton;
+import com.example.mobilepose.UserCallback;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
 
 public class User implements Serializable {
     private String username;
@@ -25,6 +37,9 @@ public class User implements Serializable {
     public String getPasswordProtected() {
         return password.replaceAll(".","*");
     }
+    public String getPasswordHashed() {
+        return Utils.MD5(password);
+    }
 
     public String getFname() {
         return fname;
@@ -34,10 +49,16 @@ public class User implements Serializable {
         return lname;
     }
 
-
-
     public String getType() {
-        if (type.equals("1")) {
+        if (type.equals("Manager")) {
+            return "0";
+        }else{
+            return "1";
+        }
+    }
+
+    public String getTypeConvert() {
+        if (type.equals("0")) {
             return "Manager";
         }else{
             return "Cashier";
@@ -74,6 +95,57 @@ public class User implements Serializable {
             return false;
         }
     }
+
+    public static void getUsers(UserCallback callback) {
+        List<User> users = new ArrayList<>();
+
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<FetchUserResponse[]>> acc = api.GetAccount("test");
+        acc.enqueue(new APICallback<>(
+                response -> {
+                    FetchUserResponse[] userArray = response;
+                    for (FetchUserResponse fetchUserResponse : userArray) {
+                        User user = new User(
+                                fetchUserResponse.username,
+                                "",
+                                fetchUserResponse.fname,
+                                fetchUserResponse.lname,
+                                String.valueOf(fetchUserResponse.accType),
+                                "1"
+                        );
+
+                        System.out.println(user.getFname());
+                        System.out.println(user.getLname());
+                        System.out.println("+++++++++");
+                        users.add(user);
+                    }
+                    callback.onProductsFetched(users);
+                },
+                error -> {
+                    callback.onError(error);
+                }
+        ));
+    }
+
+    public static void addAccount(User user,Context context) {
+
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> account = api.PostAccount(user.getUsername(),
+                user.getPasswordHashed(),
+                user.getFname(),
+                user.getLname(),
+                user.getType());
+
+        account.enqueue(new APICallback<>(
+                response -> {
+
+                },
+                error -> {
+                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                }
+        ));
+    }
+
 
 
 

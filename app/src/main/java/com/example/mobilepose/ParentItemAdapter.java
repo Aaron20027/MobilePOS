@@ -22,7 +22,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
 
     SelectItemListener listener;
 
-    ParentItemAdapter(List<ParentItem> itemList, SelectItemListener listener) {
+    public ParentItemAdapter(List<ParentItem> itemList, SelectItemListener listener) {
         this.listener = listener;
         this.itemList = itemList;
     }
@@ -59,6 +59,9 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
     {
 
         return itemList.size();
+    }
+
+    public void setFilteredList(List<ParentItem> filteredParentItemList) {
     }
 
 

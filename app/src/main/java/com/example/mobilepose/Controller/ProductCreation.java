@@ -15,8 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.mobilepose.Model.API.Entities.ProductCategory;
+import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
 
@@ -27,15 +30,25 @@ public class ProductCreation extends Fragment {
     String[] productCategory={"Add New Category"};
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> arrayAdapter;
-    Button cancelButton,saveButton;
+    Button cancelButton,saveButton,createButton;
     EditText newCatEdit;
-
     TextView backBtn;
+    EditText prodNameTxt,prodDescTxt,prodPriceTxt,prodCatTxt;
+    RadioGroup proAvailGrp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_product_creation, container, false);
+
+
+        prodNameTxt=view.findViewById(R.id.productNameEdit);
+        prodDescTxt=view.findViewById(R.id.productDescEdit);
+        prodPriceTxt=view.findViewById(R.id.productPriceEdit);
+        //prodCatTxt=view.findViewById(R.id.productCategoryEdit);
+        proAvailGrp=view.findViewById(R.id.availabilityRadio);
+
+
 
         backBtn=view.findViewById(R.id.backProductBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,11 +82,25 @@ public class ProductCreation extends Fragment {
             }
         });
 
+        createButton=view.findViewById(R.id.createProductBtn);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateProduct();
+            }
+        });
+
         return view;
     }
 
-    public void CreateProduct(View view){
-        //code to ADD com.example.mobilepose.Model.Product to database
+    public void CreateProduct(){
+        Product product=new Product(1,
+                prodNameTxt.getText().toString(),
+                Float.valueOf(prodPriceTxt.getText().toString()),
+                prodDescTxt.getText().toString(),
+                ProductCategory.PIZZA,
+                "111");
+        Product.addProducts(product,getActivity());
     }
 
     public void AddNewCategory(){

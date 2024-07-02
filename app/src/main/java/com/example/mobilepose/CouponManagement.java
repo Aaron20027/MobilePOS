@@ -12,9 +12,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -28,11 +32,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CouponManagement#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CouponManagement extends Fragment implements SelectCouponListener{
     FloatingActionButton createCouponBtn;
     View bottomSheetView;
@@ -164,6 +163,31 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
 
         editGroup.setVisibility(View.VISIBLE);
         textGroup.setVisibility(View.GONE);
+
+        TextView couponAmtTxt=bottomSheetView.findViewById(R.id.textView4);
+
+
+        String[] couponStatus={"Percentage","Fixed Ammount"};
+        AutoCompleteTextView autoCompleteTextView=bottomSheetView.findViewById(R.id.coupStatusDrop);
+        ArrayAdapter arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,couponStatus);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String item=adapterView.getItemAtPosition(position).toString();
+
+                if (item.equals("Percentage")){
+                    couponAmtTxt.setText("Percentage");
+                    couponAmtTxt.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+
+                }else{
+                    couponAmtTxt.setText("Ammount");
+                    couponAmtTxt.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                }
+
+            }
+        });
 
 
 

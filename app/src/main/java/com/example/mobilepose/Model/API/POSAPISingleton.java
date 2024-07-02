@@ -7,11 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class POSAPISingleton {
     private static APIInterface apiInstance = null;
-    final static String API_HOST ="http://10.0.5.248/";
+    final static String API_HOST ="http://192.168.2.203/";
 
-    //10.0.5.245
-
-    //192.168.2.203 - my ip
     //192.168.254.108
     public static APIInterface getOrCreateInstance() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

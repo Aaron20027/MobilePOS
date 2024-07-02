@@ -1,6 +1,7 @@
 package com.example.mobilepose;
 
 import com.example.mobilepose.ChildItem;
+import com.example.mobilepose.Model.Coupon;
 
 import java.util.List;
 
