@@ -15,7 +15,7 @@
             <item
                 android:id="@+id/nav_accMng"
                 android:icon="@drawable/person_add_icon"
-                android:title="Accoun Management"/>
+                android:title="Account Management"/>
         </menu>
     </item>
     <item android:title="Product Management">

@@ -2,8 +2,10 @@ package com.example.mobilepose;
 
 import com.example.mobilepose.Model.Coupon;
 
+import java.util.List;
+
 public interface SelectCouponListener {
 
-    void onItemClick(Coupon coupon);
+    void onItemClick(Coupon coupon, List<Coupon> coupons);
 
 }

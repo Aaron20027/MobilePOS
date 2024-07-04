@@ -7,7 +7,7 @@ include_once ('../../Modules/DiscountRepository.php');
 
 /*
  * POST - /api/discounts/get.php
- * 
+ * @id: int - [optional]
  * Return: [DiscountResponse(Base)]
  */
 
@@ -40,8 +40,8 @@ function fetch_discounts($db)
             $discount["title"],
             $discount["description"],
             $discount["type"],
-            $discount["value"]
+            $discount["value"],
+            $discount["avail"]
         ), $discounts);
 }
-
 ?>

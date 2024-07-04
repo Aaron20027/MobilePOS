@@ -20,8 +20,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobilepose.Controller.AccountCreation;
 import com.example.mobilepose.Model.Coupon;
@@ -29,19 +33,19 @@ import com.example.mobilepose.Model.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountManagement extends Fragment implements SelectUserListener {
 
     FloatingActionButton createUserBtn;
-
     SearchView searchView;
-    List<User> itemList;
     View bottomSheetView;
     BottomSheetDialog bottomSheetDialog;
-
     AccountAdapter userItemAdapter;
+    EditText fnameEdit,lnameEdit,passwordEdit;
+    RadioGroup typeGrp,statusGrp;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -113,7 +117,7 @@ public class AccountManagement extends Fragment implements SelectUserListener {
 
 
     @Override
-    public void onItemClick(User user) {
+    public void onItemClick(User user, List<User> users) {
         bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
         bottomSheetView = LayoutInflater.from(requireContext())
                 .inflate(
@@ -121,13 +125,11 @@ public class AccountManagement extends Fragment implements SelectUserListener {
                         (ConstraintLayout) getActivity().findViewById(R.id.userDetails)
                 );
 
-        setTextview(bottomSheetView, user);
-
         TextView updateBtn=bottomSheetView.findViewById(R.id.updateBtn);
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUpdatePopup();
+                showUpdatePopup(user, users);
 
             }
         });
@@ -136,14 +138,11 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDeletePopup();
+                showDeletePopup(user, users);
             }
         });
 
-
         SetText(user);
-
-
 
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
@@ -158,19 +157,25 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         TextView statusTxt=bottomSheetView.findViewById(R.id.statusTxt);
         userTxt.setText(user.getUsername());
         fnameTxt.setText(user.getFname());
-        lnameTxt.setText(user.getFname());
+        lnameTxt.setText(user.getLname());
         passwordTxt.setText(user.getPasswordProtected());
-        typeTxt.setText(user.getTypeConvert());
-        statusTxt.setText(user.getStatus());
+        typeTxt.setText(user.getType(Integer.valueOf(user.getType())));
+        statusTxt.setText(user.getStatus(Integer.valueOf(user.getStatus())));
     }
 
 
-    private void showUpdatePopup(){
+    private void showUpdatePopup(User user, List<User> users){
         Group editGroup=bottomSheetView.findViewById(R.id.editgroup);
         Group textGroup=bottomSheetView.findViewById(R.id.textgroup);
 
         editGroup.setVisibility(View.VISIBLE);
         textGroup.setVisibility(View.GONE);
+
+        fnameEdit=bottomSheetView.findViewById(R.id.firstnameEdit);
+        lnameEdit=bottomSheetView.findViewById(R.id.lastnameEdit);
+        passwordEdit=bottomSheetView.findViewById(R.id.passwordEdit);
+        typeGrp=bottomSheetView.findViewById(R.id.typeRadio);
+        statusGrp=bottomSheetView.findViewById(R.id.statusRadio);
 
         Button cancelBtn=bottomSheetView.findViewById(R.id.cancelCouponBtn);
         Button saveBtn=bottomSheetView.findViewById(R.id.saveCouponBtn);
@@ -185,17 +190,61 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUser();
+                updateUser(user,users);
 
             }
         });
     }
 
-    private void updateUser() {
+    private void updateUser(User user, List<User> users) {
+
+        if (!fnameEdit.getText().toString().trim().isEmpty()) {
+            user.setFname(fnameEdit.getText().toString());
+        }
+        if (!lnameEdit.getText().toString().trim().isEmpty()) {
+            user.setLname(lnameEdit.getText().toString());
+        }
+        if (!passwordEdit.getText().toString().trim().isEmpty()) {
+            user.setPassword(passwordEdit.getText().toString());
+        }
+
+        int selectedTypeId = typeGrp.getCheckedRadioButtonId();
+        int selectedStatusId = statusGrp.getCheckedRadioButtonId();
+
+        if (selectedTypeId != -1) {
+            RadioButton selectedTypeButton = bottomSheetView.findViewById(selectedTypeId);
+            String userType = selectedTypeButton.getText().toString();
+            user.setType(userType);
+        }
+
+        if (selectedStatusId != -1) {
+            RadioButton selectedStatusButton = bottomSheetView.findViewById(selectedStatusId);
+            String userStatus = selectedStatusButton.getText().toString();
+            user.setStatus(userStatus);
+
+        }
+
+
+        for (User acc : users) {
+            if (acc.getUsername().equals(user.getUsername())) {
+                acc.setFname(user.getFname());
+                acc.setLname(user.getLname());
+                acc.setPassword(user.getPassword());
+                acc.setType(Integer.valueOf(user.getType()));
+                acc.setStatus(Integer.valueOf(user.getStatus()));
+                break;
+            }
+        }
+
+        bottomSheetDialog.dismiss();
+        userItemAdapter.setFilteredList(users);
+        User.updateAccount(user,bottomSheetView.getContext());
+        Toast.makeText(bottomSheetView.getContext(), "User has been updated!", Toast.LENGTH_SHORT).show();
+
     }
 
 
-    private void showDeletePopup(){
+    private void showDeletePopup(User user, List<User> users){
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.delete_pop);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -217,17 +266,20 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteUser();
+                users.remove(user);
+                bottomSheetDialog.dismiss();
+                dialog.dismiss();
+                userItemAdapter.setFilteredList(users);
+                User.deleteAccount(user,bottomSheetView.getContext());
+                Toast.makeText(bottomSheetView.getContext(), "User has been deleted!", Toast.LENGTH_SHORT).show();
+
             }
         });
 
     }
 
-    private void deleteUser() {
-    }
 
-    private void setTextview(View view, User user){
 
-    }
+
 
 }

@@ -10,20 +10,21 @@ import android.widget.TextView;
 
 
 import com.example.mobilepose.Model.Coupon;
+import com.example.mobilepose.Model.Product;
 
 import java.util.List;
 
 public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.ChildViewHolder> {
-    private List<ChildItem> ChildItemList;
+    private List<Product> ChildItemList;
     private SelectItemListener listener;
 
-    ChildItemAdapter(List<ChildItem> childItemList,SelectItemListener listener)
+    ChildItemAdapter(List<Product> childItemList,SelectItemListener listener)
     {
         this.ChildItemList = childItemList;
         this.listener=listener;
     }
 
-    public void setFilteredList(List<ChildItem> filteredList){
+    public void setFilteredList(List<Product> filteredList){
         this.ChildItemList=filteredList;
         notifyDataSetChanged();
     }
@@ -44,9 +45,9 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     @Override
     public void onBindViewHolder(@NonNull ChildViewHolder childViewHolder, int position)
     {
-        ChildItem childItem = ChildItemList.get(position);
-        childViewHolder.ChildItemTitle.setText(childItem.getProduct().getProductName());
-        childViewHolder.ChildItemPrice.setText(String.valueOf(childItem.getProduct().getProductPrice()));
+        Product childItem = ChildItemList.get(position);
+        childViewHolder.ChildItemTitle.setText(childItem.getProductName());
+        childViewHolder.ChildItemPrice.setText(String.valueOf(childItem.getProductPrice()));
         childViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

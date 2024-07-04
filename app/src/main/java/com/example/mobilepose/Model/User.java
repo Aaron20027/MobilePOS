@@ -50,26 +50,66 @@ public class User implements Serializable {
     }
 
     public String getType() {
-        if (type.equals("Manager")) {
-            return "0";
-        }else{
-            return "1";
-        }
+        return type;
+
     }
 
-    public String getTypeConvert() {
-        if (type.equals("0")) {
+    public String getType(int type) {
+        if (type==0) {
             return "Manager";
         }else{
             return "Cashier";
         }
     }
+
     public String getStatus() {
-        if (status.equals("1")) {
-            return "Active";
+        return status;
+
+    }
+
+    public String getStatus(int type) {
+        if (type==0) {
+            return "Activate";
         }else{
-            return "Deactive";
+            return "Deactivate";
         }
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public void setType(String type) {
+        if (type.equals("Manager")) {
+            this.type="0";
+        }else{
+            this.type="1";
+        }
+    }
+
+    public void setType(int type) {
+        this.type=String.valueOf(type);
+    }
+
+    public void setStatus(String status) {
+        if (status.equals("Activate")) {
+            this.status="0";
+        }else{
+            this.status="1";
+        }
+    }
+
+    public void setStatus(int status) {
+        this.status=String.valueOf(status);
     }
 
     public User(String username, String password, String fname, String lname, String type, String status) {
@@ -114,9 +154,6 @@ public class User implements Serializable {
                                 "1"
                         );
 
-                        System.out.println(user.getFname());
-                        System.out.println(user.getLname());
-                        System.out.println("+++++++++");
                         users.add(user);
                     }
                     callback.onProductsFetched(users);
@@ -136,6 +173,40 @@ public class User implements Serializable {
                 user.getLname(),
                 user.getType());
 
+        account.enqueue(new APICallback<>(
+                response -> {
+
+                },
+                error -> {
+                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                }
+        ));
+    }
+
+    public static void deleteAccount(User user,Context context) {
+
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> account = api.DeleteAccount(user.getUsername());
+
+        account.enqueue(new APICallback<>(
+                response -> {
+
+                },
+                error -> {
+                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                }
+        ));
+    }
+
+    public static void updateAccount(User user,Context context) {
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> account = api.UpdateAccount(user.getUsername(),
+                user.getPassword(),
+                user.getFname(),
+                user.getLname(),
+                user.getType(),
+                user.getStatus());
+        ;
         account.enqueue(new APICallback<>(
                 response -> {
 

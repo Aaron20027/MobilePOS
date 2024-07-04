@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.example.mobilepose.Model.Product;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.ParentViewHolder>{
@@ -22,10 +24,15 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
 
     SelectItemListener listener;
 
-    public ParentItemAdapter(List<ParentItem> itemList, SelectItemListener listener) {
+    public ParentItemAdapter( SelectItemListener listener) {
         this.listener = listener;
+        this.itemList = new ArrayList<>();
+    }
+
+    public void setItemList(List<ParentItem> itemList) {
         this.itemList = itemList;
     }
+
 
     @NonNull
     @Override

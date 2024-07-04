@@ -17,33 +17,65 @@ import android.widget.TextView;
 
 import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.User;
 import com.example.mobilepose.R;
+import com.example.mobilepose.SelectUserListener;
+import com.example.mobilepose.UserCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.List;
 
 public class MyAccount extends Fragment {
 
     private TextView username,firstname,lastname,password,contact,email,address,acctype,accstatus;
     private EditText oldPass,newPass,confirmPass;
     private Button cancelButton,saveButton;
+    String loginUserInfo;
+    LoginResponse loginResponse;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //String jsonUserInfo = getActivity().getIntent().getStringExtra("userinfo");
-        //LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
+        if (getArguments() != null) {
+            loginUserInfo = getArguments().getString("loginUserInfo");
+            loginResponse = Utils.FromJson(loginUserInfo, LoginResponse.class);
+        }
+
 
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
         TextView textView= view.findViewById(R.id.textView92);
 
-        //add image
+
         username= view.findViewById(R.id.usernameTxt);;
         firstname= view.findViewById(R.id.firstnameTxt);;
         lastname= view.findViewById(R.id.lastnameTxt);;
         password= view.findViewById(R.id.passwordTxt);;
         acctype= view.findViewById(R.id.typeTxt);
         accstatus= view.findViewById(R.id.statusTxt);;
+
+        User.getUsers(new UserCallback() {
+            @Override
+            public void onProductsFetched(List<User> users) {
+                for(User user: users){
+                    if (loginResponse.username.equals(user.getUsername())){
+                        username.setText(user.getUsername());
+                        firstname.setText(user.getFname());
+                        lastname.setText(user.getLname());
+                        password.setText(user.getPasswordProtected());
+                        acctype.setText(user.getType());
+                        accstatus.setText(user.getStatus());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
+            }
+        });
 
         //username.setText(loginResponse.username);
         //firstname.setText(loginResponse.firstName);
@@ -125,4 +157,6 @@ public class MyAccount extends Fragment {
         //check if new password same as confirmpasserd
 
     }
+
+
 }

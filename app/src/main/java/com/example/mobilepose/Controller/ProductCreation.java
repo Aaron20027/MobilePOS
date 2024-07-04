@@ -18,12 +18,17 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.mobilepose.CategoriesCallback;
+import com.example.mobilepose.Category;
 import com.example.mobilepose.Model.API.Entities.ProductCategory;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductCreation extends Fragment {
 
@@ -64,8 +69,25 @@ public class ProductCreation extends Fragment {
         });
 
         autoCompleteTextView=view.findViewById(R.id.autoCompleteTextView3);
-        arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,productCategory);
-        autoCompleteTextView.setAdapter(arrayAdapter);
+
+        Product.getCategories(new CategoriesCallback() {
+            @Override
+            public void onProductsFetched(List<Category> categories) {
+                List<String> categoriesList=new ArrayList<String>();
+                for (Category cat: categories){
+                    categoriesList.add(cat.getCategoryName());
+                }
+                arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,categoriesList);
+                categoriesList.add("Add New Category");
+                autoCompleteTextView.setAdapter(arrayAdapter);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
+            }
+        });
+
 
 
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,10 +125,6 @@ public class ProductCreation extends Fragment {
         Product.addProducts(product,getActivity());
     }
 
-    public void AddNewCategory(){
-        //code to add category to database
-    }
-
     public void ShowAddCategory(){
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
                 requireContext(), R.style.BottomSheetDialogTheme
@@ -131,7 +149,9 @@ public class ProductCreation extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddNewCategory();
+                Product.addCategories(newCatEdit.getText().toString(),getActivity());
+                newCatEdit.setText("");
+                bottomSheetDialog.dismiss();
             }
         });
 

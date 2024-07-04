@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.mobilepose.CategoriesCallback;
+import com.example.mobilepose.Category;
 import com.example.mobilepose.Controller.Utils;
+import com.example.mobilepose.CouponCallback;
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.CategoryResponse;
+import com.example.mobilepose.Model.API.Entities.DiscountResponse;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.ProductCategory;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
@@ -58,11 +63,12 @@ public class Product {
         this.productImage = productImage;
     }
 
-    public static void getProducts(ProductCallback callback) {
+    public static void getProducts(String category,ProductCallback callback) {
         List<Product> products = new ArrayList<>();
 
+
         APIInterface api = POSAPISingleton.getOrCreateInstance();
-        Call<ResponseBase<FetchProductResponse[]>> prod = api.GetProducts("0"); // 0, 1, 2, or null
+        Call<ResponseBase<FetchProductResponse[]>> prod = api.GetProducts(category); // 0, 1, 2, or null
         prod.enqueue(new APICallback<>(
                 response -> {
                     FetchProductResponse[] productArray = response;
@@ -106,14 +112,46 @@ public class Product {
         ));
     }
 
-    private static void getCategories(){
+    public static void addCategories(String category, Context context){
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> prod = api.PostCategory(category);
 
-        //loop through categories
+        prod.enqueue(new APICallback<>(
+                response -> {
 
-        List<String> categories = new ArrayList<>();
-        //add to array
+                },
+                error -> {
+                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                }
+        ));
 
-        //return array
+    }
+
+    public static List<Category> getCategories(CategoriesCallback callback){
+        List<Category> categories = new ArrayList<>();
+
+        APIInterface api= POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<CategoryResponse[]>> cat = api.GetCategory(0);
+        cat.enqueue(new APICallback<>(
+                response ->
+                {
+                    CategoryResponse[] categoryArray = response;
+                    for (CategoryResponse categoryResponse : categoryArray) {
+                        Category category= new Category(categoryResponse.categoryId,categoryResponse.categoryName);
+                        categories.add(category);
+
+                    }
+                    callback.onProductsFetched(categories);
+
+                },
+                error ->
+                {
+                    callback.onError(error);
+
+                }
+        ));
+
+        return categories;
 
     }
 

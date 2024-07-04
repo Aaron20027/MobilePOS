@@ -36,14 +36,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductManagement extends Fragment implements SelectItemListener{
 
     private FloatingActionButton createProductBtn;
     ParentItemAdapter parentItemAdapter;
-
-    List<String> categories=new ArrayList<>();
 
     String[] productCategory={"Testing"};
     AutoCompleteTextView autoCompleteTextView;
@@ -51,6 +53,10 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     View bottomSheetView;
     BottomSheetDialog bottomSheetDialog;
     SearchView searchView;
+    private List<Category> categoriesList;
+    private Map<Category, List<Product>> categoryProductsMap = new HashMap<>();
+    private int categoriesFetchedCount = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,12 +67,8 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         searchView = view.findViewById(R.id.searchbar);
 
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
-        categories.add("Pizza");
-        categories.add("Doughnouts");
-        categories.add("Drinks");
 
-
-        //get categories first cause need categoires that get products in the parent list method
+        /*
         Product.getProducts(new ProductCallback() {
             @Override
             public void onProductsFetched(List<Product> products) {
@@ -83,7 +85,7 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        filterList(newText, products,categories);
+                        filterList(newText, products,ca);
                         return true;
                     }
                 });
@@ -92,16 +94,25 @@ public class ProductManagement extends Fragment implements SelectItemListener{
             @Override
             public void onError(Throwable error) {
                 // Handle error
-            }
+            } parentItemAdapter = new ParentItemAdapter(ParentItemList(products,categories), ProductManagement.this);
+                            ParentRecyclerViewItem.setAdapter(parentItemAdapter);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                            ParentRecyclerViewItem.setLayoutManager(layoutManager);
         });
 
-/*
+         */
+
+
+
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        ParentItemAdapter parentItemAdapter = new ParentItemAdapter(ParentItemList(),this);
+        parentItemAdapter = new ParentItemAdapter(this);
         ParentRecyclerViewItem.setAdapter(parentItemAdapter);
         ParentRecyclerViewItem.setLayoutManager(layoutManager);
 
- */
+        fetchCategories();
+
 
 
         createProductBtn=(view).findViewById(R.id.createProductFab);
@@ -123,11 +134,82 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     }
 
 
+    private void fetchCategories() {
+        Product.getCategories(new CategoriesCallback() {
+            @Override
+            public void onProductsFetched(List<Category> categories) {
+                categoriesList = categories;
+                for (Category category : categoriesList) {
+                    fetchProductsForCategory(category);
+                }
+            }
 
-    private void filterList(String newText, List<Product> products,List<String> categories) {
+            @Override
+            public void onError(Throwable error) {
+                // Handle error
+            }
+        });
+    }
+
+    private void fetchProductsForCategory(Category category) {
+        Product.getProducts(String.valueOf(category.getCategoryId()), new ProductCallback() {
+            @Override
+            public void onProductsFetched(List<Product> products) {
+                categoryProductsMap.put(category, products);
+                categoriesFetchedCount++;
+                if (categoriesFetchedCount == categoriesList.size()) {
+                    sortAndDisplayCategoriesWithProducts();
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                // Handle error
+            }
+        });
+    }
+
+    private void sortAndDisplayCategoriesWithProducts() {
+        // Sort categories
+        List<Category> sortedCategories = new ArrayList<>(categoriesList);
+        sortCategories(sortedCategories);
+
+        // Sort products within each category
+        List<ParentItem> parentItemList = new ArrayList<>();
+        for (Category category : sortedCategories) {
+            List<Product> products = categoryProductsMap.get(category);
+            sortProducts(products);
+            parentItemList.add(new ParentItem(category.getCategoryName(), products));
+        }
+
+        // Update the adapter
+        parentItemAdapter.setItemList(parentItemList);
+        parentItemAdapter.notifyDataSetChanged();
+    }
+    private void sortCategories(List<Category> categories) {
+        Collections.sort(categories, new Comparator<Category>() {
+            @Override
+            public int compare(Category c1, Category c2) {
+                return c1.getCategoryName().compareTo(c2.getCategoryName());
+            }
+        });
+    }
+
+    private void sortProducts(List<Product> products) {
+        Collections.sort(products, new Comparator<Product>() {
+            @Override
+            public int compare(Product p1, Product p2) {
+                return p1.getProductName().compareTo(p2.getProductName());
+            }
+        });
+    }
+
+
+
+    private void filterList(String newText, List<Product> products,List<Category> categories) {
         List<ParentItem> filteredParentItemList = new ArrayList<>();
 
-        for (String category : categories) {
+        for (Category category : categories) {
             List<ChildItem> filteredChildItemList = new ArrayList<>();
             for (Product product : products) {
                 if (product.getProductName().toLowerCase().contains(newText.toLowerCase())) {
@@ -141,35 +223,8 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     }
 
 
-
-    private List<ParentItem> ParentItemList(List<Product> products,List<String> categories)
-    {
-        List<ParentItem> itemList = new ArrayList<>();
-
-        for (String category : categories) {
-            if (!products.isEmpty()) {
-                ParentItem item = new ParentItem(category, ChildItemList(products));
-                itemList.add(item);
-            }
-        }
-
-        return itemList;
-    }
-
-    private List<ChildItem> ChildItemList(List<Product> products)
-    {
-        List<ChildItem> ChildItemList = new ArrayList<>();
-
-        for (Product product : products) {
-            ChildItem item = new ChildItem(product);
-            ChildItemList.add(item);
-        }
-
-        return ChildItemList;
-    }
-
     @Override
-    public void onItemClick(ChildItem childitem) {
+    public void onItemClick(Product childitem) {
         bottomSheetDialog = new BottomSheetDialog(
                 requireContext(), R.style.BottomSheetDialogTheme
         );
@@ -181,13 +236,13 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
 
         TextView prodNameTxt=bottomSheetView.findViewById(R.id.prodNameTxt);
-        prodNameTxt.setText(childitem.getProduct().getProductName());
+        prodNameTxt.setText(childitem.getProductName());
 
         TextView prodDescTxt=bottomSheetView.findViewById(R.id.prodDescTxt);
-        prodDescTxt.setText(childitem.getProduct().getProductDescription());
+        prodDescTxt.setText(childitem.getProductDescription());
 
         TextView prodPriceTxt=bottomSheetView.findViewById(R.id.prodPriceTxt);
-        prodPriceTxt.setText(String.valueOf(childitem.getProduct().getProductPrice()));
+        prodPriceTxt.setText(String.valueOf(childitem.getProductPrice()));
 
         //TextView prodCatTxt=bottomSheetView.findViewById(R.id.prodCategoryTxt);
         //prodCatTxt.setText(childitem.getProduct().getProductCategory());

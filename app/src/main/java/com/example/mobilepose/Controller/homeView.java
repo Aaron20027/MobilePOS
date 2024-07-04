@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -15,11 +16,13 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.mobilepose.AccountManagement;
 import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.API.Entities.UserAccountType;
 import com.example.mobilepose.Model.User;
 import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
@@ -28,11 +31,13 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class homeView extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigation;
+    LoginResponse loginResponse;
 
 
     @Override
@@ -48,20 +53,27 @@ public class homeView extends AppCompatActivity {
 
         Intent intent = getIntent();
         String jsonUserInfo = intent.getStringExtra("userinfo");
+        loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
 
-        LoginResponse loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);;
+        Bundle bundle = new Bundle();
+        bundle.putString("loginUserInfo", jsonUserInfo);
 
+        Home homeFragment = new Home();
+        homeFragment.setArguments(bundle);
 
-
-        FragmentManager fragmentmanger=getSupportFragmentManager();
-        fragmentmanger.beginTransaction()
-                .replace(R.id.fragmentContainerView, Home.class,null)
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, homeFragment)
                 .setReorderingAllowed(true)
                 .addToBackStack("name")
                 .commit();
 
         drawerLayout=findViewById(R.id.drawer_layout);
         navigation=findViewById(R.id.nav_view);
+
+        if (loginResponse.accountType== UserAccountType.CASHIER){
+            disableMenu();
+        }
 
 
 
@@ -83,60 +95,49 @@ public class homeView extends AppCompatActivity {
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int itemId=menuItem.getItemId();
 
-                if (itemId== R.id.nav_home){
-                    FragmentManager fragmentmanger=getSupportFragmentManager();
-                    fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, Home.class,null)
+                int itemId = menuItem.getItemId();
+                Fragment fragment = null;
+
+                if (itemId == R.id.nav_home) {
+                    fragment = new Home();
+                } else if (itemId == R.id.nav_accMng) {
+                    fragment = new AccountManagement();
+                } else if (itemId == R.id.nav_prodMng) {
+                    fragment = new ProductManagement();
+                } else if (itemId == R.id.nav_coupMng) {
+                    fragment = new CouponManagement();
+                } else if (itemId == R.id.nav_reports) {
+                    fragment = new ReportsManagement();
+                }
+
+                if (fragment != null) {
+                    fragment.setArguments(bundle); // Set the arguments
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView, fragment)
                             .setReorderingAllowed(true)
                             .addToBackStack("name")
                             .commit();
                 }
-                if (itemId== R.id.nav_accMng) {
-                    FragmentManager fragmentmanger=getSupportFragmentManager();
-                    fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, AccountManagement.class,null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("name")
-                            .commit();
 
-                }
-
-                if (itemId== R.id.nav_prodMng) {
-                    FragmentManager fragmentmanger=getSupportFragmentManager();
-                    fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, ProductManagement.class,null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("name")
-                            .commit();
-
-
-                }
-                if (itemId== R.id.nav_coupMng) {
-                    FragmentManager fragmentmanger=getSupportFragmentManager();
-                    fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, CouponManagement.class,null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("name")
-                            .commit();
-
-                }
-
-                if (itemId== R.id.nav_reports) {
-                    FragmentManager fragmentmanger=getSupportFragmentManager();
-                    fragmentmanger.beginTransaction()
-                            .replace(R.id.fragmentContainerView, ReportsManagement.class,null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("name")
-                            .commit();
-
-                }
                 drawerLayout.close();
-                return  false;
+                return false;
+
             }
         });
 
+    }
+
+    private void disableMenu(){
+        Menu menu = navigation.getMenu();
+        MenuItem accountItem = menu.findItem(R.id.nav_accMng);
+        MenuItem productItem = menu.findItem(R.id.nav_prodMng);
+        MenuItem couponItem = menu.findItem(R.id.nav_coupMng);
+        MenuItem reportItem = menu.findItem(R.id.nav_reports);
+        accountItem.setEnabled(false);
+        productItem.setEnabled(false);
+        couponItem.setEnabled(false);
+        reportItem.setEnabled(false);
     }
 
     @Override

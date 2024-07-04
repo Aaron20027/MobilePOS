@@ -9,6 +9,7 @@ public class POSAPISingleton {
     private static APIInterface apiInstance = null;
     final static String API_HOST ="http://192.168.2.203/";
 
+
     //192.168.254.108
     public static APIInterface getOrCreateInstance() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

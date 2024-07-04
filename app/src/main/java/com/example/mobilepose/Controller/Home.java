@@ -1,5 +1,8 @@
 package com.example.mobilepose.Controller;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,11 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.mobilepose.ChildItem;
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.Model.ProductCallback;
 import com.example.mobilepose.ParentItem;
@@ -41,11 +47,24 @@ public class Home extends Fragment implements SelectItemListener {
     BottomSheetDialog bottomSheetDialog;
     ParentItemAdapter parentItemAdapter;
 
+    String loginUserInfo;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+
+        if (getArguments() != null) {
+            loginUserInfo = getArguments().getString("loginUserInfo");
+            LoginResponse loginResponse = Utils.FromJson(loginUserInfo, LoginResponse.class);
+
+            TextView nameTxt= view.findViewById(R.id.name);
+            nameTxt.setText(loginResponse.firstName+" "+loginResponse.lastName);
+            TextView typeTxt= view.findViewById(R.id.typeTxt);
+            typeTxt.setText(String.valueOf(loginResponse.accountType.toString().charAt(0)));
+        }
 
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
         searchView = view.findViewById(R.id.searchbar);
@@ -54,6 +73,7 @@ public class Home extends Fragment implements SelectItemListener {
         categories.add("Doughnouts");
         categories.add("Drinks");
 
+        /*
         Product.getProducts(new ProductCallback() {
             @Override
             public void onProductsFetched(List<Product> products) {
@@ -81,6 +101,8 @@ public class Home extends Fragment implements SelectItemListener {
                 // Handle error
             }
         });
+
+         */
 
 
 
@@ -130,7 +152,7 @@ public class Home extends Fragment implements SelectItemListener {
 
         for (String category : categories) {
             if (!products.isEmpty()) {
-                ParentItem item = new ParentItem(category, ChildItemList(products));
+                ParentItem item = new ParentItem(category, products);
                 itemList.add(item);
             }
         }
@@ -189,9 +211,16 @@ public class Home extends Fragment implements SelectItemListener {
     }
 
     public void ShowMyAccount(){
-        FragmentManager fragmentmanger= getActivity().getSupportFragmentManager();
-        fragmentmanger.beginTransaction()
-                .replace(R.id.fragmentContainerView, MyAccount.class,null)
+
+        Bundle bundle = new Bundle();
+        bundle.putString("loginUserInfo", loginUserInfo);
+
+        MyAccount myAccount = new MyAccount();
+        myAccount.setArguments(bundle);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, myAccount)
                 .setReorderingAllowed(true)
                 .addToBackStack("name")
                 .commit();
@@ -200,19 +229,26 @@ public class Home extends Fragment implements SelectItemListener {
     }
 
     @Override
-    public void onItemClick(ChildItem childitem) {
-        bottomSheetDialog = new BottomSheetDialog(
-                requireContext(), R.style.BottomSheetDialogTheme
-        );
-        bottomSheetView = LayoutInflater.from(requireContext())
-                .inflate(
-                        R.layout.order_pop,
-                        (ConstraintLayout) getActivity().findViewById(R.id.orderDetails)
-                );
+    public void onItemClick(Product childitem) {
 
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.order_pop);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
 
-        bottomSheetDialog.setContentView(bottomSheetView);
-        bottomSheetDialog.show();
+        String[] numbers = new String[99];
+
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = String.valueOf(i + 1);
+        }
+
+        AutoCompleteTextView autoCompleteTextView=dialog.findViewById(R.id.autoCompleteTextView2);
+        ArrayAdapter arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,numbers);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+
 
     }
+
+
 }

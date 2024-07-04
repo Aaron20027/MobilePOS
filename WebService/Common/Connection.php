@@ -2,9 +2,9 @@
 
 // constants
 define("DB_HOST", "localhost");
-define("DB_USER", "root");
-define("DB_PASS", "");
-define("DB_NAME", "restaurantdb");
+define("DB_USER", "id22405775_root");
+define("DB_PASS", "Aaron2002$");
+define("DB_NAME", "id22405775_restaurantdb");
 
 class RestaurantDB
 {

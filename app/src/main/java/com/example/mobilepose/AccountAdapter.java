@@ -29,6 +29,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -43,12 +44,12 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.MyViewHo
 
         holder.usernameTxt.setText(user.getUsername());
         holder.nameTxt.setText(user.getFname()+" "+user.getLname());
-        holder.typeTxt.setText(String.valueOf(user.getTypeConvert().charAt(0)));
+        holder.typeTxt.setText(String.valueOf(user.getType(Integer.valueOf(user.getType())).charAt(0)));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(users.get(position));
+                listener.onItemClick(users.get(position),users);
             }
         });
     }

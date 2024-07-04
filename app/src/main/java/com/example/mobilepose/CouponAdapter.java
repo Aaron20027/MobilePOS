@@ -43,14 +43,20 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Coupon coupon = coupons.get(position);
-        holder.ammountTxt.setText(coupon.getCouponAmmnt()+ " OFF");
+
+        if(coupon.getCouponType()==0){
+            holder.ammountTxt.setText(String.valueOf((int)coupon.getCouponAmmnt())+"% OFF");
+        }else{
+            holder.ammountTxt.setText(coupon.getCouponAmmnt()+ " OFF");
+        }
+
         holder.codeTxt.setText(coupon.getCouponCode());
-        holder.dateTxt.setText(coupon.getCouponStart()+"-"+coupon.getCouponEnd());
+        //holder.dateTxt.setText(coupon.getCouponStart()+"-"+coupon.getCouponEnd());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(coupons.get(position));
+                listener.onItemClick(coupons.get(position),coupons);
             }
         });
     }

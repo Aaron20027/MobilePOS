@@ -6,7 +6,8 @@ class DiscountResponse
         public readonly string $title,
         public readonly string $description,
         public readonly int $discount_type,
-        public readonly int $discount_value
+        public readonly int $discount_value,
+        public readonly int $discount_avail
     ) {
     }
 }

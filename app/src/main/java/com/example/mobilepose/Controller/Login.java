@@ -12,13 +12,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mobilepose.CategoriesCallback;
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
+import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.R;
 
+
+import java.util.List;
 
 import retrofit2.Call;
 

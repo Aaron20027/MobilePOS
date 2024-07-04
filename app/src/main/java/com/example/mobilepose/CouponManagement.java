@@ -20,12 +20,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobilepose.Controller.CouponCreation;
 import com.example.mobilepose.Controller.ProductCreation;
 import com.example.mobilepose.Model.Coupon;
+import com.example.mobilepose.Model.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -37,9 +42,14 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
     View bottomSheetView;
     BottomSheetDialog bottomSheetDialog;
     SearchView searchView;
-    List<Coupon> itemList;
-
     CouponAdapter couponItemAdapter;
+
+    TextView couponAmtTxt;
+    EditText couponDescEdit,couponAmtEdit;
+    RadioGroup availGrp;
+    AutoCompleteTextView autoCompleteTextView;
+
+    int discountType=2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,24 +61,35 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
 
         searchView=view.findViewById(R.id.searchbar);
         searchView.clearFocus();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+
+        Coupon.getCoupons(new CouponCallback() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
+            public void onProductsFetched(List<Coupon> coupons) {
+                couponItemAdapter = new CouponAdapter(coupons, CouponManagement.this);
+                ParentRecyclerViewItem.setAdapter(couponItemAdapter);
+                ParentRecyclerViewItem.setLayoutManager(layoutManager);
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        filterList(newText,coupons);
+                        return true;
+                    }
+                });
+
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                filterList(newText);
-                return true;
+            public void onError(Throwable error) {
+
             }
         });
-
-
-        couponItemAdapter = new CouponAdapter(couponItemList(), this);
-        ParentRecyclerViewItem.setAdapter(couponItemAdapter);
-        ParentRecyclerViewItem.setLayoutManager(layoutManager);
-
 
         createCouponBtn=(view).findViewById(R.id.createCouponFab);
         createCouponBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,9 +108,9 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
         return view;
     }
 
-    private void filterList(String newText) {
+    private void filterList(String newText,List<Coupon> coupons) {
         List<Coupon> filteredList=new ArrayList<>();
-        for(Coupon coupon: itemList){
+        for(Coupon coupon: coupons){
             if(coupon.getCouponCode().toLowerCase().contains(newText.toLowerCase())) {
                 filteredList.add(coupon);
             }
@@ -99,29 +120,8 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
     }
 
 
-    private List<Coupon> couponItemList()
-    {
-        itemList = new ArrayList<>();
-
-        Coupon item = new Coupon("111","Test","1","100","11/11/11","11/11/15","1");
-        itemList.add(item);
-        Coupon item1 = new Coupon("222","Test1","1","101","11/11/12","11/11/14","1");
-        itemList.add(item1);
-        Coupon item2 = new Coupon("333","Test2","1","102","11/11/13","11/11/13","1");
-        itemList.add(item2);
-        Coupon item3 = new Coupon("444","Test3","1","103","11/11/14","11/11/12","1");
-        itemList.add(item3);
-        Coupon item4= new Coupon("555","Test4","1","104","11/11/15","11/11/11","1");
-        itemList.add(item4);
-        Coupon item5= new Coupon("555","Test4","1","104","11/11/15","11/11/11","1");
-        itemList.add(item5);
-        Coupon item6= new Coupon("555","Test4","1","104","11/11/15","11/11/11","1");
-        itemList.add(item6);
-
-        return itemList;
-    }
     @Override
-    public void onItemClick(Coupon coupon) {
+    public void onItemClick(Coupon coupon, List<Coupon> coupons) {
         bottomSheetDialog = new BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme);
         bottomSheetView = LayoutInflater.from(requireContext())
                 .inflate(
@@ -137,7 +137,7 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUpdatePopup();
+                showUpdatePopup(coupon, coupons);
 
             }
         });
@@ -147,7 +147,7 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDeletePopup();
+                showDeletePopup(coupon, coupons);
             }
         });
 
@@ -157,18 +157,21 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
 
     }
 
-    private void showUpdatePopup(){
+    private void showUpdatePopup(Coupon coupon, List<Coupon> coupons){
         Group editGroup=bottomSheetView.findViewById(R.id.editgroup);
         Group textGroup=bottomSheetView.findViewById(R.id.textgroup);
 
         editGroup.setVisibility(View.VISIBLE);
         textGroup.setVisibility(View.GONE);
 
-        TextView couponAmtTxt=bottomSheetView.findViewById(R.id.textView4);
+        couponAmtTxt=bottomSheetView.findViewById(R.id.textView4);
 
+        couponDescEdit=bottomSheetView.findViewById(R.id.coupDescEdit);
+        couponAmtEdit=bottomSheetView.findViewById(R.id.coupAmmountEdit);
+        availGrp=bottomSheetView.findViewById(R.id.availabilityRadio);
 
         String[] couponStatus={"Percentage","Fixed Ammount"};
-        AutoCompleteTextView autoCompleteTextView=bottomSheetView.findViewById(R.id.coupStatusDrop);
+        autoCompleteTextView=bottomSheetView.findViewById(R.id.coupStatusDrop);
         ArrayAdapter arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,couponStatus);
         autoCompleteTextView.setAdapter(arrayAdapter);
 
@@ -180,10 +183,12 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
                 if (item.equals("Percentage")){
                     couponAmtTxt.setText("Percentage");
                     couponAmtTxt.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+                    discountType=0;
 
                 }else{
                     couponAmtTxt.setText("Ammount");
                     couponAmtTxt.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    discountType=1;
                 }
 
             }
@@ -205,15 +210,54 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
             @Override
             public void onClick(View v) {
                 //update coupon
-                updateCoupon();
+                updateCoupon(coupon,coupons);
 
             }
         });
     }
 
+    private void updateCoupon(Coupon coupon, List<Coupon> coupons) {
+
+        if (!couponDescEdit.getText().toString().trim().isEmpty()) {
+            coupon.setCouponDesc(couponDescEdit.getText().toString());
+        }
+        if (!(discountType==2)) {
+            coupon.setCouponType(discountType);
+        }
+        if (!couponAmtEdit.getText().toString().trim().isEmpty()) {
+            coupon.setCouponAmmnt(Float.parseFloat(couponAmtEdit.getText().toString()));
+        }
+
+        int selectedAvailId = availGrp.getCheckedRadioButtonId();
+
+        if (selectedAvailId != -1) {
+            RadioButton selectedTypeButton = bottomSheetView.findViewById(selectedAvailId);
+            String coupAvail = selectedTypeButton.getText().toString();
+            coupon.setCouponAvail(coupAvail);
+            System.out.println(coupAvail);
+        }
+
+        for (Coupon coup : coupons) {
+            if (coup.getCouponId()==coup.getCouponId()) {
+                coup.setCouponDesc(coupon.getCouponDesc());
+                coup.setCouponType(coupon.getCouponType());
+                coup.setCouponAmmnt(coupon.getCouponAmmnt());
+                coup.setCouponAvail(coupon.getCouponAvail());
+                break;
+            }
+        }
+
+        couponAmtTxt.setText("Percentage/Ammount");
+        bottomSheetDialog.dismiss();
+        couponItemAdapter.setFilteredList(coupons);
+        Coupon.updateCoupon(coupon,bottomSheetView.getContext());
+        Toast.makeText(bottomSheetView.getContext(), "Coupon has been updated!", Toast.LENGTH_SHORT).show();
+
+    }
 
 
-    private void showDeletePopup(){
+
+    private void showDeletePopup(Coupon coupon, List<Coupon> coupons){
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.delete_pop);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -235,7 +279,12 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteCoupon();
+                coupons.remove(coupon);
+                bottomSheetDialog.dismiss();
+                dialog.dismiss();
+                couponItemAdapter.setFilteredList(coupons);
+                Coupon.deleteCoupon(coupon,bottomSheetView.getContext());
+                Toast.makeText(bottomSheetView.getContext(), "Coupon has been deleted!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -250,26 +299,25 @@ public class CouponManagement extends Fragment implements SelectCouponListener{
         couponDescTxt.setText(coupon.getCouponDesc());
 
         couponStatTxt=view.findViewById(R.id.coupStatusTxt);
-        couponStatTxt.setText(coupon.getCouponStat());
+        couponStatTxt.setText(coupon.getCouponType(coupon.getCouponType()));
 
+
+        TextView ammountTxt=view.findViewById(R.id.textView4);
         couponAmmntTxt=view.findViewById(R.id.coupAmmountTxt);
-        couponAmmntTxt.setText(coupon.getCouponAmmnt());
 
-        couponStartTxt=view.findViewById(R.id.coupStartTxt);
-        couponStartTxt.setText(coupon.getCouponStart());
+        if(coupon.getCouponType()==0){
+            ammountTxt.setText("Percentage");
+            couponAmmntTxt.setText(String.valueOf((int)coupon.getCouponAmmnt())+"%");
+        }else{
+            ammountTxt.setText("Fixed Ammount");
+            couponAmmntTxt.setText(String.valueOf(coupon.getCouponAmmnt()));
+        }
 
-        couponEndTxt=view.findViewById(R.id.coupEndTxt);
-        couponEndTxt.setText(coupon.getCouponEnd());
 
         couponAvailTxt=view.findViewById(R.id.coupAvailTxt);
-        couponAvailTxt.setText(coupon.getCouponAvail());
+        couponAvailTxt.setText(coupon.getCouponAvail(coupon.getCouponAvail()));
     }
 
-    private void updateCoupon(){
 
-    }
 
-    private void deleteCoupon(){
-
-    }
 }
