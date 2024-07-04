@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobilepose.CategoriesCallback;
 import com.example.mobilepose.Category;
@@ -32,14 +33,16 @@ import java.util.List;
 
 public class ProductCreation extends Fragment {
 
-    String[] productCategory={"Add New Category"};
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> arrayAdapter;
     Button cancelButton,saveButton,createButton;
     EditText newCatEdit;
     TextView backBtn;
-    EditText prodNameTxt,prodDescTxt,prodPriceTxt,prodCatTxt;
+    EditText prodNameTxt,prodDescTxt,prodPriceTxt;
     RadioGroup proAvailGrp;
+    List<String> categoriesList=new ArrayList<String>();
+
+    int category=-1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +53,6 @@ public class ProductCreation extends Fragment {
         prodNameTxt=view.findViewById(R.id.productNameEdit);
         prodDescTxt=view.findViewById(R.id.productDescEdit);
         prodPriceTxt=view.findViewById(R.id.productPriceEdit);
-        //prodCatTxt=view.findViewById(R.id.productCategoryEdit);
         proAvailGrp=view.findViewById(R.id.availabilityRadio);
 
 
@@ -73,13 +75,32 @@ public class ProductCreation extends Fragment {
         Product.getCategories(new CategoriesCallback() {
             @Override
             public void onProductsFetched(List<Category> categories) {
-                List<String> categoriesList=new ArrayList<String>();
+                categoriesList=new ArrayList<String>();
                 for (Category cat: categories){
                     categoriesList.add(cat.getCategoryName());
                 }
-                arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,categoriesList);
                 categoriesList.add("Add New Category");
+                arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,categoriesList);
                 autoCompleteTextView.setAdapter(arrayAdapter);
+
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        String item=adapterView.getItemAtPosition(position).toString();
+
+                        if (item.equals("Add New Category")){
+                            ShowAddCategory(categories);
+                        }else{
+                            for (Category cat: categories){
+                                if(item.equals(cat.getCategoryName())){
+                                    category=cat.getCategoryId();;
+                                }
+                            }
+
+                        }
+
+                    }
+                });
             }
 
             @Override
@@ -90,42 +111,40 @@ public class ProductCreation extends Fragment {
 
 
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String item=adapterView.getItemAtPosition(position).toString();
 
-                if (item.equals("Add New Category")){
-                    ShowAddCategory();
-                }else{
-
-                }
-
-            }
-        });
 
         createButton=view.findViewById(R.id.createProductBtn);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateProduct();
+                CreateProduct(view);
             }
         });
 
         return view;
     }
 
-    public void CreateProduct(){
+    public void CreateProduct(View view){
         Product product=new Product(1,
                 prodNameTxt.getText().toString(),
                 Float.valueOf(prodPriceTxt.getText().toString()),
                 prodDescTxt.getText().toString(),
-                ProductCategory.PIZZA,
+                category,
                 "111");
         Product.addProducts(product,getActivity());
+
+        prodNameTxt.setText("");
+        prodDescTxt.setText("");
+        prodPriceTxt.setText("");
+        autoCompleteTextView.setText("Select item");
+        arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,categoriesList);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+        proAvailGrp.clearCheck();
+        Toast.makeText(view.getContext(), "Product has been added!", Toast.LENGTH_SHORT).show();
+
     }
 
-    public void ShowAddCategory(){
+    public void ShowAddCategory(List<Category> categories){
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
                 requireContext(), R.style.BottomSheetDialogTheme
         );
@@ -150,6 +169,9 @@ public class ProductCreation extends Fragment {
             @Override
             public void onClick(View v) {
                 Product.addCategories(newCatEdit.getText().toString(),getActivity());
+                categoriesList.set(categoriesList.size() - 2,newCatEdit.getText().toString());
+                arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,categoriesList);
+                autoCompleteTextView.setAdapter(arrayAdapter);
                 newCatEdit.setText("");
                 bottomSheetDialog.dismiss();
             }

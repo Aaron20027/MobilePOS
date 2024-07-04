@@ -2,6 +2,7 @@ package com.example.mobilepose.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class Login extends AppCompatActivity {
 
 
 
+
         userTxt = findViewById(R.id.usernameEdit);
         passTxt = findViewById(R.id.passwordEdit);
 
@@ -70,4 +72,11 @@ public class Login extends AppCompatActivity {
         ));
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -27,7 +27,7 @@ public class Product {
     private String productName;
     private float productPrice;
     private String productDescription;
-    private ProductCategory productCategory;
+    private int productCategory;
 
     private String productImage;
 
@@ -46,7 +46,7 @@ public class Product {
         return productDescription;
     }
 
-    public ProductCategory getProductCategory() {
+    public int getProductCategory() {
         return productCategory;
     }
 
@@ -54,7 +54,31 @@ public class Product {
         return productImage;
     }
 
-    public Product(int productID, String productName,float productPrice, String productDescription, ProductCategory productCategory, String productImage) {
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductPrice(float productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+
+    public void setProductCategory(int productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public Product(int productID, String productName, float productPrice, String productDescription, int productCategory, String productImage) {
         this.productID = productID;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -107,7 +131,43 @@ public class Product {
 
                 },
                 error -> {
-                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+
+                }
+        ));
+    }
+
+    public static void deleteProduct(Product product,Context context) {
+
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> prod = api.DeleteProducts(product.getProductID());
+
+        prod.enqueue(new APICallback<>(
+                response -> {
+
+                },
+                error -> {
+
+                }
+        ));
+    }
+
+    public static void updateProduct(Product product,Context context) {
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> prod = api.UpdateProducts(product.getProductID(),
+                product.getProductName(),
+                product.getProductDescription(),
+                product.getProductPrice(),
+                product.getProductCategory(),
+                "",
+                "",
+                1);
+        ;
+        prod.enqueue(new APICallback<>(
+                response -> {
+
+                },
+                error -> {
+
                 }
         ));
     }
@@ -121,7 +181,7 @@ public class Product {
 
                 },
                 error -> {
-                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+
                 }
         ));
 

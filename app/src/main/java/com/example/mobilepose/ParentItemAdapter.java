@@ -55,7 +55,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
         parentViewHolder.ParentItemTitle.setText(parentItem.getParentItemTitle());
         LinearLayoutManager layoutManager = new LinearLayoutManager(parentViewHolder.ChildRecyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         layoutManager.setInitialPrefetchItemCount(parentItem.getChildItemList().size());
-        ChildItemAdapter childItemAdapter = new ChildItemAdapter(parentItem.getChildItemList(),listener);
+        ChildItemAdapter childItemAdapter = new ChildItemAdapter(parentItem.getChildItemList(),listener,position);
         parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);
         parentViewHolder.ChildRecyclerView.setAdapter(childItemAdapter);
         parentViewHolder.ChildRecyclerView.setRecycledViewPool(viewPool);
@@ -69,6 +69,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
     }
 
     public void setFilteredList(List<ParentItem> filteredParentItemList) {
+        this.itemList = filteredParentItemList;
     }
 
 

@@ -20,8 +20,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobilepose.Controller.ProductCreation;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
@@ -29,6 +32,7 @@ import com.example.mobilepose.Model.API.Entities.ProductCategory;
 import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.Model.ProductCallback;
+import com.example.mobilepose.Model.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -45,8 +49,8 @@ import java.util.Map;
 public class ProductManagement extends Fragment implements SelectItemListener{
 
     private FloatingActionButton createProductBtn;
+    RecyclerView ParentRecyclerViewItem;
     ParentItemAdapter parentItemAdapter;
-
     String[] productCategory={"Testing"};
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> arrayAdapter;
@@ -56,7 +60,10 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     private List<Category> categoriesList;
     private Map<Category, List<Product>> categoryProductsMap = new HashMap<>();
     private int categoriesFetchedCount = 0;
+    int category=-1;
+    RadioGroup availGrp;
 
+    EditText prodDesc,prodPrice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,45 +73,7 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
         searchView = view.findViewById(R.id.searchbar);
 
-        RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
-
-        /*
-        Product.getProducts(new ProductCallback() {
-            @Override
-            public void onProductsFetched(List<Product> products) {
-                parentItemAdapter = new ParentItemAdapter(ParentItemList(products,categories), ProductManagement.this);
-                ParentRecyclerViewItem.setAdapter(parentItemAdapter);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                ParentRecyclerViewItem.setLayoutManager(layoutManager);
-
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        filterList(newText, products,ca);
-                        return true;
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                // Handle error
-            } parentItemAdapter = new ParentItemAdapter(ParentItemList(products,categories), ProductManagement.this);
-                            ParentRecyclerViewItem.setAdapter(parentItemAdapter);
-                            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                            ParentRecyclerViewItem.setLayoutManager(layoutManager);
-        });
-
-         */
-
-
-
-
+        ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         parentItemAdapter = new ParentItemAdapter(this);
@@ -113,7 +82,18 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
         fetchCategories();
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
 
         createProductBtn=(view).findViewById(R.id.createProductFab);
         createProductBtn.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +115,8 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
 
     private void fetchCategories() {
+        categoriesFetchedCount = 0;
+        categoryProductsMap.clear();
         Product.getCategories(new CategoriesCallback() {
             @Override
             public void onProductsFetched(List<Category> categories) {
@@ -170,19 +152,22 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     }
 
     private void sortAndDisplayCategoriesWithProducts() {
-        // Sort categories
+
         List<Category> sortedCategories = new ArrayList<>(categoriesList);
         sortCategories(sortedCategories);
 
-        // Sort products within each category
+
         List<ParentItem> parentItemList = new ArrayList<>();
         for (Category category : sortedCategories) {
             List<Product> products = categoryProductsMap.get(category);
-            sortProducts(products);
-            parentItemList.add(new ParentItem(category.getCategoryName(), products));
+
+
+            if (products.size()>0) {
+                sortProducts(products);
+                parentItemList.add(new ParentItem(category.getCategoryName(), products));
+            }
         }
 
-        // Update the adapter
         parentItemAdapter.setItemList(parentItemList);
         parentItemAdapter.notifyDataSetChanged();
     }
@@ -206,25 +191,33 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
 
 
-    private void filterList(String newText, List<Product> products,List<Category> categories) {
+    private void filterList(String newText) {
+
         List<ParentItem> filteredParentItemList = new ArrayList<>();
 
-        for (Category category : categories) {
-            List<ChildItem> filteredChildItemList = new ArrayList<>();
-            for (Product product : products) {
+        List<Category> sortedCategories = new ArrayList<>(categoriesList);
+        sortCategories(sortedCategories);
+        System.out.println(sortedCategories.size());
+
+        List<ParentItem> parentItemList = new ArrayList<>();
+        for (Category category : sortedCategories) {
+            List<Product> products = categoryProductsMap.get(category);
+
+            for (Product product : categoryProductsMap.get(category)) {
                 if (product.getProductName().toLowerCase().contains(newText.toLowerCase())) {
-                    filteredChildItemList.add(new ChildItem(product));
+                    filteredParentItemList.add(new ParentItem(category.getCategoryName(), products));
                 }
             }
         }
 
         parentItemAdapter.setFilteredList(filteredParentItemList);
+        parentItemAdapter.notifyDataSetChanged();
 
     }
 
 
     @Override
-    public void onItemClick(Product childitem) {
+    public void onItemClick(Product childitem, List<Product> products) {
         bottomSheetDialog = new BottomSheetDialog(
                 requireContext(), R.style.BottomSheetDialogTheme
         );
@@ -244,17 +237,33 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         TextView prodPriceTxt=bottomSheetView.findViewById(R.id.prodPriceTxt);
         prodPriceTxt.setText(String.valueOf(childitem.getProductPrice()));
 
-        //TextView prodCatTxt=bottomSheetView.findViewById(R.id.prodCategoryTxt);
-        //prodCatTxt.setText(childitem.getProduct().getProductCategory());
+        TextView prodCatTxt=bottomSheetView.findViewById(R.id.prodCategoryTxt);
 
-        //TextView prodAvailTxt=bottomSheetView.findViewById(R.id.prodAvailabiltyTxt);
-        //prodPriceTxt.setText(childitem.getProduct().ge);
+        Product.getCategories(new CategoriesCallback() {
+            @Override
+            public void onProductsFetched(List<Category> categories) {
+                for(Category cat:categories){
+                    if(cat.getCategoryId()==childitem.getProductCategory()){
+                        prodCatTxt.setText(cat.getCategoryName());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
+            }
+        });
+
+
+        TextView prodAvailTxt=bottomSheetView.findViewById(R.id.prodAvailabiltyTxt);
+
 
         TextView updateBtn=bottomSheetView.findViewById(R.id.updateBtn);
         updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showUpdatePopup();
+                showUpdatePopup(childitem);
 
             }
         });
@@ -264,7 +273,7 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDeletePopup();
+                showDeletePopup(childitem,products);
             }
         });
 
@@ -272,34 +281,52 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
     }
-    private void showUpdatePopup(){
+    private void showUpdatePopup(Product childitem){
         Group editGroup=bottomSheetView.findViewById(R.id.editgroup);
         Group textGroup=bottomSheetView.findViewById(R.id.textgroup);
 
         editGroup.setVisibility(View.VISIBLE);
         textGroup.setVisibility(View.GONE);
 
-        EditText prodDesc=bottomSheetView.findViewById(R.id.productDescEdit);
+        prodDesc=bottomSheetView.findViewById(R.id.productDescEdit);
         prodDesc.getText().clear();
-        EditText prodPrice=bottomSheetView.findViewById(R.id.productPriceEdit);
+        prodPrice=bottomSheetView.findViewById(R.id.productPriceEdit);
         prodPrice.getText().clear();
 
-
         autoCompleteTextView=bottomSheetView.findViewById(R.id.autoCompleteTextView3);
-        autoCompleteTextView.setText("Select Item");
-
-        arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,productCategory);
-        autoCompleteTextView.setAdapter(arrayAdapter);
 
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        Product.getCategories(new CategoriesCallback() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String item=adapterView.getItemAtPosition(position).toString();
+            public void onProductsFetched(List<Category> categories) {
+                List<String> categoriesList=new ArrayList<String>();
+                for (Category cat: categories){
+                    categoriesList.add(cat.getCategoryName());
+                }
+                arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,categoriesList);
+                autoCompleteTextView.setAdapter(arrayAdapter);
+
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        String item=adapterView.getItemAtPosition(position).toString();
+                            for (Category cat: categories){
+                                if(item.equals(cat.getCategoryName())){
+                                    category=cat.getCategoryId();;
+                                }
+                            }
+                        }
+                });
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
             }
         });
 
-        //avialabilty
+        availGrp=bottomSheetView.findViewById(R.id.availabilityRadio);
+
 
         Button cancelBtn=bottomSheetView.findViewById(R.id.cancelProductBtn);
         Button saveBtn=bottomSheetView.findViewById(R.id.saveProductBtn);
@@ -313,14 +340,12 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateProduct();
+                updateProduct(childitem);
             }
         });
     }
 
-
-
-    private void showDeletePopup(){
+    private void showDeletePopup(Product childitem, List<Product> products){
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.delete_pop);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -342,22 +367,44 @@ public class ProductManagement extends Fragment implements SelectItemListener{
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteProduct();
+                bottomSheetDialog.dismiss();
+                dialog.dismiss();
+                Product.deleteProduct(childitem,getActivity());
+                fetchCategories();
+                Toast.makeText(bottomSheetView.getContext(), "Product has been deleted!", Toast.LENGTH_SHORT).show();
+
+
             }
         });
 
     }
 
-    private void updateProduct(){
-        //code to update product
+    private void updateProduct(Product childitem){
+        if (!prodDesc.getText().toString().trim().isEmpty()) {
+            childitem.setProductDescription(prodDesc.getText().toString());
+        }
+        if (!prodPrice.getText().toString().trim().isEmpty()) {
+            childitem.setProductPrice(Integer.valueOf(prodPrice.getText().toString()));
+        }
+
+        if(category!=-1){
+            childitem.setProductCategory(category);
+        }
+
+        int selectedTypeId = availGrp.getCheckedRadioButtonId();
+
+        if (selectedTypeId != -1) {
+            RadioButton selectedTypeButton = bottomSheetView.findViewById(selectedTypeId);
+            String userType = selectedTypeButton.getText().toString();
+        }
+
+        bottomSheetDialog.dismiss();
+        Product.updateProduct(childitem,bottomSheetView.getContext());
+        fetchCategories();
+        Toast.makeText(bottomSheetView.getContext(), "Product has been updated!", Toast.LENGTH_SHORT).show();
+
+
     }
 
-    private void deleteProduct(){
-        //code to delete product
-    }
-
-    private void searchProduct(){
-        //code to search product
-    }
 
 }

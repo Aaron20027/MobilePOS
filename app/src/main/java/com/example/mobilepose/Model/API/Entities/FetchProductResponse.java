@@ -12,7 +12,7 @@ public class FetchProductResponse {
     @SerializedName("price")
     public float price;
     @SerializedName("productCategory")
-    public ProductCategory productCategory;
+    public int productCategory;
     @SerializedName("productImage")
     public String productImage; // base64
 }

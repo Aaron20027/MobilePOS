@@ -17,11 +17,13 @@ import java.util.List;
 public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.ChildViewHolder> {
     private List<Product> ChildItemList;
     private SelectItemListener listener;
+    private int parentPosition;
 
-    ChildItemAdapter(List<Product> childItemList,SelectItemListener listener)
+    ChildItemAdapter(List<Product> childItemList,SelectItemListener listener, int parentPosition)
     {
         this.ChildItemList = childItemList;
         this.listener=listener;
+        this.parentPosition=parentPosition;
     }
 
     public void setFilteredList(List<Product> filteredList){
@@ -51,7 +53,7 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
         childViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(ChildItemList.get(position));
+                listener.onItemClick(ChildItemList.get(position),ChildItemList);
             }
         });
     }

@@ -115,6 +115,26 @@ public interface APIInterface {
             @Field("size") String size
     );
 
+    @FormUrlEncoded
+    @POST("/api/products/delete.php")
+    Call<ResponseBase<Void>> DeleteProducts(
+            @Field("id") int id
+    );
+
+    @FormUrlEncoded
+    @POST("/api/products/update.php")
+    Call<ResponseBase<Void>> UpdateProducts(
+            @Field("id") int id,
+            @Field("name") String name,
+            @Field("desc") String desc,
+            @Field("price") float price,
+            @Field("category_id") int categoryId,
+            @Field("image") String image,
+            @Field("size") String size,
+            @Field("availability") int availability
+    );
+
+
 
     @FormUrlEncoded
     @POST("/api/categories/create.php")

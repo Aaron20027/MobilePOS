@@ -229,7 +229,7 @@ public class Home extends Fragment implements SelectItemListener {
     }
 
     @Override
-    public void onItemClick(Product childitem) {
+    public void onItemClick(Product childitem, List<Product> products) {
 
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.order_pop);
