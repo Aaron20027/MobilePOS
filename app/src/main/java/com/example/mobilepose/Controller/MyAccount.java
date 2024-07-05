@@ -64,8 +64,8 @@ public class MyAccount extends Fragment {
                         firstname.setText(user.getFname());
                         lastname.setText(user.getLname());
                         password.setText(user.getPasswordProtected());
-                        acctype.setText(user.getType());
-                        accstatus.setText(user.getStatus());
+                        acctype.setText(user.getType(Integer.parseInt(user.getType())));
+                        accstatus.setText(user.getStatus(Integer.parseInt(user.getStatus())));
                     }
                 }
 
@@ -77,17 +77,20 @@ public class MyAccount extends Fragment {
             }
         });
 
-        //username.setText(loginResponse.username);
-        //firstname.setText(loginResponse.firstName);
-        //lastname.setText(loginResponse.lastName);
 
         TextView backBtn=view.findViewById(R.id.backMyAccountBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentmanger= getActivity().getSupportFragmentManager();
-                fragmentmanger.beginTransaction()
-                        .replace(R.id.fragmentContainerView, Home.class,null)
+                Bundle bundle = new Bundle();
+                bundle.putString("loginUserInfo", loginUserInfo);
+
+                Home home = new Home();
+                home.setArguments(bundle);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView, home)
                         .setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();

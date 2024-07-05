@@ -51,7 +51,6 @@ public class ProductManagement extends Fragment implements SelectItemListener{
     private FloatingActionButton createProductBtn;
     RecyclerView ParentRecyclerViewItem;
     ParentItemAdapter parentItemAdapter;
-    String[] productCategory={"Testing"};
     AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> arrayAdapter;
     View bottomSheetView;
@@ -324,6 +323,7 @@ public class ProductManagement extends Fragment implements SelectItemListener{
 
             }
         });
+
 
         availGrp=bottomSheetView.findViewById(R.id.availabilityRadio);
 

@@ -1,6 +1,7 @@
 package com.example.mobilepose.Controller;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,39 +14,63 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.mobilepose.CategoriesCallback;
+import com.example.mobilepose.Category;
 import com.example.mobilepose.ChildItem;
+import com.example.mobilepose.CouponAdapter;
+import com.example.mobilepose.CouponCallback;
+import com.example.mobilepose.CouponManagement;
+import com.example.mobilepose.MenuAdapter;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.Model.ProductCallback;
+import com.example.mobilepose.Order;
 import com.example.mobilepose.ParentItem;
 import com.example.mobilepose.ParentItemAdapter;
 import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
 import com.example.mobilepose.SelectItemListener;
+import com.example.mobilepose.ShoppingCart;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Home extends Fragment implements SelectItemListener {
     private ChipGroup categoryChips;
-    List<String> categories=new ArrayList<>();
     SearchView searchView;
-    View bottomSheetView;
-    BottomSheetDialog bottomSheetDialog;
+    private ShoppingCart shoppingCart=new ShoppingCart();
+    ArrayAdapter<String> arrayAdapter;
     ParentItemAdapter parentItemAdapter;
+    private List<Category> categoriesList;
+    private Map<Category, List<Product>> categoryProductsMap = new HashMap<>();
+    private int categoriesFetchedCount = 0;
+
+    int quantity=-1;
+
 
     String loginUserInfo;
 
@@ -63,47 +88,31 @@ public class Home extends Fragment implements SelectItemListener {
             TextView nameTxt= view.findViewById(R.id.name);
             nameTxt.setText(loginResponse.firstName+" "+loginResponse.lastName);
             TextView typeTxt= view.findViewById(R.id.typeTxt);
+            System.out.println(String.valueOf(loginResponse.accountType.toString().charAt(0)));
             typeTxt.setText(String.valueOf(loginResponse.accountType.toString().charAt(0)));
         }
 
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
         searchView = view.findViewById(R.id.searchbar);
 
-        categories.add("Pizza");
-        categories.add("Doughnouts");
-        categories.add("Drinks");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        parentItemAdapter = new ParentItemAdapter(this);
+        ParentRecyclerViewItem.setAdapter(parentItemAdapter);
+        ParentRecyclerViewItem.setLayoutManager(layoutManager);
 
-        /*
-        Product.getProducts(new ProductCallback() {
+        fetchCategories();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onProductsFetched(List<Product> products) {
-                parentItemAdapter = new ParentItemAdapter(ParentItemList(products,categories), Home.this);
-                ParentRecyclerViewItem.setAdapter(parentItemAdapter);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                ParentRecyclerViewItem.setLayoutManager(layoutManager);
-
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        filterList(newText, products,categories);
-                        return true;
-                    }
-                });
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
 
             @Override
-            public void onError(Throwable error) {
-                // Handle error
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
             }
         });
-
-         */
-
 
 
 
@@ -128,49 +137,110 @@ public class Home extends Fragment implements SelectItemListener {
 
     }
 
-    private void filterList(String newText, List<Product> products,List<String> categories) {
+    private void fetchCategories() {
+        categoriesFetchedCount = 0;
+        categoryProductsMap.clear();
+        Product.getCategories(new CategoriesCallback() {
+            @Override
+            public void onProductsFetched(List<Category> categories) {
+                categoriesList = categories;
+                for (Category category : categoriesList) {
+                    fetchProductsForCategory(category);
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                // Handle error
+            }
+        });
+    }
+
+    private void fetchProductsForCategory(Category category) {
+        Product.getProducts(String.valueOf(category.getCategoryId()), new ProductCallback() {
+            @Override
+            public void onProductsFetched(List<Product> products) {
+                categoryProductsMap.put(category, products);
+                categoriesFetchedCount++;
+                if (categoriesFetchedCount == categoriesList.size()) {
+                    sortAndDisplayCategoriesWithProducts();
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                // Handle error
+            }
+        });
+    }
+
+    private void sortAndDisplayCategoriesWithProducts() {
+
+        List<Category> sortedCategories = new ArrayList<>(categoriesList);
+        sortCategories(sortedCategories);
+
+
+        List<ParentItem> parentItemList = new ArrayList<>();
+        for (Category category : sortedCategories) {
+            List<Product> products = categoryProductsMap.get(category);
+
+
+            if (products.size()>0) {
+                sortProducts(products);
+                parentItemList.add(new ParentItem(category.getCategoryName(), products));
+            }
+        }
+
+        parentItemAdapter.setItemList(parentItemList);
+        parentItemAdapter.notifyDataSetChanged();
+    }
+    private void sortCategories(List<Category> categories) {
+        Collections.sort(categories, new Comparator<Category>() {
+            @Override
+            public int compare(Category c1, Category c2) {
+                return c1.getCategoryName().compareTo(c2.getCategoryName());
+            }
+        });
+    }
+
+    private void sortProducts(List<Product> products) {
+        Collections.sort(products, new Comparator<Product>() {
+            @Override
+            public int compare(Product p1, Product p2) {
+                return p1.getProductName().compareTo(p2.getProductName());
+            }
+        });
+    }
+
+
+
+    private void filterList(String newText) {
+
         List<ParentItem> filteredParentItemList = new ArrayList<>();
 
-        for (String category : categories) {
-            List<ChildItem> filteredChildItemList = new ArrayList<>();
-            for (Product product : products) {
+        List<Category> sortedCategories = new ArrayList<>(categoriesList);
+        sortCategories(sortedCategories);
+
+        List<ParentItem> parentItemList = new ArrayList<>();
+        for (Category category : sortedCategories) {
+            List<Product> products = categoryProductsMap.get(category);
+
+            for (Product product : categoryProductsMap.get(category)) {
                 if (product.getProductName().toLowerCase().contains(newText.toLowerCase())) {
-                    filteredChildItemList.add(new ChildItem(product));
+                    filteredParentItemList.add(new ParentItem(category.getCategoryName(), products));
                 }
             }
         }
 
         parentItemAdapter.setFilteredList(filteredParentItemList);
+        parentItemAdapter.notifyDataSetChanged();
 
     }
 
 
 
-    private List<ParentItem> ParentItemList(List<Product> products,List<String> categories)
-    {
-        List<ParentItem> itemList = new ArrayList<>();
 
-        for (String category : categories) {
-            if (!products.isEmpty()) {
-                ParentItem item = new ParentItem(category, products);
-                itemList.add(item);
-            }
-        }
 
-        return itemList;
-    }
-
-    private List<ChildItem> ChildItemList(List<Product> products)
-    {
-        List<ChildItem> ChildItemList = new ArrayList<>();
-
-        for (Product product : products) {
-            ChildItem item = new ChildItem(product);
-            ChildItemList.add(item);
-        }
-
-        return ChildItemList;
-    }
 
     public void createChips(String[] chipTexts){
         //programatically create chips for home
@@ -205,6 +275,63 @@ public class Home extends Fragment implements SelectItemListener {
                         (ConstraintLayout) getActivity().findViewById(R.id.shoppingcart)
                 );
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        MenuAdapter menuAdapter = new MenuAdapter(shoppingCart.getOrders());
+        RecyclerView recyclerView = bottomSheetView.findViewById(R.id.parentRecycle);
+        recyclerView.setAdapter(menuAdapter);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        if (shoppingCart.getOrders().size()>0) {
+            TextView discoutTxt, SubtotalTxt, TaxTxt, TotalTxt;
+            discoutTxt = bottomSheetView.findViewById(R.id.textView20);
+            SubtotalTxt = bottomSheetView.findViewById(R.id.textView21);
+            TaxTxt = bottomSheetView.findViewById(R.id.textView22);
+            TotalTxt = bottomSheetView.findViewById(R.id.textView23);
+
+            EditText applyTxt = bottomSheetView.findViewById(R.id.editTextText4);
+
+            Button applyBtn = bottomSheetView.findViewById(R.id.applyBtn);
+            applyBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Coupon.getCoupons(new CouponCallback() {
+                        @Override
+                        public void onProductsFetched(List<Coupon> coupons) {
+                            for (Coupon coupon : coupons) {
+                                if (coupon.getCouponCode().equals(applyTxt.getText().toString())) {
+                                    shoppingCart.applyDiscount(coupon);
+                                    applyTxt.setEnabled(false);
+                                    applyBtn.setEnabled(false);
+                                    discoutTxt.setText(String.format("-₱%.2f",shoppingCart.getDiscountAmt()));
+                                    TotalTxt.setText(String.format("₱%.2f",shoppingCart.getTotal()));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable error) {
+
+                        }
+                    });
+
+                }
+            });
+
+            SubtotalTxt.setText(String.format("₱%.2f",shoppingCart.getSubtotal()));
+            TaxTxt.setText(String.format("₱%.2f",shoppingCart.getVat()));
+            TotalTxt.setText(String.format("₱%.2f",shoppingCart.getTotal()));
+        }
+
+
+
+
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                shoppingCart.setOrders(menuAdapter.getOrders());
+            }
+        });
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
 
@@ -237,15 +364,63 @@ public class Home extends Fragment implements SelectItemListener {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
 
-        String[] numbers = new String[99];
+        TextView prodName=dialog.findViewById(R.id.prodName);
+        prodName.setText(childitem.getProductName());
+        TextView prodDesc=dialog.findViewById(R.id.prodDesc);
+        prodDesc.setText(childitem.getProductDescription());
+        TextView prodPrice=dialog.findViewById(R.id.prodPrice);
+        prodPrice.setText("₱"+String.valueOf(childitem.getProductPrice()));
+        TextView prodTotal=dialog.findViewById(R.id.prodTotal);
 
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = String.valueOf(i + 1);
-        }
+        TextView plusTxt,minusTxt,quantityTxt,prodTotalTxt;
+        minusTxt=dialog.findViewById(R.id.textView11);
+        plusTxt=dialog.findViewById(R.id.textView13);
+        quantityTxt=dialog.findViewById(R.id.textView12);
+        prodTotalTxt=dialog.findViewById(R.id.prodTotal);
 
-        AutoCompleteTextView autoCompleteTextView=dialog.findViewById(R.id.autoCompleteTextView2);
-        ArrayAdapter arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,numbers);
-        autoCompleteTextView.setAdapter(arrayAdapter);
+        minusTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(quantityTxt.getText().toString()) > 1) {
+                    quantityTxt.setText(String.valueOf(Integer.parseInt(quantityTxt.getText().toString())-1));
+                    prodTotalTxt.setText("₱"+String.valueOf(Integer.parseInt(quantityTxt.getText().toString())*childitem.getProductPrice()));
+                }
+            }
+        });
+
+        plusTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(quantityTxt.getText().toString()) < 99) {
+                    quantityTxt.setText(String.valueOf(Integer.parseInt(quantityTxt.getText().toString())+1));
+                    prodTotalTxt.setText("₱"+String.valueOf(Integer.parseInt(quantityTxt.getText().toString())*childitem.getProductPrice()));
+                }
+
+            }
+        });
+
+        Button addToCart=dialog.findViewById(R.id.addToCart);
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(quantityTxt.getText().toString()) > 0){
+                    Order order=new Order(childitem,Integer.parseInt(quantityTxt.getText().toString()));
+
+                    if(shoppingCart.getOrders().contains(order)){
+                        Toast.makeText(getActivity(), "Order exist in shopping cart!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        shoppingCart.addOrder(order);
+                        Toast.makeText(getActivity(), "Order has been added!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Quantity is 0!", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
 
 
     }

@@ -49,7 +49,6 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     {
         Product childItem = ChildItemList.get(position);
         childViewHolder.ChildItemTitle.setText(childItem.getProductName());
-        childViewHolder.ChildItemPrice.setText(String.valueOf(childItem.getProductPrice()));
         childViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,14 +65,13 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
 
     class ChildViewHolder extends RecyclerView.ViewHolder {
 
-        TextView ChildItemTitle, ChildItemPrice;
+        TextView ChildItemTitle;
         CardView cardView;
 
         ChildViewHolder(View itemView)
         {
             super(itemView);
             ChildItemTitle = itemView.findViewById(R.id.child_item_title);
-            ChildItemPrice= itemView.findViewById(R.id.child_item_price);
             cardView= itemView.findViewById(R.id.cardView);
         }
     }

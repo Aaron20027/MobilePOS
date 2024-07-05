@@ -201,66 +201,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView65" />
 
         <TextView
-            android:id="@+id/textView66"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins"
-            android:text="@string/startData"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/couponAmmntEdit" />
-
-        <EditText
-            android:id="@+id/couponStartEdit"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_edittext"
-            android:elevation="10dp"
-            android:fontFamily="@font/poppins"
-            android:inputType="date"
-            android:textColor="@color/black"
-            android:textColorHint="@color/blackcream"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView66" />
-
-        <TextView
-            android:id="@+id/textView67"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins"
-            android:text="@string/endData"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/couponStartEdit" />
-
-        <EditText
-            android:id="@+id/couponEndEdit"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_edittext"
-            android:elevation="10dp"
-            android:fontFamily="@font/poppins"
-            android:inputType="date"
-            android:textColor="@color/black"
-            android:textColorHint="@color/blackcream"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView67" />
-
-        <TextView
             android:id="@+id/textView68"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -271,7 +211,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/couponEndEdit" />
+            app:layout_constraintTop_toBottomOf="@+id/couponAmmntEdit" />
 
         <RadioGroup
             android:id="@+id/availabilityRadio"

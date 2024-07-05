@@ -33,7 +33,7 @@ public class CouponCreation extends Fragment {
     TextView discountValueText, backBtn;
     EditText discountValueEdit;
 
-    TextView couponCodeTxt,couponDescTxt,couponStatTxt,couponAmtTxt,couponStartTxt,couponEndTxt;
+    TextView couponCodeTxt,couponDescTxt,couponAmtTxt;
     RadioGroup availabiltyGrp;
 
     int discountType=2;
@@ -62,8 +62,6 @@ public class CouponCreation extends Fragment {
         //autto complete view text
         //couponStatTxt=view.findViewById(R.id.couponStatusEdit);
         couponAmtTxt=view.findViewById(R.id.couponAmmntEdit);
-        couponStartTxt=view.findViewById(R.id.couponStartEdit);
-        couponEndTxt=view.findViewById(R.id.couponEndEdit);
 
         availabiltyGrp=view.findViewById(R.id.availabilityRadio);
 

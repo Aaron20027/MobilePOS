@@ -15,42 +15,101 @@
         android:layout_marginBottom="34dp">
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/couponStatusEdit"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/prodTotal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:padding="0dp"
-            app:endIconTint="@color/black"
-            app:hintTextColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/textView115"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView115"
-            app:layout_constraintTop_toTopOf="@+id/textView115"
-            app:layout_constraintVertical_bias="0.35000002"
-            app:startIconTint="@color/black">
+            android:fontFamily="@font/poppins"
+            android:text="₱00.00"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/prodTotalTxt"
+            app:layout_constraintTop_toTopOf="@+id/prodTotalTxt" />
 
-            <AutoCompleteTextView
-                android:id="@+id/autoCompleteTextView2"
-                android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/prodTotalTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins"
+            android:text="Total"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/prodQty"
+            app:layout_constraintTop_toBottomOf="@+id/prodQty" />
+
+        <TextView
+            android:id="@+id/prodDescTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins"
+            android:text="@string/productDescTxt"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/prodName"
+            app:layout_constraintTop_toBottomOf="@+id/prodName" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/prodQty"
+            app:layout_constraintStart_toEndOf="@+id/prodQty"
+            app:layout_constraintTop_toTopOf="@+id/prodQty">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/circular_image_button"
+                android:backgroundTint="@color/backOrange"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_edittext"
-                android:inputType="none"
-                android:text="Select Quantity"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="0"
                 android:textColor="@color/black"
-                android:textColorLink="@android:color/transparent" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView13"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/circular_image_button"
+                android:backgroundTint="@color/backOrange"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_edges_box"
+            android:background="@drawable/corner_image"
             android:elevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,11 +118,11 @@
 
 
         <TextView
-            android:id="@+id/textView112"
+            android:id="@+id/prodName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins"
             android:text="@string/productNameTxt"
             android:textColor="@color/black"
@@ -75,25 +134,20 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
         <TextView
-            android:id="@+id/textView113"
+            android:id="@+id/prodDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:fontFamily="@font/poppins"
             android:text="@string/productDescTxt"
             android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView112"
-            app:layout_constraintTop_toBottomOf="@+id/textView112" />
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/prodDescTxt"
+            app:layout_constraintTop_toBottomOf="@+id/prodDescTxt" />
 
         <TextView
-            android:id="@+id/textView114"
+            android:id="@+id/prodPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/poppins"
             android:text="@string/productPriceTxt"
@@ -101,22 +155,20 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView113"
-            app:layout_constraintTop_toBottomOf="@+id/textView113" />
+            app:layout_constraintTop_toTopOf="@+id/prodName" />
+
 
         <TextView
-            android:id="@+id/textView115"
+            android:id="@+id/prodQty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins"
             android:text="Quantity"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/textView114"
-            app:layout_constraintTop_toBottomOf="@+id/textView114" />
-
+            app:layout_constraintStart_toStartOf="@+id/prodDesc"
+            app:layout_constraintTop_toBottomOf="@+id/prodDesc" />
 
         <Button
             android:id="@+id/addToCart"
@@ -134,7 +186,7 @@
             app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/couponStatusEdit" />
+            app:layout_constraintTop_toBottomOf="@+id/prodTotal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

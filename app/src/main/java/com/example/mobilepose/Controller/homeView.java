@@ -1,7 +1,11 @@
 package com.example.mobilepose.Controller;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -135,6 +139,10 @@ public class homeView extends AppCompatActivity {
         MenuItem productItem = menu.findItem(R.id.nav_prodMng);
         MenuItem couponItem = menu.findItem(R.id.nav_coupMng);
         MenuItem reportItem = menu.findItem(R.id.nav_reports);
+        accountItem.setVisible(false);
+        productItem.setVisible(false);
+        couponItem.setVisible(false);
+        reportItem.setVisible(false);
         accountItem.setEnabled(false);
         productItem.setEnabled(false);
         couponItem.setEnabled(false);

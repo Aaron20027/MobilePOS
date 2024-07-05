@@ -46,6 +46,7 @@ public class AccountManagement extends Fragment implements SelectUserListener {
     AccountAdapter userItemAdapter;
     EditText fnameEdit,lnameEdit,passwordEdit;
     RadioGroup typeGrp,statusGrp;
+    ConstraintLayout constraint;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,6 +55,8 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
+
+        constraint=view.findViewById(R.id.ErrorLayout);
         searchView=view.findViewById(R.id.searchbar);
         searchView.clearFocus();
 
@@ -72,7 +75,7 @@ public class AccountManagement extends Fragment implements SelectUserListener {
 
                     @Override
                     public boolean onQueryTextChange(String newText) {
-                        filterList(newText,users);
+                        filterList(newText,users,view);
                         return true;
                     }
                 });
@@ -104,7 +107,7 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         return view;
     }
 
-    private void filterList(String newText, List<User> users) {
+    private void filterList(String newText, List<User> users,View view) {
         List<User> filteredList=new ArrayList<>();
         for(User user: users){
             if(user.getUsername().toLowerCase().contains(newText.toLowerCase())) {
@@ -112,7 +115,14 @@ public class AccountManagement extends Fragment implements SelectUserListener {
             }
         }
 
+        if (!filteredList.isEmpty()) {
+            constraint.setVisibility(View.VISIBLE);
+        }else{
+            constraint.setVisibility(View.GONE);
+        }
         userItemAdapter.setFilteredList(filteredList);
+
+
     }
 
 

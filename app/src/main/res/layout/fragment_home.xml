@@ -30,7 +30,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:background="@color/material_dynamic_neutral99"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,6 +139,22 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView47" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <SearchView
+                android:id="@+id/searchbar"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_edittext"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search Product Name"
+                android:searchIcon="@drawable/search_icon"
+                android:theme="@style/AppSearchViewStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+
             <TextView
                 android:id="@+id/textView50"
                 android:layout_width="wrap_content"
@@ -170,7 +186,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip2"
                         style="@style/Widget.Material3.Chip.Filter.Elevated"
@@ -183,7 +198,6 @@
                         app:chipBackgroundColor="@color/backOrange"
                         app:closeIconTint="@color/black" />
                 </com.google.android.material.chip.ChipGroup>
-
             </LinearLayout>
 
             <TextView
@@ -213,28 +227,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView51"
                 app:layout_constraintVertical_bias="0.0" />
-
-            <SearchView
-                android:id="@+id/searchbar"
-                android:layout_width="0dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:iconifiedByDefault="false"
-                android:queryHint="Search Product Name"
-                android:searchIcon="@drawable/search_icon"
-                android:theme="@style/AppSearchViewStyle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
-
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.core.widget.NestedScrollView>
