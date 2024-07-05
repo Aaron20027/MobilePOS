@@ -1,0 +1,23 @@
+Index: app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mobilepose.Model.API;\r\n\r\nimport okhttp3.OkHttpClient;\r\nimport okhttp3.logging.HttpLoggingInterceptor;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class POSAPISingleton {\r\n    private static APIInterface apiInstance = null;\r\n    final static String API_HOST =\"http://192.168.2.203/\";\r\n\r\n\r\n    //192.168.254.108\r\n    public static APIInterface getOrCreateInstance() {\r\n        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();\r\n        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);\r\n        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();\r\n        if(apiInstance == null)\r\n        {\r\n            Retrofit retrofit = new Retrofit.Builder()\r\n                    .baseUrl(API_HOST)\r\n                    .addConverterFactory(GsonConverterFactory.create())\r\n                    .client(client)\r\n                    .build();\r\n\r\n            apiInstance = retrofit.create(APIInterface.class);\r\n        }\r\n\r\n        return apiInstance;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java b/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java
+--- a/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java	(revision b401be858ed13084615e2c59c43b9697d33b0610)
++++ b/app/src/main/java/com/example/mobilepose/Model/API/POSAPISingleton.java	(date 1720192366866)
+@@ -7,9 +7,10 @@
+ 
+ public class POSAPISingleton {
+     private static APIInterface apiInstance = null;
+-    final static String API_HOST ="http://192.168.2.203/";
+ 
+-
++    final static String API_HOST ="https://blimpish-spray.000webhostapp.com";
++    //http://192.168.2.203/
++    //https://blimpish-spray.000webhostapp.com
+     //192.168.254.108
+     public static APIInterface getOrCreateInstance() {
+         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

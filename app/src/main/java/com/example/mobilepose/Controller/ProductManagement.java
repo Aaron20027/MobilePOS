@@ -1,12 +1,10 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Controller;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
@@ -26,13 +24,14 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.Controller.ProductCreation;
-import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
-import com.example.mobilepose.Model.API.Entities.ProductCategory;
-import com.example.mobilepose.Model.Coupon;
+import com.example.mobilepose.Model.Adapters.CategoriesCallback;
+import com.example.mobilepose.Model.Category;
+import com.example.mobilepose.Model.ParentItem;
+import com.example.mobilepose.Model.Adapters.ParentItemAdapter;
 import com.example.mobilepose.Model.Product;
-import com.example.mobilepose.Model.ProductCallback;
-import com.example.mobilepose.Model.User;
+import com.example.mobilepose.Model.Adapters.ProductCallback;
+import com.example.mobilepose.R;
+import com.example.mobilepose.Model.Listeners.SelectItemListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -46,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductManagement extends Fragment implements SelectItemListener{
+public class ProductManagement extends Fragment implements SelectItemListener {
 
     private FloatingActionButton createProductBtn;
     RecyclerView ParentRecyclerViewItem;

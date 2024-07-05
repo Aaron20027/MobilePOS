@@ -1,4 +1,4 @@
-package com.example.mobilepose.Model;
+package com.example.mobilepose.Model.Adapters;
 
 public interface VolleyCallback {
     void onSuccess(String response);

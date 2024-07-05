@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.User;
 import com.example.mobilepose.R;
-import com.example.mobilepose.SelectUserListener;
-import com.example.mobilepose.UserCallback;
+import com.example.mobilepose.Model.Adapters.UserCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;

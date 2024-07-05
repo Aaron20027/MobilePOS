@@ -1,21 +1,15 @@
 package com.example.mobilepose.Model;
 
-import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
 
-import com.example.mobilepose.CategoriesCallback;
-import com.example.mobilepose.Category;
-import com.example.mobilepose.Controller.Utils;
-import com.example.mobilepose.CouponCallback;
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
 import com.example.mobilepose.Model.API.Entities.CategoryResponse;
-import com.example.mobilepose.Model.API.Entities.DiscountResponse;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
-import com.example.mobilepose.Model.API.Entities.ProductCategory;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
+import com.example.mobilepose.Model.Adapters.CategoriesCallback;
+import com.example.mobilepose.Model.Adapters.ProductCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +81,7 @@ public class Product {
         this.productImage = productImage;
     }
 
-    public static void getProducts(String category,ProductCallback callback) {
+    public static void getProducts(String category, ProductCallback callback) {
         List<Product> products = new ArrayList<>();
 
 

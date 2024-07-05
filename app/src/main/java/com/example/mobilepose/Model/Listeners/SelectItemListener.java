@@ -1,9 +1,6 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Model.Listeners;
 
-import com.example.mobilepose.ChildItem;
-import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
-import com.example.mobilepose.Model.User;
 
 import java.util.List;
 

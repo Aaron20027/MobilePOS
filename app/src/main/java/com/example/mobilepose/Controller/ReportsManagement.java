@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Controller;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mobilepose.Model.Adapters.ReportsAdapter;
+import com.example.mobilepose.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

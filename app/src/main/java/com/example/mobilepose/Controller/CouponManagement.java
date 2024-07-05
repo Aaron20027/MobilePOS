@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Controller;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -27,17 +27,18 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.Controller.CouponCreation;
-import com.example.mobilepose.Controller.ProductCreation;
 import com.example.mobilepose.Model.Coupon;
-import com.example.mobilepose.Model.User;
+import com.example.mobilepose.Model.Adapters.CouponAdapter;
+import com.example.mobilepose.Model.Adapters.CouponCallback;
+import com.example.mobilepose.R;
+import com.example.mobilepose.Model.Listeners.SelectCouponListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CouponManagement extends Fragment implements SelectCouponListener{
+public class CouponManagement extends Fragment implements SelectCouponListener {
     FloatingActionButton createCouponBtn;
     View bottomSheetView;
     BottomSheetDialog bottomSheetDialog;

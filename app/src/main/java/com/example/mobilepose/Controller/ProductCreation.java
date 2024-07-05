@@ -19,11 +19,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.CategoriesCallback;
-import com.example.mobilepose.Category;
-import com.example.mobilepose.Model.API.Entities.ProductCategory;
+import com.example.mobilepose.Model.Adapters.CategoriesCallback;
+import com.example.mobilepose.Model.Category;
 import com.example.mobilepose.Model.Product;
-import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;

@@ -19,9 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.Model.Coupon;
-import com.example.mobilepose.Model.User;
 import com.example.mobilepose.R;
 
 public class CouponCreation extends Fragment {

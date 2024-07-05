@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Model;
 
 import com.example.mobilepose.Model.Product;
 

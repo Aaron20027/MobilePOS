@@ -14,11 +14,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.AccountManagement;
 import com.example.mobilepose.Model.User;
 import com.example.mobilepose.R;
-
-import java.sql.SQLOutput;
 
 public class AccountCreation extends Fragment {
     Button createBtn;

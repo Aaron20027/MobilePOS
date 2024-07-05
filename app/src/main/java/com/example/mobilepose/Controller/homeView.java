@@ -1,16 +1,11 @@
 package com.example.mobilepose.Controller;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,19 +19,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mobilepose.AccountManagement;
-import com.example.mobilepose.CouponManagement;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.UserAccountType;
-import com.example.mobilepose.Model.User;
-import com.example.mobilepose.ProductManagement;
 import com.example.mobilepose.R;
-import com.example.mobilepose.ReportsManagement;
 import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class homeView extends AppCompatActivity {
 

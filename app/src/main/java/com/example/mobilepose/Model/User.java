@@ -3,15 +3,13 @@ package com.example.mobilepose.Model;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.mobilepose.Controller.MainActivity;
 import com.example.mobilepose.Controller.Utils;
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
-import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.FetchUserResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
-import com.example.mobilepose.UserCallback;
+import com.example.mobilepose.Model.Adapters.UserCallback;
 
 import java.io.Serializable;
 import java.util.ArrayList;

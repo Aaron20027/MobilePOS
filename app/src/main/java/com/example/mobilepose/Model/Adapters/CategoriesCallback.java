@@ -1,6 +1,6 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Model.Adapters;
 
-import com.example.mobilepose.Model.Coupon;
+import com.example.mobilepose.Model.Category;
 
 import java.util.List;
 public interface CategoriesCallback {

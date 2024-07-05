@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Model.Adapters;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
+import com.example.mobilepose.Model.Listeners.SelectItemListener;
+import com.example.mobilepose.R;
 
 import java.util.List;
 

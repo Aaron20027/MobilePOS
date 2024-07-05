@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Model;
 
 public class Category {
     private int categoryId;

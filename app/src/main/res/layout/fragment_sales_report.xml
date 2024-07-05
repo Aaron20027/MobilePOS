@@ -7,7 +7,7 @@
     android:elevation="10dp"
     android:fillViewport="true"
     android:padding="8dp"
-    tools:context=".SalesReport">
+    tools:context=".Controller.SalesReport">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

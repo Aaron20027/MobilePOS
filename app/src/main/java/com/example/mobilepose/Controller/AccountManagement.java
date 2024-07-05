@@ -1,4 +1,4 @@
-package com.example.mobilepose;
+package com.example.mobilepose.Controller;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -12,13 +12,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -27,13 +23,14 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.Controller.AccountCreation;
-import com.example.mobilepose.Model.Coupon;
+import com.example.mobilepose.Model.Adapters.AccountAdapter;
 import com.example.mobilepose.Model.User;
+import com.example.mobilepose.R;
+import com.example.mobilepose.Model.Listeners.SelectUserListener;
+import com.example.mobilepose.Model.Adapters.UserCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
