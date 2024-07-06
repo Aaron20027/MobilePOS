@@ -25,14 +25,14 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.Model.Adapters.CategoriesCallback;
+import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
 import com.example.mobilepose.Model.Category;
-import com.example.mobilepose.Model.Adapters.CouponCallback;
+import com.example.mobilepose.Model.Callbacks.CouponCallback;
 import com.example.mobilepose.Model.Adapters.MenuAdapter;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
-import com.example.mobilepose.Model.Adapters.ProductCallback;
+import com.example.mobilepose.Model.Callbacks.ProductCallback;
 import com.example.mobilepose.Model.Order;
 import com.example.mobilepose.Model.ParentItem;
 import com.example.mobilepose.Model.Adapters.ParentItemAdapter;
@@ -55,16 +55,15 @@ public class Home extends Fragment implements SelectItemListener {
     private ChipGroup categoryChips;
     SearchView searchView;
     private ShoppingCart shoppingCart=new ShoppingCart();
-    ArrayAdapter<String> arrayAdapter;
     ParentItemAdapter parentItemAdapter;
     private List<Category> categoriesList;
     private Map<Category, List<Product>> categoryProductsMap = new HashMap<>();
     private int categoriesFetchedCount = 0;
 
-    int quantity=-1;
 
 
     String loginUserInfo;
+    int passLength;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +74,7 @@ public class Home extends Fragment implements SelectItemListener {
 
         if (getArguments() != null) {
             loginUserInfo = getArguments().getString("loginUserInfo");
+            passLength=getArguments().getInt("passCount");
             LoginResponse loginResponse = Utils.FromJson(loginUserInfo, LoginResponse.class);
 
             TextView nameTxt= view.findViewById(R.id.name);
@@ -333,6 +333,7 @@ public class Home extends Fragment implements SelectItemListener {
 
         Bundle bundle = new Bundle();
         bundle.putString("loginUserInfo", loginUserInfo);
+        bundle.putInt("passCount", passLength);
 
         MyAccount myAccount = new MyAccount();
         myAccount.setArguments(bundle);

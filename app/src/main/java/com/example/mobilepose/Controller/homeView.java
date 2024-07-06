@@ -44,9 +44,11 @@ public class homeView extends AppCompatActivity {
 
         Intent intent = getIntent();
         String jsonUserInfo = intent.getStringExtra("userinfo");
+        int PassLength = intent.getIntExtra("passCount",1);
         loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
 
         Bundle bundle = new Bundle();
+        bundle.putInt("passCount",PassLength);
         bundle.putString("loginUserInfo", jsonUserInfo);
 
         Home homeFragment = new Home();

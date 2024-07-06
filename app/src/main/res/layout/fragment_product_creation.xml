@@ -207,50 +207,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView75" />
             -->
 
-        <TextView
-            android:id="@+id/textView76"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins"
-            android:text="@string/productAvailabiltyTxt"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/productCategoryEdit" />
-
-        <RadioGroup
-            android:id="@+id/availabilityRadio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView76">
-
-            <RadioButton
-                android:id="@+id/availRadio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/black"
-                android:text="@string/availableTxt"
-                android:textColor="@color/black"
-                android:textColorLink="@color/black"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/unavailRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:buttonTint="@color/black"
-                android:text="@string/unavailableTxt"
-                android:textColor="@color/black"
-                android:textColorLink="@color/black"
-                android:textSize="16sp" />
-        </RadioGroup>
-
         <Button
             android:id="@+id/createProductBtn"
             android:layout_width="0dp"
@@ -268,7 +224,7 @@
             app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/availabilityRadio" />
+            app:layout_constraintTop_toBottomOf="@+id/productCategoryEdit" />
 
         <TextView
             android:id="@+id/backProductBtn"

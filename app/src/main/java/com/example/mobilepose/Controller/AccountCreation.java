@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,8 @@ import com.example.mobilepose.R;
 public class AccountCreation extends Fragment {
     Button createBtn;
     TextView backBtn;
-
     TextView usernameTxt,firstnameTxt,lastnameTxt,passwordTxt;
-
-    RadioGroup accountTypGrp,AccountStatGrp;
+    RadioGroup accountTypGrp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,12 +55,34 @@ public class AccountCreation extends Fragment {
         lastnameTxt=view.findViewById(R.id.lastnameEdit);
         passwordTxt=view.findViewById(R.id.passwordEdit);
         accountTypGrp=view.findViewById(R.id.typeRadio);
-        AccountStatGrp=view.findViewById(R.id.statusRadio);
 
         return view;
     }
 
     public void CreateUser(View view){
+        if (TextUtils.isEmpty(usernameTxt.getText().toString()) || TextUtils.isEmpty(firstnameTxt.getText().toString()) ||
+                TextUtils.isEmpty(lastnameTxt.getText().toString()) || TextUtils.isEmpty(passwordTxt.getText().toString())
+                || accountTypGrp.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(getActivity(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (usernameTxt.length() < 6 || usernameTxt.length() > 30) {
+            Toast.makeText(getActivity(), "Username must be between 6 to 30 characters.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (firstnameTxt.length() < 6 || firstnameTxt.length() > 35) {
+            Toast.makeText(getActivity(), "Firstname must be between 6 to 35 characters.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (lastnameTxt.length() < 6 || lastnameTxt.length() > 35) {
+            Toast.makeText(getActivity(), "Lastname must be between 6 to 35 characters.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (passwordTxt.length() < 8 || passwordTxt.length() > 50) {
+            Toast.makeText(getActivity(), "Password must be between 8 to 50 characters.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         int typeid=accountTypGrp.getCheckedRadioButtonId();
         RadioButton radioButton = view.findViewById(typeid);
@@ -79,7 +100,6 @@ public class AccountCreation extends Fragment {
         lastnameTxt.setText("");
         passwordTxt.setText("");
         accountTypGrp.clearCheck();
-        AccountStatGrp.clearCheck();
 
         Toast.makeText(view.getContext(), "User has been added!", Toast.LENGTH_SHORT).show();
 

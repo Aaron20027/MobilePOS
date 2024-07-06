@@ -10,16 +10,12 @@ include_once ('../../Modules/AccountRepository.php');
  * will be considered invalid.
  * @username: str - [required]
  * @password: str - [optional]
- * @fname: str - [optional]
- * @lname: str - [optional]
- * @accType: int - [optional]
- * @accStatus: int - [optional]
- * 
+ *
  * Return: [Response(Base)]
  */
 
 $dbInst = RestaurantDB::GetTransient();
-$postArgsIds = ["username", "password", "fname", "lname", "accType", "accStatus"];
+$postArgsIds = ["username", "password"];
 
 try {
     if (Utils::InitCheck($dbInst)) {
@@ -30,11 +26,11 @@ try {
             return Response::CreateFailResponse("One or more arguments are invalid!");
         }
 
-        $update_result = update_account($dbInst, $reqArgs[0], $reqArgs[1], $reqArgs[2], $reqArgs[3], $reqArgs[4], $reqArgs[5]);
+        $update_result = update_account($dbInst, $reqArgs[0], $reqArgs[1];
         if ($update_result) {
-            return Response::CreateSuccessResponse("Successfully updated account!");
+            return Response::CreateSuccessResponse("Successfully updated password!");
         } else {
-            return Response::CreateFailResponse("Failed to update account!");
+            return Response::CreateFailResponse("Failed to update password!");
         }
     }
 
@@ -43,10 +39,10 @@ try {
     $dbInst->close();
 }
 
-function update_account($db, $username, $password, $fname, $lname, $accType, $accStatus)
+function update_password($db, $username, $password)
 {
     $accountModule = new AccountRepository($db);
-    $result = $accountModule->update_account($username, md5($password), $fname, $lname, $accType, $accStatus);
+    $result = $accountModule->update_password($username, $password);
     return $result;
 }
 ?>

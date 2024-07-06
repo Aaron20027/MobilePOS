@@ -8,7 +8,7 @@ import com.example.mobilepose.Model.API.APIInterface;
 import com.example.mobilepose.Model.API.Entities.DiscountResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
-import com.example.mobilepose.Model.Adapters.CouponCallback;
+import com.example.mobilepose.Model.Callbacks.CouponCallback;
 
 import java.util.ArrayList;
 import java.util.List;

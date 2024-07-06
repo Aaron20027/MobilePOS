@@ -5,6 +5,7 @@ import com.example.mobilepose.Model.API.Entities.DiscountResponse;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.FetchUserResponse;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.API.Entities.PasswordResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 
 import retrofit2.Call;
@@ -23,10 +24,22 @@ public interface APIInterface {
 
     //ACCOUNTS
 
-    //kulang ng password
+    @FormUrlEncoded
+    @POST("/api/accounts/UpdatePass.php")
+    Call<ResponseBase<Void>> UpdatePassword(
+            @Field("username") String username,
+            @Field("password") String password
+    );
+
     @FormUrlEncoded
     @POST("/api/accounts/get.php")
     Call<ResponseBase<FetchUserResponse[]>> GetAccount(
+            @Field("username") String username
+    );
+
+    @FormUrlEncoded
+    @POST("/api/accounts/getPass.php")
+    Call<ResponseBase<PasswordResponse>> GetPassword(
             @Field("username") String username
     );
 

@@ -59,6 +59,7 @@ public class Login extends AppCompatActivity {
                 {
                     Intent intent = new Intent(Login.this, homeView.class);
                     intent.putExtra("userinfo", Utils.ToJson(response));
+                    intent.putExtra("passCount", password.length());
                     startActivity(intent);
                 },
                 error -> {

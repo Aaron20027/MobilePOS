@@ -45,8 +45,8 @@ class ProductRepository
             $categoryId,
             $image,
             $size,
-            1
-        ); // 1 means available/true
+            0
+        ); // 0 means available/true
         return $q;
     }
 

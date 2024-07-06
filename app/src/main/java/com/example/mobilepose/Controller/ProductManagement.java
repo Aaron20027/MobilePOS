@@ -24,12 +24,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.Model.Adapters.CategoriesCallback;
+import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
 import com.example.mobilepose.Model.Category;
 import com.example.mobilepose.Model.ParentItem;
 import com.example.mobilepose.Model.Adapters.ParentItemAdapter;
 import com.example.mobilepose.Model.Product;
-import com.example.mobilepose.Model.Adapters.ProductCallback;
+import com.example.mobilepose.Model.Callbacks.ProductCallback;
 import com.example.mobilepose.R;
 import com.example.mobilepose.Model.Listeners.SelectItemListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -60,7 +60,7 @@ public class ProductManagement extends Fragment implements SelectItemListener {
     private int categoriesFetchedCount = 0;
     int category=-1;
     RadioGroup availGrp;
-
+    ConstraintLayout constraint;
     EditText prodDesc,prodPrice;
 
     @Override
@@ -72,6 +72,8 @@ public class ProductManagement extends Fragment implements SelectItemListener {
         searchView = view.findViewById(R.id.searchbar);
 
         ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
+
+        constraint= view.findViewById(R.id.ErrorLayout);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         parentItemAdapter = new ParentItemAdapter(this);
@@ -166,6 +168,12 @@ public class ProductManagement extends Fragment implements SelectItemListener {
             }
         }
 
+        if (parentItemList.isEmpty()) {
+            constraint.setVisibility(View.VISIBLE);
+        } else {
+            constraint.setVisibility(View.GONE);
+        }
+
         parentItemAdapter.setItemList(parentItemList);
         parentItemAdapter.notifyDataSetChanged();
     }
@@ -206,6 +214,11 @@ public class ProductManagement extends Fragment implements SelectItemListener {
                     filteredParentItemList.add(new ParentItem(category.getCategoryName(), products));
                 }
             }
+        }
+        if (filteredParentItemList.isEmpty()) {
+            constraint.setVisibility(View.VISIBLE);
+        } else {
+            constraint.setVisibility(View.GONE);
         }
 
         parentItemAdapter.setFilteredList(filteredParentItemList);
@@ -380,10 +393,25 @@ public class ProductManagement extends Fragment implements SelectItemListener {
 
     private void updateProduct(Product childitem){
         if (!prodDesc.getText().toString().trim().isEmpty()) {
+            if (prodDesc.length() < 6 || prodDesc.length() > 70) {
+                Toast.makeText(getActivity(), "Product description must be between 6 to 70 characters.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             childitem.setProductDescription(prodDesc.getText().toString());
         }
         if (!prodPrice.getText().toString().trim().isEmpty()) {
-            childitem.setProductPrice(Integer.valueOf(prodPrice.getText().toString()));
+            try {
+                double price = Double.parseDouble(prodPrice.getText().toString());
+
+                if (price <= 0) {
+                    Toast.makeText(getActivity(), "Price must be greater than zero.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                childitem.setProductPrice(Integer.valueOf(prodPrice.getText().toString()));
+            } catch (NumberFormatException e) {
+                Toast.makeText(getActivity(), "Invalid price amount.", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         if(category!=-1){

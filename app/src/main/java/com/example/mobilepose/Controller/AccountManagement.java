@@ -23,11 +23,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.Adapters.AccountAdapter;
 import com.example.mobilepose.Model.User;
 import com.example.mobilepose.R;
 import com.example.mobilepose.Model.Listeners.SelectUserListener;
-import com.example.mobilepose.Model.Adapters.UserCallback;
+import com.example.mobilepose.Model.Callbacks.UserCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -44,6 +45,7 @@ public class AccountManagement extends Fragment implements SelectUserListener {
     EditText fnameEdit,lnameEdit,passwordEdit;
     RadioGroup typeGrp,statusGrp;
     ConstraintLayout constraint;
+    int passLength;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +53,12 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         
         RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        if (getArguments() != null) {
+            passLength= getArguments().getInt("passCount");
+
+
+        }
 
 
         constraint=view.findViewById(R.id.ErrorLayout);
@@ -63,6 +71,12 @@ public class AccountManagement extends Fragment implements SelectUserListener {
                 userItemAdapter = new AccountAdapter(users, AccountManagement.this);
                 ParentRecyclerViewItem.setAdapter(userItemAdapter);
                 ParentRecyclerViewItem.setLayoutManager(layoutManager);
+
+                if (users.isEmpty()) {
+                    constraint.setVisibility(View.VISIBLE);
+                }else{
+                    constraint.setVisibility(View.GONE);
+                }
 
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -106,18 +120,23 @@ public class AccountManagement extends Fragment implements SelectUserListener {
 
     private void filterList(String newText, List<User> users,View view) {
         List<User> filteredList=new ArrayList<>();
+
         for(User user: users){
             if(user.getUsername().toLowerCase().contains(newText.toLowerCase())) {
                 filteredList.add(user);
             }
         }
 
-        if (!filteredList.isEmpty()) {
+        if (filteredList.isEmpty()) {
             constraint.setVisibility(View.VISIBLE);
         }else{
             constraint.setVisibility(View.GONE);
         }
         userItemAdapter.setFilteredList(filteredList);
+
+
+
+
 
 
     }
@@ -165,7 +184,7 @@ public class AccountManagement extends Fragment implements SelectUserListener {
         userTxt.setText(user.getUsername());
         fnameTxt.setText(user.getFname());
         lnameTxt.setText(user.getLname());
-        passwordTxt.setText(user.getPasswordProtected());
+        passwordTxt.setText(new String(new char[3]).replace("\0", "*"));
         typeTxt.setText(user.getType(Integer.valueOf(user.getType())));
         statusTxt.setText(user.getStatus(Integer.valueOf(user.getStatus())));
     }
@@ -206,12 +225,25 @@ public class AccountManagement extends Fragment implements SelectUserListener {
     private void updateUser(User user, List<User> users) {
 
         if (!fnameEdit.getText().toString().trim().isEmpty()) {
+
+            if (fnameEdit.length() < 6 || fnameEdit.length() > 35) {
+                Toast.makeText(getActivity(), "Firstname must be between 6 to 35 characters.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             user.setFname(fnameEdit.getText().toString());
         }
         if (!lnameEdit.getText().toString().trim().isEmpty()) {
+            if (lnameEdit.length() < 6 || lnameEdit.length() > 35) {
+                Toast.makeText(getActivity(), "Lastname must be between 6 to 35 characters.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             user.setLname(lnameEdit.getText().toString());
         }
         if (!passwordEdit.getText().toString().trim().isEmpty()) {
+            if (passwordEdit.length() < 8 || passwordEdit.length() > 50) {
+                Toast.makeText(getActivity(), "Password must be between 8 to 50 characters.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             user.setPassword(passwordEdit.getText().toString());
         }
 

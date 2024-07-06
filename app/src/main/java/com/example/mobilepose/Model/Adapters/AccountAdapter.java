@@ -43,7 +43,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         User user = users.get(position);
 
-        holder.usernameTxt.setText(user.getUsername());
+        holder.usernameTxt.setText("@"+user.getUsername());
         holder.nameTxt.setText(user.getFname()+" "+user.getLname());
         holder.typeTxt.setText(String.valueOf(user.getType(Integer.valueOf(user.getType())).charAt(0)));
 

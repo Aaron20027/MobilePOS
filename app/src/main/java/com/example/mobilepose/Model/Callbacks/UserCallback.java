@@ -1,4 +1,4 @@
-package com.example.mobilepose.Model.Adapters;
+package com.example.mobilepose.Model.Callbacks;
 
 import com.example.mobilepose.Model.User;
 

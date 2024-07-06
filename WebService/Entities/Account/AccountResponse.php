@@ -5,6 +5,7 @@ class AccountResponse
         public readonly string $username,
         public readonly string $firstName,
         public readonly string $lastName,
+        public readonly string $pass,
         public readonly int $accountType,
         public readonly int $status
     ) {

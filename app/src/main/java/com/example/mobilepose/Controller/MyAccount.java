@@ -7,19 +7,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.Callbacks.PasswordCallback;
 import com.example.mobilepose.Model.User;
 import com.example.mobilepose.R;
-import com.example.mobilepose.Model.Adapters.UserCallback;
+import com.example.mobilepose.Model.Callbacks.UserCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class MyAccount extends Fragment {
@@ -28,6 +32,7 @@ public class MyAccount extends Fragment {
     private EditText oldPass,newPass,confirmPass;
     private Button cancelButton,saveButton;
     String loginUserInfo;
+    int passLength;
     LoginResponse loginResponse;
 
 
@@ -37,7 +42,9 @@ public class MyAccount extends Fragment {
 
         if (getArguments() != null) {
             loginUserInfo = getArguments().getString("loginUserInfo");
+            passLength= getArguments().getInt("passCount");
             loginResponse = Utils.FromJson(loginUserInfo, LoginResponse.class);
+
         }
 
 
@@ -57,10 +64,10 @@ public class MyAccount extends Fragment {
             public void onProductsFetched(List<User> users) {
                 for(User user: users){
                     if (loginResponse.username.equals(user.getUsername())){
-                        username.setText(user.getUsername());
+                        username.setText("@"+user.getUsername());
                         firstname.setText(user.getFname());
                         lastname.setText(user.getLname());
-                        password.setText(user.getPasswordProtected());
+                        password.setText(new String(new char[passLength]).replace("\0", "*"));
                         acctype.setText(user.getType(Integer.parseInt(user.getType())));
                         accstatus.setText(user.getStatus(Integer.parseInt(user.getStatus())));
                     }
@@ -81,6 +88,7 @@ public class MyAccount extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("loginUserInfo", loginUserInfo);
+                bundle.putInt("passCount", passLength);
 
                 Home home = new Home();
                 home.setArguments(bundle);
@@ -131,7 +139,7 @@ public class MyAccount extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePassword();
+                changePassword(bottomSheetDialog);
             }
         });
 
@@ -142,21 +150,61 @@ public class MyAccount extends Fragment {
 
     }
 
-    public void SetInfo(){
-        //code to set info of my account
+
+    public void changePassword(BottomSheetDialog bottomSheetDialog){
+        User.getUsers(new UserCallback() {
+            @Override
+            public void onProductsFetched(List<User> users) {
+                for(User user:users){
+                    if(user.getUsername().equals(loginResponse.username)){
+                        if (TextUtils.isEmpty(oldPass.getText().toString()) || TextUtils.isEmpty(newPass.getText().toString()) ||
+                                TextUtils.isEmpty(confirmPass.getText().toString())) {
+                            Toast.makeText(getActivity(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (!Utils.MD5(oldPass.getText().toString()).equals(user.getPassword())) {
+                            Toast.makeText(getActivity(), "Old Password does not match!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (newPass.length() < 8 || newPass.length() > 50) {
+                            Toast.makeText(getActivity(), "New Password must be between 8 to 50 characters.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+
+                        if (!newPass.getText().toString().equals(confirmPass.getText().toString())) {
+                            Toast.makeText(getActivity(), "New Password does not match!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        user.setPassword(newPass.getText().toString());
+                        oldPass.setText("");
+                        newPass.setText("");
+                        confirmPass.setText("");
+                        User.updateAccount(user,getActivity());
+                        bottomSheetDialog.dismiss();
+                        Toast.makeText(getActivity(), "Password has been changed!", Toast.LENGTH_SHORT).show();
+
+
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
+            }
+        });
 
     }
 
-    public void changePassword(){
-        //code to change password in database
 
-    }
 
-    public void validatePassword(){
-        //code to check if oldd password is same as current old passord
-        //check if new password same as confirmpasserd
 
-    }
 
 
 }

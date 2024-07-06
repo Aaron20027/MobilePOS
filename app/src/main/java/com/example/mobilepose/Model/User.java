@@ -7,9 +7,11 @@ import com.example.mobilepose.Controller.Utils;
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
 import com.example.mobilepose.Model.API.Entities.FetchUserResponse;
+import com.example.mobilepose.Model.API.Entities.PasswordResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
-import com.example.mobilepose.Model.Adapters.UserCallback;
+import com.example.mobilepose.Model.Callbacks.PasswordCallback;
+import com.example.mobilepose.Model.Callbacks.UserCallback;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -145,11 +147,11 @@ public class User implements Serializable {
                     for (FetchUserResponse fetchUserResponse : userArray) {
                         User user = new User(
                                 fetchUserResponse.username,
-                                "",
+                                fetchUserResponse.pass,
                                 fetchUserResponse.fname,
                                 fetchUserResponse.lname,
                                 String.valueOf(fetchUserResponse.accType),
-                                "1"
+                                fetchUserResponse.accStatus
                         );
 
                         users.add(user);
@@ -166,7 +168,7 @@ public class User implements Serializable {
 
         APIInterface api = POSAPISingleton.getOrCreateInstance();
         Call<ResponseBase<Void>> account = api.PostAccount(user.getUsername(),
-                user.getPasswordHashed(),
+                user.getPassword(),
                 user.getFname(),
                 user.getLname(),
                 user.getType());
@@ -210,7 +212,38 @@ public class User implements Serializable {
 
                 },
                 error -> {
-                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+
+                }
+        ));
+    }
+
+    public static void updatePassword(User user,String password,Context context) {
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> account = api.UpdatePassword(user.getUsername(),
+                password);
+        ;
+        account.enqueue(new APICallback<>(
+                response -> {
+
+                },
+                error -> {
+
+                }
+        ));
+    }
+
+    public static void getPassword(String user, PasswordCallback passwordCallback) {
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<PasswordResponse>> account = api.GetPassword(user);
+        account.enqueue(new APICallback<>(
+                response -> {
+                    PasswordResponse passwordResponse=response;
+                    passwordCallback.onProductsFetched(passwordResponse.password);
+
+                },
+                error -> {
+                    passwordCallback.onError(error);
+
                 }
         ));
     }

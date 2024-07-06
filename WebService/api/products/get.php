@@ -29,7 +29,7 @@ try {
 function fetch_products($db, $categoryId)
 {
     $productModule = new ProductRepository($db);
-    $productItemsDB = $productModule->get_products_by_category($categoryId, true); // Available value set to true by default
+    $productItemsDB = $productModule->get_products_by_category($categoryId, false); // Available value set to true by default
     if ($productItemsDB === false) {
         return [];
     } else if (!array_key_exists(0, $productItemsDB)) {

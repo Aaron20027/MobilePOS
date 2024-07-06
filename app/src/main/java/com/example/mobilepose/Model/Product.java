@@ -8,8 +8,8 @@ import com.example.mobilepose.Model.API.Entities.CategoryResponse;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
-import com.example.mobilepose.Model.Adapters.CategoriesCallback;
-import com.example.mobilepose.Model.Adapters.ProductCallback;
+import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
+import com.example.mobilepose.Model.Callbacks.ProductCallback;
 
 import java.util.ArrayList;
 import java.util.List;

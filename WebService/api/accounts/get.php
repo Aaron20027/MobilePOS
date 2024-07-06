@@ -42,6 +42,7 @@ function get_accounts($db, $name)
             $account["username"],
             $account["fname"],
             $account["lname"],
+            $account["pass"],
             $account["accType"],
             $account["accStatus"]
         ),

@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Adapters.CouponAdapter;
-import com.example.mobilepose.Model.Adapters.CouponCallback;
+import com.example.mobilepose.Model.Callbacks.CouponCallback;
 import com.example.mobilepose.R;
 import com.example.mobilepose.Model.Listeners.SelectCouponListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -44,13 +44,13 @@ public class CouponManagement extends Fragment implements SelectCouponListener {
     BottomSheetDialog bottomSheetDialog;
     SearchView searchView;
     CouponAdapter couponItemAdapter;
-
     TextView couponAmtTxt;
     EditText couponDescEdit,couponAmtEdit;
     RadioGroup availGrp;
     AutoCompleteTextView autoCompleteTextView;
 
     int discountType=2;
+    ConstraintLayout constraint;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +63,8 @@ public class CouponManagement extends Fragment implements SelectCouponListener {
         searchView=view.findViewById(R.id.searchbar);
         searchView.clearFocus();
 
+        constraint=view.findViewById(R.id.ErrorLayout);
+
 
         Coupon.getCoupons(new CouponCallback() {
             @Override
@@ -70,6 +72,12 @@ public class CouponManagement extends Fragment implements SelectCouponListener {
                 couponItemAdapter = new CouponAdapter(coupons, CouponManagement.this);
                 ParentRecyclerViewItem.setAdapter(couponItemAdapter);
                 ParentRecyclerViewItem.setLayoutManager(layoutManager);
+
+                if (coupons.isEmpty()) {
+                    constraint.setVisibility(View.VISIBLE);
+                }else{
+                    constraint.setVisibility(View.GONE);
+                }
 
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
@@ -115,6 +123,12 @@ public class CouponManagement extends Fragment implements SelectCouponListener {
             if(coupon.getCouponCode().toLowerCase().contains(newText.toLowerCase())) {
                 filteredList.add(coupon);
             }
+        }
+
+        if (filteredList.isEmpty()) {
+            constraint.setVisibility(View.VISIBLE);
+        }else{
+            constraint.setVisibility(View.GONE);
         }
 
         couponItemAdapter.setFilteredList(filteredList);
@@ -222,13 +236,49 @@ public class CouponManagement extends Fragment implements SelectCouponListener {
     private void updateCoupon(Coupon coupon, List<Coupon> coupons) {
 
         if (!couponDescEdit.getText().toString().trim().isEmpty()) {
+            if (couponDescEdit.length() < 6 || couponDescEdit.length() > 70) {
+                Toast.makeText(getActivity(), "Coupon Description must be between 6 to 70 characters.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             coupon.setCouponDesc(couponDescEdit.getText().toString());
         }
+
         if (!(discountType==2)) {
             coupon.setCouponType(discountType);
         }
+
         if (!couponAmtEdit.getText().toString().trim().isEmpty()) {
-            coupon.setCouponAmmnt(Float.parseFloat(couponAmtEdit.getText().toString()));
+            if (autoCompleteTextView.getText().toString().equals("Percentage")) {
+
+                try {
+                    double percentage = Double.parseDouble(couponAmtEdit.getText().toString());
+                    if (percentage <= 0 || percentage > 100) {
+                        Toast.makeText(getActivity(), "Percentage must be between 0 and 100.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    coupon.setCouponAmmnt(Float.parseFloat(couponAmtEdit.getText().toString()));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), "Percentage must be a number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+            }
+            if (autoCompleteTextView.getText().toString().equals("Fixed Ammount")) {
+                try {
+                    double ammount = Double.parseDouble(couponAmtEdit.getText().toString());
+
+                    if (ammount <= 0 ) {
+                        Toast.makeText(getActivity(), "Ammount must be greater than 0!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    coupon.setCouponAmmnt(Float.parseFloat(couponAmtEdit.getText().toString()));
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getActivity(), "Ammount must be a number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
         }
 
         int selectedAvailId = availGrp.getCheckedRadioButtonId();
@@ -244,6 +294,7 @@ public class CouponManagement extends Fragment implements SelectCouponListener {
             if (coup.getCouponId()==coup.getCouponId()) {
                 coup.setCouponDesc(coupon.getCouponDesc());
                 coup.setCouponType(coupon.getCouponType());
+                System.out.println(coupon.getCouponAmmnt());
                 coup.setCouponAmmnt(coupon.getCouponAmmnt());
                 coup.setCouponAvail(coupon.getCouponAvail());
                 break;

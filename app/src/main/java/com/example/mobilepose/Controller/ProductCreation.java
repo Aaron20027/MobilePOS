@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.Model.Adapters.CategoriesCallback;
+import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
 import com.example.mobilepose.Model.Category;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.R;
@@ -37,7 +38,6 @@ public class ProductCreation extends Fragment {
     EditText newCatEdit;
     TextView backBtn;
     EditText prodNameTxt,prodDescTxt,prodPriceTxt;
-    RadioGroup proAvailGrp;
     List<String> categoriesList=new ArrayList<String>();
 
     int category=-1;
@@ -51,7 +51,6 @@ public class ProductCreation extends Fragment {
         prodNameTxt=view.findViewById(R.id.productNameEdit);
         prodDescTxt=view.findViewById(R.id.productDescEdit);
         prodPriceTxt=view.findViewById(R.id.productPriceEdit);
-        proAvailGrp=view.findViewById(R.id.availabilityRadio);
 
 
 
@@ -123,6 +122,34 @@ public class ProductCreation extends Fragment {
     }
 
     public void CreateProduct(View view){
+        System.out.println(autoCompleteTextView.getText().toString().equals("Select item"));
+        if (TextUtils.isEmpty(prodNameTxt.getText().toString()) || TextUtils.isEmpty(prodDescTxt.getText().toString()) ||
+                TextUtils.isEmpty(prodPriceTxt.getText().toString()) || autoCompleteTextView.getText().toString().equals("Select item")) {
+            Toast.makeText(getActivity(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (prodNameTxt.length() < 6 || prodNameTxt.length() > 30) {
+            Toast.makeText(getActivity(), "Product name must be between 6 to 30 characters.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (prodDescTxt.length() < 6 || prodDescTxt.length() > 70) {
+            Toast.makeText(getActivity(), "Product description must be between 6 to 70 characters.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            double price = Double.parseDouble(prodPriceTxt.getText().toString());
+
+            if (price <= 0) {
+                Toast.makeText(getActivity(), "Price must be greater than zero.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(getActivity(), "Invalid price amount.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Product product=new Product(1,
                 prodNameTxt.getText().toString(),
                 Float.valueOf(prodPriceTxt.getText().toString()),
@@ -137,7 +164,6 @@ public class ProductCreation extends Fragment {
         autoCompleteTextView.setText("Select item");
         arrayAdapter=new ArrayAdapter<String>(getActivity(),R.layout.list_item,categoriesList);
         autoCompleteTextView.setAdapter(arrayAdapter);
-        proAvailGrp.clearCheck();
         Toast.makeText(view.getContext(), "Product has been added!", Toast.LENGTH_SHORT).show();
 
     }

@@ -29,6 +29,54 @@ class AccountRepository
         return true;
     }
 
+    public function update_password($username, $password)
+        {
+            if (!$this->username_exists(strtolower($username))) {
+                return false;
+            }
+
+            $queryStr = "UPDATE `accounttbl` SET `acc_Pass`";
+            $queryCmds = [];
+            $queryArgs = [];
+            $queryDataTypes = "";
+
+            if (!is_null($password)) {
+                $hashedPwd = $password;
+                $queryCmds[] = "`acc_Pass`=?";
+                $queryArgs[] = $hashedPwd;
+                $queryDataTypes .= "s";
+            }
+
+
+            if (count($queryArgs) > 0) {
+                // SET arguments for query
+                $queryStr .= join(", ", $queryCmds);
+
+                // Query condition
+                $queryStr .= " WHERE `acc_User`=?";
+                $queryArgs[] = $username;
+                $queryDataTypes .= "s";
+
+                /*
+                    It can be confusing. But, the last parameter of `query` method does not accept array.
+                    Since the expression of the last parameter of the method `query` contains ellipsis,
+                    the parameter only accepts unlimited number of arguments and not an array.
+                    With that reason, we need to dynamically call the `query` method to treat the
+                    values in the array as arguments.
+                */
+
+                // merge array to treat `$queryArgs` as individual arguments
+                $func_args = array_merge([$queryStr, $queryDataTypes], $queryArgs);
+
+                // dynamically call `query` method
+                $q = call_user_func_array(array($this->db, "query"), $func_args);
+                return $q;
+            }
+
+            // Invalid request. We need at least 1 argument for this api to work
+            Utils::error($this->db);
+        }
+
     public function update_account($username, $password, $firstName, $lastName, $accountType, $accountStatus)
     {
         if (!$this->username_exists(strtolower($username))) {
@@ -41,9 +89,8 @@ class AccountRepository
         $queryDataTypes = "";
 
         if (!is_null($password)) {
-            $hashedPwd = md5($password);
             $queryCmds[] = "`acc_Pass`=?";
-            $queryArgs[] = $hashedPwd;
+            $queryArgs[] = $password;
             $queryDataTypes .= "s";
         }
 
@@ -100,9 +147,20 @@ class AccountRepository
         Utils::error($this->db);
     }
 
+    public function get_password($name)
+    {
+            if (!$this->username_exists(strtolower($name))) {
+                    return false;
+                }
+
+                $delQuery = $this->db->query("SELECT `acc_Pass` as password FROM `accounttbl` WHERE `acc_User` = ?", "s", $name);
+                return $delQuery;
+    }
+
+
     public function get_accounts($name)
     {
-        $selectedAttr = "acc_User as username, acc_Fname as fname, acc_Lname as lname, acc_Type as accType, acc_Status as accStatus";
+        $selectedAttr = "acc_User as username, acc_Fname as fname, acc_Lname as lname, acc_Pass as pass, acc_Type as accType, acc_Status as accStatus";
         $initQuery = "SELECT " . $selectedAttr . " FROM `accounttbl`";
         $getQuery = null;
         if (!is_null($name) || strlen($name) == 0)

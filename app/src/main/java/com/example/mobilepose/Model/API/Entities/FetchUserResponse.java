@@ -8,6 +8,8 @@ public class FetchUserResponse {
     public String fname;
     @SerializedName("lastName")
     public String lname;
+    @SerializedName("pass")
+    public String pass;
     @SerializedName("accountType")
     public int accType;
     @SerializedName("status")
