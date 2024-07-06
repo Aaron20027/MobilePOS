@@ -74,7 +74,7 @@
             android:iconifiedByDefault="false"
             android:queryHint="Search Product Name"
             android:searchIcon="@drawable/search_icon"
-            android:theme="@style/AppSearchViewStyle"
+            android:theme="@style/Widget.AppCompat.SearchView"
             app:layout_constraintEnd_toStartOf="@+id/createProductFab"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView44" />

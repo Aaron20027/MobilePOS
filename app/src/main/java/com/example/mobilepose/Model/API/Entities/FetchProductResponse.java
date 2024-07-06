@@ -15,4 +15,8 @@ public class FetchProductResponse {
     public int productCategory;
     @SerializedName("productImage")
     public String productImage; // base64
+    @SerializedName("available")
+    public int available;
+
+
 }

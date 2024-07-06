@@ -7,9 +7,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class POSAPISingleton {
     private static APIInterface apiInstance = null;
-    final static String API_HOST ="https://blimpish-spray.000webhostapp.com/";
+    final static String API_HOST ="http://192.168.2.203/";
 
-
+    //http://192.168.2.203/
+    //"https://blimpish-spray.000webhostapp.com/"
     //192.168.254.108
     public static APIInterface getOrCreateInstance() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

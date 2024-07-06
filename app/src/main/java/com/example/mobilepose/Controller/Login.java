@@ -63,8 +63,7 @@ public class Login extends AppCompatActivity {
                     startActivity(intent);
                 },
                 error -> {
-
-                    Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
         ));
     }

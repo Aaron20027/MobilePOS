@@ -7,16 +7,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobilepose.Model.Order;
 import com.example.mobilepose.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
 
     List<Order> orders;
+    ConstraintLayout constraintLayout;
+
+    public MenuAdapter(List<Order> orders, ConstraintLayout constraintLayout) {
+        this.constraintLayout=constraintLayout;
+        this.orders = orders;
+    }
 
     public MenuAdapter(List<Order> orders) {
         this.orders = orders;
@@ -71,6 +79,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
             @Override
             public void onClick(View v) {
                 orders.remove(order);
+
+                if (orders.isEmpty()) {
+                    constraintLayout.setVisibility(View.VISIBLE);
+                }else{
+                    constraintLayout.setVisibility(View.GONE);
+                }
                 notifyDataSetChanged();
 
             }

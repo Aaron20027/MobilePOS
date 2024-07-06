@@ -63,11 +63,8 @@ dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
-
-
-
-
-
+    implementation ("org.parceler:parceler-api:1.1.12")
+    annotationProcessor ("org.parceler:parceler:1.1.12")
 
 
     implementation("com.android.volley:volley:1.2.1")

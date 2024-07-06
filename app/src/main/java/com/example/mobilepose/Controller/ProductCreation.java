@@ -155,7 +155,7 @@ public class ProductCreation extends Fragment {
                 Float.valueOf(prodPriceTxt.getText().toString()),
                 prodDescTxt.getText().toString(),
                 category,
-                "111");
+                "111",0);
         Product.addProducts(product,getActivity());
 
         prodNameTxt.setText("");

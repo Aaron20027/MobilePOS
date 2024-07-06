@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
 import com.example.mobilepose.Model.Category;
+import com.example.mobilepose.Model.ChildItem;
 import com.example.mobilepose.Model.ParentItem;
 import com.example.mobilepose.Model.Adapters.ParentItemAdapter;
 import com.example.mobilepose.Model.Product;
@@ -38,6 +40,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,6 +73,12 @@ public class ProductManagement extends Fragment implements SelectItemListener {
         View view = inflater.inflate(R.layout.fragment_product_management, container, false);
 
         searchView = view.findViewById(R.id.searchbar);
+
+        int searchTextId = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        EditText searchEditText = searchView.findViewById(searchTextId);
+        searchEditText.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+        searchEditText.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+
 
         ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
 
@@ -203,7 +212,7 @@ public class ProductManagement extends Fragment implements SelectItemListener {
 
         List<Category> sortedCategories = new ArrayList<>(categoriesList);
         sortCategories(sortedCategories);
-        System.out.println(sortedCategories.size());
+
 
         List<ParentItem> parentItemList = new ArrayList<>();
         for (Category category : sortedCategories) {
@@ -268,6 +277,11 @@ public class ProductManagement extends Fragment implements SelectItemListener {
 
 
         TextView prodAvailTxt=bottomSheetView.findViewById(R.id.prodAvailabiltyTxt);
+        prodAvailTxt.setText(childitem.getProductAvailability(childitem.getProductAvailability()));
+
+
+
+
 
 
         TextView updateBtn=bottomSheetView.findViewById(R.id.updateBtn);

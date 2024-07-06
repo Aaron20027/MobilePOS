@@ -175,10 +175,10 @@ public class User implements Serializable {
 
         account.enqueue(new APICallback<>(
                 response -> {
-
+                    
                 },
                 error -> {
-                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                 }
         ));
     }

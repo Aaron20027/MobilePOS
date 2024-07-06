@@ -22,63 +22,65 @@ public class Product {
     private float productPrice;
     private String productDescription;
     private int productCategory;
-
+    private  int productAvailability;
     private String productImage;
 
     public int getProductID() {
         return productID;
     }
-
     public String getProductName() {
         return productName;
     }
     public float getProductPrice() {
         return productPrice;
     }
-
     public String getProductDescription() {
         return productDescription;
     }
-
     public int getProductCategory() {
         return productCategory;
     }
-
     public String getProductImage() {
         return productImage;
     }
-
+    public int getProductAvailability() {
+        return productAvailability;
+    }
+    public String getProductAvailability(int availability) {
+        if(availability==0){
+            return "Available";
+        }else{
+            return "Unavailable";
+        }
+    }
     public void setProductID(int productID) {
         this.productID = productID;
     }
-
     public void setProductName(String productName) {
         this.productName = productName;
     }
-
     public void setProductPrice(float productPrice) {
         this.productPrice = productPrice;
     }
-
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
     }
-
     public void setProductCategory(int productCategory) {
         this.productCategory = productCategory;
     }
-
     public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 
-    public Product(int productID, String productName, float productPrice, String productDescription, int productCategory, String productImage) {
+    public Product(int productID, String productName, float productPrice, String productDescription, int productCategory, String productImage, int productAvailability) {
         this.productID = productID;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productDescription = productDescription;
         this.productCategory = productCategory;
         this.productImage = productImage;
+        this.productAvailability = productAvailability;
+
     }
 
     public static void getProducts(String category, ProductCallback callback) {
@@ -97,7 +99,9 @@ public class Product {
                                 fetchProductResponse.price,
                                 fetchProductResponse.productDescription,
                                 fetchProductResponse.productCategory,
-                                fetchProductResponse.productImage
+                                fetchProductResponse.productImage,
+                                fetchProductResponse.available
+
                         );
                         products.add(newProduct);
                     }

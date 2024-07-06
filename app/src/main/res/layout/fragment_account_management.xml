@@ -75,7 +75,7 @@
             android:iconifiedByDefault="false"
             android:queryHint="Search Username"
             android:searchIcon="@drawable/search_icon"
-            android:theme="@style/AppSearchViewStyle"
+            android:theme="@style/Widget.AppCompat.SearchView"
             app:layout_constraintEnd_toStartOf="@+id/createAccountFab"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/accountManagement" />
