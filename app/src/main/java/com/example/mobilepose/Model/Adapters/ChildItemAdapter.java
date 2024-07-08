@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -50,6 +51,7 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     {
         Product childItem = ChildItemList.get(position);
         childViewHolder.ChildItemTitle.setText(childItem.getProductName());
+        childViewHolder.imageView.setImageBitmap(childItem.decodeImage(childItem.getProductImage()));
         childViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,12 +70,14 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
 
         TextView ChildItemTitle;
         CardView cardView;
+        ImageView imageView;
 
         ChildViewHolder(View itemView)
         {
             super(itemView);
             ChildItemTitle = itemView.findViewById(R.id.child_item_title);
             cardView= itemView.findViewById(R.id.cardView);
+            imageView= itemView.findViewById(R.id.img_child_item);
         }
     }
 } 

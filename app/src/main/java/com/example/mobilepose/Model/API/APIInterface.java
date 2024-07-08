@@ -8,10 +8,13 @@ import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.PasswordResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface APIInterface {
 
@@ -128,6 +131,8 @@ public interface APIInterface {
             @Field("size") String size
     );
 
+
+
     @FormUrlEncoded
     @POST("/api/products/delete.php")
     Call<ResponseBase<Void>> DeleteProducts(
@@ -159,5 +164,27 @@ public interface APIInterface {
     @POST("/api/categories/get.php")
     Call<ResponseBase<CategoryResponse[]>> GetCategory(
             @Field("name") int name
+    );
+
+
+    @FormUrlEncoded
+    @POST("/api/orders/addPayment.php")
+    Call<ResponseBase<Void>> addPayment(
+            @Field("payamnt") int payamnt,
+            @Field("date") int date,
+            @Field("method") int method,
+            @Field("discountId") int discountId,
+            @Field("discountAmt") int discountAmt,
+            @Field("accountId") String accountId,
+            @Field("orderTotal") float orderTotal
+
+    );
+
+    @FormUrlEncoded
+    @POST("/api/orders/addOrder.php")
+    Call<ResponseBase<Void>> addOrder(
+            @Field("accountId") String accountId,
+            @Field("orderTotal") float orderTotal
+
     );
 }

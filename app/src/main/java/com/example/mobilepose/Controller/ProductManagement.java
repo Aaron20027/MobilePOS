@@ -1,16 +1,26 @@
 package com.example.mobilepose.Controller;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +29,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SearchView;
@@ -41,6 +53,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Field;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -65,6 +78,8 @@ public class ProductManagement extends Fragment implements SelectItemListener {
     RadioGroup availGrp;
     ConstraintLayout constraint;
     EditText prodDesc,prodPrice;
+    ImageButton prodImage;
+    String sImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -207,31 +222,41 @@ public class ProductManagement extends Fragment implements SelectItemListener {
 
 
     private void filterList(String newText) {
-
         List<ParentItem> filteredParentItemList = new ArrayList<>();
+
 
         List<Category> sortedCategories = new ArrayList<>(categoriesList);
         sortCategories(sortedCategories);
 
 
-        List<ParentItem> parentItemList = new ArrayList<>();
         for (Category category : sortedCategories) {
             List<Product> products = categoryProductsMap.get(category);
 
-            for (Product product : categoryProductsMap.get(category)) {
+
+            List<Product> filteredProducts = new ArrayList<>();
+            for (Product product : products) {
                 if (product.getProductName().toLowerCase().contains(newText.toLowerCase())) {
-                    filteredParentItemList.add(new ParentItem(category.getCategoryName(), products));
+                    filteredProducts.add(product);
                 }
             }
+
+
+            if (!filteredProducts.isEmpty()) {
+                filteredParentItemList.add(new ParentItem(category.getCategoryName(), filteredProducts));
+            }
         }
+
         if (filteredParentItemList.isEmpty()) {
             constraint.setVisibility(View.VISIBLE);
         } else {
             constraint.setVisibility(View.GONE);
         }
 
-        parentItemAdapter.setFilteredList(filteredParentItemList);
+        parentItemAdapter.setItemList(filteredParentItemList);
         parentItemAdapter.notifyDataSetChanged();
+
+
+
 
     }
 
@@ -259,6 +284,9 @@ public class ProductManagement extends Fragment implements SelectItemListener {
 
         TextView prodCatTxt=bottomSheetView.findViewById(R.id.prodCategoryTxt);
 
+        ImageView prodImage=bottomSheetView.findViewById(R.id.imageView3);
+        prodImage.setImageBitmap(childitem.decodeImage(childitem.getProductImage()));
+
         Product.getCategories(new CategoriesCallback() {
             @Override
             public void onProductsFetched(List<Category> categories) {
@@ -278,9 +306,6 @@ public class ProductManagement extends Fragment implements SelectItemListener {
 
         TextView prodAvailTxt=bottomSheetView.findViewById(R.id.prodAvailabiltyTxt);
         prodAvailTxt.setText(childitem.getProductAvailability(childitem.getProductAvailability()));
-
-
-
 
 
 
@@ -319,6 +344,15 @@ public class ProductManagement extends Fragment implements SelectItemListener {
         prodPrice.getText().clear();
 
         autoCompleteTextView=bottomSheetView.findViewById(R.id.autoCompleteTextView3);
+
+        prodImage=bottomSheetView.findViewById(R.id.imageView3);
+
+        prodImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGalley();
+            }
+        });
 
 
         Product.getCategories(new CategoriesCallback() {
@@ -432,6 +466,10 @@ public class ProductManagement extends Fragment implements SelectItemListener {
             childitem.setProductCategory(category);
         }
 
+        if(sImage!=null){
+            childitem.setProductImage(sImage);
+        }
+
         int selectedTypeId = availGrp.getCheckedRadioButtonId();
 
         if (selectedTypeId != -1) {
@@ -441,11 +479,34 @@ public class ProductManagement extends Fragment implements SelectItemListener {
 
         bottomSheetDialog.dismiss();
         Product.updateProduct(childitem,bottomSheetView.getContext());
+        sImage=null;
         fetchCategories();
         Toast.makeText(bottomSheetView.getContext(), "Product has been updated!", Toast.LENGTH_SHORT).show();
 
 
     }
+
+    public void openGalley() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        openGalley.launch(intent);
+    }
+
+
+    ActivityResultLauncher<Intent> openGalley = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult o) {
+
+                    try{
+                        Uri uriImage = o.getData().getData();
+                        prodImage.setImageURI(uriImage);
+                        sImage = Product.encodeImage(getActivity(), uriImage);
+                    }catch (Exception e){
+
+                    }
+
+                }
+            });
 
 
 }

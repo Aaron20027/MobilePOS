@@ -15,9 +15,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
 import com.example.mobilepose.Model.API.POSAPISingleton;
+import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.R;
 
 
@@ -37,6 +39,20 @@ public class Login extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
+        Call<ResponseBase<Void>> prod = api.addPayment(100,1,0,1,100,"Tt",23.0f); // 0, 1, 2, or null
+        prod.enqueue(new APICallback<>(
+                response -> {
+
+
+                },
+                error -> {
+
+                }
+        ));
 
 
 

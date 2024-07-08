@@ -39,6 +39,7 @@
             android:background="@drawable/rounded_edges_box"
             android:contentDescription="User picture"
             android:elevation="10dp"
+            android:scaleType="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView70"

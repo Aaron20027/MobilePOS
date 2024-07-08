@@ -55,6 +55,10 @@ public class ShoppingCart  implements Parcelable{
     public ShoppingCart() {
     }
 
+    public void setDiscountAmt(double discountAmt) {
+        this.discountAmt = discountAmt;
+    }
+
     public void addOrder(Order order){
         orders.add(order);
     }
@@ -74,15 +78,21 @@ public class ShoppingCart  implements Parcelable{
     }
 
     public void calculateAll(){
-        calculateSubTotal();
-        calculateTax();
-        calculatetTotal();
-        System.out.println(discountAmt);
-
+        if (orders.size()==0){
+            discountAmt=0.00;
+            subtotal=0.00;
+            Vat=0.00;
+            total=0.00;
+        }else{
+            calculateSubTotal();
+            calculateTax();
+            calculatetTotal();
+        }
     }
 
 
     private void calculateSubTotal(){
+        subtotal=0;
         for (Order order:orders){
             subtotal+=order.getOrderTotal();
         }
@@ -105,25 +115,30 @@ public class ShoppingCart  implements Parcelable{
         }
     }
 
-    public void validateCoupon(String CouponCode, Context context){
+    public void validateCoupon(String couponCode, Context context, CouponCallback couponCallback) {
         Coupon.getCoupons(new CouponCallback() {
             @Override
             public void onProductsFetched(List<Coupon> coupons) {
                 for (Coupon coupon : coupons) {
-                    if (coupon.getCouponCode().equals(CouponCode)) {
+                    if (coupon.getCouponCode().equals(couponCode)) {
                         applyDiscount(coupon);
+                        couponCallback.onProductsFetched(coupons); // Notify the callback
                         return;
                     }
                 }
                 Toast.makeText(context, "Coupon is Invalid!", Toast.LENGTH_SHORT).show();
-
+                couponCallback.onError(new Exception("Invalid coupon code"));
             }
 
             @Override
             public void onError(Throwable error) {
-
+                couponCallback.onError(error);
             }
         });
+    }
+
+    public double calculateChange(double ammount){
+        return ammount-total;
     }
 
 

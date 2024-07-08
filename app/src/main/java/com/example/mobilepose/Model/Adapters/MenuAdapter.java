@@ -21,14 +21,18 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
     List<Order> orders;
     ConstraintLayout constraintLayout;
 
-    public MenuAdapter(List<Order> orders, ConstraintLayout constraintLayout) {
-        this.constraintLayout=constraintLayout;
-        this.orders = orders;
+    private OnOrderChangeListener orderChangeListener;
+
+    public interface OnOrderChangeListener {
+        void onOrderChanged(List<Order> orders);
     }
 
-    public MenuAdapter(List<Order> orders) {
+    public MenuAdapter(List<Order> orders, ConstraintLayout constraintLayout, OnOrderChangeListener orderChangeListener) {
+        this.constraintLayout=constraintLayout;
         this.orders = orders;
+        this.orderChangeListener = orderChangeListener;
     }
+
 
     public List<Order> getOrders() {
         return orders;
@@ -48,6 +52,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
 
         holder.qtyTxt.setText(String.valueOf(order.getQuantity()));
 
+        holder.menuImage.setImageBitmap(order.getProduct().decodeImage(order.getProduct().getProductImage()));
+
         holder.minusTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +63,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
                     System.out.println("₱"+String.valueOf(order.getOrderTotal()));
                     holder.priceTxt.setText("₱"+String.valueOf(order.getOrderTotal()));
                     notifyItemChanged(position);
+                    if (orderChangeListener != null) {
+                        orderChangeListener.onOrderChanged(orders);
+                    }
                 }
             }
         });
@@ -69,6 +78,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
                     holder.qtyTxt.setText(String.valueOf(order.getQuantity()));
                     holder.priceTxt.setText("₱"+String.valueOf(order.getOrderTotal()));
                     notifyItemChanged(position);
+                    if (orderChangeListener != null) {
+                        orderChangeListener.onOrderChanged(orders);
+                    }
                 }
             }
         });
@@ -86,6 +98,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
                     constraintLayout.setVisibility(View.GONE);
                 }
                 notifyDataSetChanged();
+                if (orderChangeListener != null) {
+                    orderChangeListener.onOrderChanged(orders);
+                }
 
             }
         });

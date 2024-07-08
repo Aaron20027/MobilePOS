@@ -25,6 +25,9 @@ public class Coupon {
     private String couponEnd;
     private int couponAvail;
 
+    public Coupon() {
+    }
+
     public Coupon(int Id, String couponCode, String couponDesc, int couponType, float couponAmmnt, int couponAvail) {
         this.couponId = Id;
         this.couponCode = couponCode;

@@ -1,40 +1,29 @@
 package com.example.mobilepose.Controller;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mobilepose.Cart;
 import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
 import com.example.mobilepose.Model.Category;
-import com.example.mobilepose.Model.Callbacks.CouponCallback;
 import com.example.mobilepose.Model.Adapters.MenuAdapter;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
-import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.Model.Callbacks.ProductCallback;
 import com.example.mobilepose.Model.Order;
@@ -44,11 +33,7 @@ import com.example.mobilepose.R;
 import com.example.mobilepose.Model.Listeners.SelectItemListener;
 import com.example.mobilepose.Model.ShoppingCart;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Home extends Fragment implements SelectItemListener {
+public class Home extends Fragment implements SelectItemListener, MenuAdapter.OnOrderChangeListener {
     SearchView searchView;
     private ShoppingCart shoppingCart=new ShoppingCart();
     ParentItemAdapter parentItemAdapter;
@@ -65,6 +50,7 @@ public class Home extends Fragment implements SelectItemListener {
     private Map<Category, List<Product>> categoryProductsMap = new HashMap<>();
     private int categoriesFetchedCount = 0;
     ConstraintLayout constraint;
+    TextView totalTxt;
 
 
 
@@ -77,6 +63,16 @@ public class Home extends Fragment implements SelectItemListener {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
+        searchView = view.findViewById(R.id.searchbar);
+        FloatingActionButton buttonShowCart = view.findViewById(R.id.shopCartBtn);
+        ConstraintLayout constraintLayout=view.findViewById(R.id.constraintLayout5);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        parentItemAdapter = new ParentItemAdapter(this);
+        ParentRecyclerViewItem.setAdapter(parentItemAdapter);
+        ParentRecyclerViewItem.setLayoutManager(layoutManager);
+
 
 
         if (getArguments() != null) {
@@ -87,19 +83,14 @@ public class Home extends Fragment implements SelectItemListener {
             TextView nameTxt= view.findViewById(R.id.name);
             nameTxt.setText(loginResponse.firstName+" "+loginResponse.lastName);
             TextView typeTxt= view.findViewById(R.id.typeTxt);
-            System.out.println(String.valueOf(loginResponse.accountType.toString().charAt(0)));
             typeTxt.setText(String.valueOf(loginResponse.accountType.toString().charAt(0)));
+
+            ShoppingCart updatedCart = getArguments().getParcelable("cart");
+            if (updatedCart != null) {
+                this.shoppingCart = updatedCart;
+            }
         }
 
-
-
-        RecyclerView ParentRecyclerViewItem = view.findViewById(R.id.parentRecycle);
-        searchView = view.findViewById(R.id.searchbar);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        parentItemAdapter = new ParentItemAdapter(this);
-        ParentRecyclerViewItem.setAdapter(parentItemAdapter);
-        ParentRecyclerViewItem.setLayoutManager(layoutManager);
 
         fetchCategories();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -114,12 +105,6 @@ public class Home extends Fragment implements SelectItemListener {
                 return true;
             }
         });
-
-
-
-
-        FloatingActionButton buttonShowCart = view.findViewById(R.id.shopCartBtn);
-        ConstraintLayout constraintLayout=view.findViewById(R.id.constraintLayout5);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +137,7 @@ public class Home extends Fragment implements SelectItemListener {
 
             @Override
             public void onError(Throwable error) {
-                // Handle error
+
             }
         });
     }
@@ -170,7 +155,6 @@ public class Home extends Fragment implements SelectItemListener {
 
             @Override
             public void onError(Throwable error) {
-                // Handle error
             }
         });
     }
@@ -216,24 +200,31 @@ public class Home extends Fragment implements SelectItemListener {
 
 
     private void filterList(String newText) {
-
         List<ParentItem> filteredParentItemList = new ArrayList<>();
+
 
         List<Category> sortedCategories = new ArrayList<>(categoriesList);
         sortCategories(sortedCategories);
 
-        List<ParentItem> parentItemList = new ArrayList<>();
+
         for (Category category : sortedCategories) {
             List<Product> products = categoryProductsMap.get(category);
 
-            for (Product product : categoryProductsMap.get(category)) {
+
+            List<Product> filteredProducts = new ArrayList<>();
+            for (Product product : products) {
                 if (product.getProductName().toLowerCase().contains(newText.toLowerCase())) {
-                    filteredParentItemList.add(new ParentItem(category.getCategoryName(), products));
+                    filteredProducts.add(product);
                 }
+            }
+
+
+            if (!filteredProducts.isEmpty()) {
+                filteredParentItemList.add(new ParentItem(category.getCategoryName(), filteredProducts));
             }
         }
 
-        parentItemAdapter.setFilteredList(filteredParentItemList);
+        parentItemAdapter.setItemList(filteredParentItemList);
         parentItemAdapter.notifyDataSetChanged();
 
     }
@@ -260,10 +251,16 @@ public class Home extends Fragment implements SelectItemListener {
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        MenuAdapter menuAdapter = new MenuAdapter(shoppingCart.getOrders(),constraint);
+        MenuAdapter menuAdapter = new MenuAdapter(shoppingCart.getOrders(),constraint, this);
         RecyclerView recyclerView = bottomSheetView.findViewById(R.id.parentRecycle);
         recyclerView.setAdapter(menuAdapter);
         recyclerView.setLayoutManager(layoutManager);
+
+        shoppingCart.setDiscountAmt(0);
+        shoppingCart.calculateAll();
+
+        totalTxt=bottomSheetView.findViewById(R.id.textView23);
+        totalTxt.setText(String.format("₱%.2f",shoppingCart.getTotal()));
 
         Button CancelBtn=bottomSheetView.findViewById(R.id.cancelTxt);
         CancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -277,65 +274,13 @@ public class Home extends Fragment implements SelectItemListener {
         ProceedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-                ShowPayment();
-            }
-        });
-
-
-
-
-
-        /*
-        if (shoppingCart.getOrders().size()>0) {
-            discoutTxt = bottomSheetView.findViewById(R.id.textView20);
-            SubtotalTxt = bottomSheetView.findViewById(R.id.textView21);
-            TaxTxt = bottomSheetView.findViewById(R.id.textView22);
-            TotalTxt = bottomSheetView.findViewById(R.id.textView23);
-
-            EditText applyTxt = bottomSheetView.findViewById(R.id.editTextText4);
-
-            Button applyBtn = bottomSheetView.findViewById(R.id.applyBtn);
-            applyBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Coupon.getCoupons(new CouponCallback() {
-                        @Override
-                        public void onProductsFetched(List<Coupon> coupons) {
-                            for (Coupon coupon : coupons) {
-                                if (coupon.getCouponCode().equals(applyTxt.getText().toString())) {
-                                    shoppingCart.applyDiscount(coupon);
-                                    applyTxt.setEnabled(false);
-                                    applyBtn.setEnabled(false);
-                                    discoutTxt.setText(String.format("-₱%.2f",shoppingCart.getDiscountAmt()));
-                                    TotalTxt.setText(String.format("₱%.2f",shoppingCart.getTotal()));
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable error) {
-
-                        }
-                    });
-
+                if (!(shoppingCart.getOrders().size() ==0)){
+                    bottomSheetDialog.dismiss();
+                    ShowPayment();
+                }else{
+                    Toast.makeText(getActivity(), "Shopping Cart is empty!", Toast.LENGTH_SHORT).show();
                 }
-            });
 
-            SubtotalTxt.setText(String.format("₱%.2f",shoppingCart.getSubtotal()));
-            TaxTxt.setText(String.format("₱%.2f",shoppingCart.getVat()));
-            TotalTxt.setText(String.format("₱%.2f",shoppingCart.getTotal()));
-        }
-
-         */
-
-
-
-
-        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                shoppingCart.setOrders(menuAdapter.getOrders());
             }
         });
         bottomSheetDialog.setContentView(bottomSheetView);
@@ -344,12 +289,10 @@ public class Home extends Fragment implements SelectItemListener {
     }
 
     public void ShowPayment(){
-
-
-
         Bundle bundle=new Bundle();
         bundle.putParcelable("cart",shoppingCart);
-
+        bundle.putString("loginUserInfo", loginUserInfo);
+        bundle.putInt("passCount", passLength);
 
         Cart cart = new Cart();
         cart.setArguments(bundle);
@@ -428,6 +371,8 @@ public class Home extends Fragment implements SelectItemListener {
         TextView prodPrice=dialog.findViewById(R.id.prodPrice);
         prodPrice.setText("₱"+String.valueOf(childitem.getProductPrice()));
         TextView prodTotal=dialog.findViewById(R.id.prodTotal);
+        ImageView imageView=dialog.findViewById(R.id.imageView3);
+        imageView.setImageBitmap(childitem.decodeImage(childitem.getProductImage()));
 
         TextView plusTxt,minusTxt,quantityTxt,prodTotalTxt;
         minusTxt=dialog.findViewById(R.id.textView11);
@@ -476,16 +421,18 @@ public class Home extends Fragment implements SelectItemListener {
                         Toast.makeText(getActivity(), "Quantity is 0!", Toast.LENGTH_SHORT).show();
                     }
                 }
-
-
-
-
             }
         });
-
-
-
     }
 
+
+    @Override
+    public void onOrderChanged(List<Order> orders) {
+
+        shoppingCart.setOrders(orders);
+        shoppingCart.calculateAll();
+        totalTxt.setText(String.format("₱%.2f",shoppingCart.getTotal()));
+
+    }
 
 }

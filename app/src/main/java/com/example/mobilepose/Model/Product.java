@@ -1,6 +1,11 @@
 package com.example.mobilepose.Model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Base64;
 
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
@@ -11,9 +16,12 @@ import com.example.mobilepose.Model.API.POSAPISingleton;
 import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
 import com.example.mobilepose.Model.Callbacks.ProductCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 
 public class Product {
@@ -22,52 +30,56 @@ public class Product {
     private float productPrice;
     private String productDescription;
     private int productCategory;
-    private  int productAvailability;
+    private int productAvailability;
     private String productImage;
 
     public int getProductID() {
         return productID;
     }
+
     public String getProductName() {
         return productName;
     }
+
     public float getProductPrice() {
         return productPrice;
     }
+
     public String getProductDescription() {
         return productDescription;
     }
+
     public int getProductCategory() {
         return productCategory;
     }
+
     public String getProductImage() {
         return productImage;
     }
+
     public int getProductAvailability() {
         return productAvailability;
     }
+
     public String getProductAvailability(int availability) {
-        if(availability==0){
+        if (availability == 0) {
             return "Available";
-        }else{
+        } else {
             return "Unavailable";
         }
-    }
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
     public void setProductPrice(float productPrice) {
         this.productPrice = productPrice;
     }
+
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
     }
+
     public void setProductCategory(int productCategory) {
         this.productCategory = productCategory;
     }
+
     public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
@@ -99,7 +111,7 @@ public class Product {
                                 fetchProductResponse.price,
                                 fetchProductResponse.productDescription,
                                 fetchProductResponse.productCategory,
-                                fetchProductResponse.productImage,
+                               "",
                                 fetchProductResponse.available
 
                         );
@@ -114,7 +126,7 @@ public class Product {
     }
 
 
-    public static void addProducts(Product product,Context context) {
+    public static void addProducts(Product product, Context context) {
 
         APIInterface api = POSAPISingleton.getOrCreateInstance();
         Call<ResponseBase<Void>> prod = api.PostProducts(product.getProductName(),
@@ -134,7 +146,9 @@ public class Product {
         ));
     }
 
-    public static void deleteProduct(Product product,Context context) {
+
+
+    public static void deleteProduct(Product product, Context context) {
 
         APIInterface api = POSAPISingleton.getOrCreateInstance();
         Call<ResponseBase<Void>> prod = api.DeleteProducts(product.getProductID());
@@ -149,16 +163,16 @@ public class Product {
         ));
     }
 
-    public static void updateProduct(Product product,Context context) {
+    public static void updateProduct(Product product, Context context) {
         APIInterface api = POSAPISingleton.getOrCreateInstance();
         Call<ResponseBase<Void>> prod = api.UpdateProducts(product.getProductID(),
                 product.getProductName(),
                 product.getProductDescription(),
                 product.getProductPrice(),
                 product.getProductCategory(),
+                product.getProductImage(),
                 "",
-                "",
-                1);
+                product.getProductAvailability());
         ;
         prod.enqueue(new APICallback<>(
                 response -> {
@@ -170,7 +184,7 @@ public class Product {
         ));
     }
 
-    public static void addCategories(String category, Context context){
+    public static void addCategories(String category, Context context) {
         APIInterface api = POSAPISingleton.getOrCreateInstance();
         Call<ResponseBase<Void>> prod = api.PostCategory(category);
 
@@ -185,17 +199,17 @@ public class Product {
 
     }
 
-    public static List<Category> getCategories(CategoriesCallback callback){
+    public static List<Category> getCategories(CategoriesCallback callback) {
         List<Category> categories = new ArrayList<>();
 
-        APIInterface api= POSAPISingleton.getOrCreateInstance();
+        APIInterface api = POSAPISingleton.getOrCreateInstance();
         Call<ResponseBase<CategoryResponse[]>> cat = api.GetCategory(0);
         cat.enqueue(new APICallback<>(
                 response ->
                 {
                     CategoryResponse[] categoryArray = response;
                     for (CategoryResponse categoryResponse : categoryArray) {
-                        Category category= new Category(categoryResponse.categoryId,categoryResponse.categoryName);
+                        Category category = new Category(categoryResponse.categoryId, categoryResponse.categoryName);
                         categories.add(category);
 
                     }
@@ -210,6 +224,28 @@ public class Product {
         ));
 
         return categories;
+
+    }
+
+    public static Bitmap decodeImage(String imgString) {
+        byte[] bytes = Base64.decode(imgString, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        return bitmap;
+    }
+
+    public static String encodeImage(Context context, Uri uriImage) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriImage);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] bytes = stream.toByteArray();
+            String sImage = Base64.encodeToString(bytes, Base64.DEFAULT);
+            return sImage;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+        return "None";
 
     }
 

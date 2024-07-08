@@ -9,6 +9,55 @@ class OrderRepository
         $this->db = $db;
     }
 
+    public function AddPayment($payamnt, $date, $method, $discountId,$discountAmnt, $accountId, $orderTotal)
+    {
+           // Execute the first insert query
+               $addResult = $this->db->query(
+                   "INSERT INTO `payment_tbl`(`pay_id`, `pay_amnt`, `date`, `pay_method`, `discount_id`, `discount_amnt`) VALUES (?, ?, ?, ?, ?, ?)",
+                   "idiiid",
+                   0,
+                   $payamnt,
+                   date('Y-m-d H:i:s'),
+                   $method,
+                   $discountId,
+                   $discountAmnt
+               );
+
+               // Check if the query was successful
+               if ($addResult) {
+                   // Get the last inserted ID
+                   $lastInsertedId = $this->db->insert_id;
+
+                   // Ensure the last inserted ID is not null
+                   if ($lastInsertedId) {
+                       // Execute the second insert query
+                       $addResult1 = $this->db->query(
+                           "INSERT INTO `order_table`(`order_Id`, `account_id_fk`, `order_total`, `pay_id_fk`) VALUES (?, ?, ?, ?)",
+                           "isdi",
+                           0,
+                           $accountId,
+                           $orderTotal,
+                           $lastInsertedId
+                       );
+
+                       // Check if the second query was successful
+                       if ($addResult1) {
+                           return true;
+                       } else {
+                           // Handle error in the second query execution
+                           return false;
+                       }
+                   } else {
+                       // Handle the case where lastInsertedId is null
+                       return false;
+                   }
+               } else {
+                   // Handle error in the first query execution
+                   return false;
+               }
+    }
+
+
     public function AddCart($username, $productId, $quantity, $size)
     {
         $itemQ = $this->db->query(
