@@ -1,6 +1,7 @@
 package com.example.mobilepose.Model;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,6 +18,10 @@ import com.example.mobilepose.Model.Callbacks.CategoriesCallback;
 import com.example.mobilepose.Model.Callbacks.ProductCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +85,16 @@ public class Product {
         this.productCategory = productCategory;
     }
 
+    public void setProductCategory(String productCategory) {
+
+        if (productCategory.equals("Available")){
+            this.productCategory = 0;
+        }
+        else{
+            this.productCategory = 1;
+        }
+    }
+
     public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
@@ -100,7 +115,7 @@ public class Product {
 
 
         APIInterface api = POSAPISingleton.getOrCreateInstance();
-        Call<ResponseBase<FetchProductResponse[]>> prod = api.GetProducts(category); // 0, 1, 2, or null
+        Call<ResponseBase<FetchProductResponse[]>> prod = api.GetProducts(category);
         prod.enqueue(new APICallback<>(
                 response -> {
                     FetchProductResponse[] productArray = response;
@@ -111,7 +126,7 @@ public class Product {
                                 fetchProductResponse.price,
                                 fetchProductResponse.productDescription,
                                 fetchProductResponse.productCategory,
-                               "",
+                                fetchProductResponse.productImage,
                                 fetchProductResponse.available
 
                         );
@@ -173,7 +188,7 @@ public class Product {
                 product.getProductImage(),
                 "",
                 product.getProductAvailability());
-        ;
+
         prod.enqueue(new APICallback<>(
                 response -> {
 
@@ -247,6 +262,37 @@ public class Product {
         }
         return "None";
 
+    }
+
+    public static String saveImage(Uri uriImage, Context context) throws IOException {
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriImage);
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+
+        String fileName = "image_" + System.currentTimeMillis() + ".jpg";
+        File myPath = new File(directory, fileName);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return myPath.getAbsolutePath();
+
+    }
+
+    public Bitmap getImage(String path) {
+        try {
+            File f = new File(path, "myImage.jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            return b;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

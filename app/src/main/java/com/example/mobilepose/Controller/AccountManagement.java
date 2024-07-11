@@ -226,25 +226,27 @@ public class AccountManagement extends Fragment implements SelectUserListener {
 
         if (!fnameEdit.getText().toString().trim().isEmpty()) {
 
-            if (fnameEdit.length() < 6 || fnameEdit.length() > 35) {
-                Toast.makeText(getActivity(), "Firstname must be between 6 to 35 characters.", Toast.LENGTH_SHORT).show();
+            if (fnameEdit.length() < 3 || fnameEdit.length() > 35) {
+                Toast.makeText(getActivity(), "Firstname must be between 3 to 35 characters.", Toast.LENGTH_SHORT).show();
                 return;
             }
             user.setFname(fnameEdit.getText().toString());
         }
+
         if (!lnameEdit.getText().toString().trim().isEmpty()) {
-            if (lnameEdit.length() < 6 || lnameEdit.length() > 35) {
-                Toast.makeText(getActivity(), "Lastname must be between 6 to 35 characters.", Toast.LENGTH_SHORT).show();
+            if (lnameEdit.length() < 3 || lnameEdit.length() > 35) {
+                Toast.makeText(getActivity(), "Lastname must be between 3 to 35 characters.", Toast.LENGTH_SHORT).show();
                 return;
             }
             user.setLname(lnameEdit.getText().toString());
         }
+
         if (!passwordEdit.getText().toString().trim().isEmpty()) {
             if (passwordEdit.length() < 8 || passwordEdit.length() > 50) {
                 Toast.makeText(getActivity(), "Password must be between 8 to 50 characters.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            user.setPassword(passwordEdit.getText().toString());
+            user.setPassword(Utils.MD5(passwordEdit.getText().toString()));
         }
 
         int selectedTypeId = typeGrp.getCheckedRadioButtonId();

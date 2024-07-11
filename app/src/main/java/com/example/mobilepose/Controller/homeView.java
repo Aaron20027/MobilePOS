@@ -47,6 +47,8 @@ public class homeView extends AppCompatActivity {
         int PassLength = intent.getIntExtra("passCount",1);
         loginResponse = Utils.FromJson(jsonUserInfo, LoginResponse.class);
 
+
+
         Bundle bundle = new Bundle();
         bundle.putInt("passCount",PassLength);
         bundle.putString("loginUserInfo", jsonUserInfo);

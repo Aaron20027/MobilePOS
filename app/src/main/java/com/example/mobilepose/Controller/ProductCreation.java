@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -59,8 +60,8 @@ public class ProductCreation extends Fragment {
     EditText prodNameTxt, prodDescTxt, prodPriceTxt;
     List<String> categoriesList = new ArrayList<String>();
     ImageButton productImg;
+    Uri uriImage;
 
-    String sImage;
 
     int category = -1;
 
@@ -140,14 +141,18 @@ public class ProductCreation extends Fragment {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateProduct(view);
+                try {
+                    CreateProduct(view);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
         return view;
     }
 
-    public void CreateProduct(View view) {
+    public void CreateProduct(View view) throws IOException {
         if (TextUtils.isEmpty(prodNameTxt.getText().toString()) || TextUtils.isEmpty(prodDescTxt.getText().toString()) ||
                 TextUtils.isEmpty(prodPriceTxt.getText().toString()) || autoCompleteTextView.getText().toString().equals("Select item")) {
             Toast.makeText(getActivity(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
@@ -175,16 +180,26 @@ public class ProductCreation extends Fragment {
             return;
         }
 
+        String imagePath = null;
+        if (uriImage != null) {
+            imagePath = Product.saveImage(uriImage, getActivity());
+        }
+
         Product product = new Product(1,
                 prodNameTxt.getText().toString(),
                 Float.valueOf(prodPriceTxt.getText().toString()),
                 prodDescTxt.getText().toString(),
                 category,
-                sImage, 0);
-        Product.addProducts(product, getActivity());
+                imagePath, 0);
 
+        Product.addProducts(product,getActivity());
+
+
+        productImg.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_edges_box));
         prodNameTxt.setText("");
         prodDescTxt.setText("");
+        uriImage=null;
+        imagePath=null;
         prodPriceTxt.setText("");
         productImg.setImageResource(R.color.gray);
         autoCompleteTextView.setText("Select item");
@@ -219,7 +234,9 @@ public class ProductCreation extends Fragment {
             @Override
             public void onClick(View v) {
                 Product.addCategories(newCatEdit.getText().toString(), getActivity());
-                categoriesList.set(categoriesList.size() - 2, newCatEdit.getText().toString());
+                categoriesList.remove(categoriesList.size()-1);
+                categoriesList.add(newCatEdit.getText().toString());
+                categoriesList.add("Add New Category");
                 arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item, categoriesList);
                 autoCompleteTextView.setAdapter(arrayAdapter);
                 newCatEdit.setText("");
@@ -242,10 +259,10 @@ public class ProductCreation extends Fragment {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult o) {
-                    Uri uriImage = o.getData().getData();
+                    uriImage = o.getData().getData();
                     productImg.setImageURI(uriImage);
 
-                    sImage = Product.encodeImage(getActivity(), uriImage);
+                    //sImage = Product.encodeImage(getActivity(), uriImage);
 
 
                 }

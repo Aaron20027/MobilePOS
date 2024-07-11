@@ -285,7 +285,7 @@ public class ProductManagement extends Fragment implements SelectItemListener {
         TextView prodCatTxt=bottomSheetView.findViewById(R.id.prodCategoryTxt);
 
         ImageView prodImage=bottomSheetView.findViewById(R.id.imageView3);
-        prodImage.setImageBitmap(childitem.decodeImage(childitem.getProductImage()));
+        prodImage.setImageBitmap(childitem.getImage(childitem.getProductImage()));
 
         Product.getCategories(new CategoriesCallback() {
             @Override
@@ -344,6 +344,7 @@ public class ProductManagement extends Fragment implements SelectItemListener {
         prodPrice.getText().clear();
 
         autoCompleteTextView=bottomSheetView.findViewById(R.id.autoCompleteTextView3);
+
 
         prodImage=bottomSheetView.findViewById(R.id.imageView3);
 
@@ -475,6 +476,7 @@ public class ProductManagement extends Fragment implements SelectItemListener {
         if (selectedTypeId != -1) {
             RadioButton selectedTypeButton = bottomSheetView.findViewById(selectedTypeId);
             String userType = selectedTypeButton.getText().toString();
+            childitem.setProductCategory(userType);
         }
 
         bottomSheetDialog.dismiss();

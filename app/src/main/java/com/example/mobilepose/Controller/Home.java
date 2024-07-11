@@ -372,7 +372,7 @@ public class Home extends Fragment implements SelectItemListener, MenuAdapter.On
         prodPrice.setText("₱"+String.valueOf(childitem.getProductPrice()));
         TextView prodTotal=dialog.findViewById(R.id.prodTotal);
         ImageView imageView=dialog.findViewById(R.id.imageView3);
-        imageView.setImageBitmap(childitem.decodeImage(childitem.getProductImage()));
+        //imageView.setImageBitmap(childitem.decodeImage(childitem.getProductImage()));
 
         TextView plusTxt,minusTxt,quantityTxt,prodTotalTxt;
         minusTxt=dialog.findViewById(R.id.textView11);

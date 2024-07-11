@@ -67,12 +67,12 @@ public class AccountCreation extends Fragment {
             return;
         }
 
-        if (usernameTxt.length() < 6 || usernameTxt.length() > 30) {
-            Toast.makeText(getActivity(), "Username must be between 6 to 30 characters.", Toast.LENGTH_SHORT).show();
+        if (usernameTxt.length() < 3 || usernameTxt.length() > 30) {
+            Toast.makeText(getActivity(), "Username must be between 3 to 30 characters.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (firstnameTxt.length() < 6 || firstnameTxt.length() > 35) {
-            Toast.makeText(getActivity(), "Firstname must be between 6 to 35 characters.", Toast.LENGTH_SHORT).show();
+        if (firstnameTxt.length() < 3 || firstnameTxt.length() > 35) {
+            Toast.makeText(getActivity(), "Firstname must be between 3 to 35 characters.", Toast.LENGTH_SHORT).show();
             return;
         }
         if (lastnameTxt.length() < 6 || lastnameTxt.length() > 35) {

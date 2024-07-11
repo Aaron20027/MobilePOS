@@ -1,6 +1,9 @@
 package com.example.mobilepose.Controller;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,6 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.print.PrintAttributes;
+import android.print.PrintManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -20,12 +25,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mobilepose.Controller.AccountManagement;
 import com.example.mobilepose.Controller.Home;
+import com.example.mobilepose.Model.API.APICallback;
+import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.example.mobilepose.Model.API.POSAPISingleton;
 import com.example.mobilepose.Model.Adapters.MenuAdapter;
+import com.example.mobilepose.Model.Adapters.ReceiptItemAdapter;
+import com.example.mobilepose.Model.Adapters.ReceiptPrintAdapter;
 import com.example.mobilepose.Model.Callbacks.CouponCallback;
 import com.example.mobilepose.Model.Coupon;
 import com.example.mobilepose.Model.Order;
@@ -33,7 +46,12 @@ import com.example.mobilepose.Model.ShoppingCart;
 import com.example.mobilepose.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
+
+import retrofit2.Call;
 
 
 public class Cart extends Fragment implements MenuAdapter.OnOrderChangeListener {
@@ -41,11 +59,17 @@ public class Cart extends Fragment implements MenuAdapter.OnOrderChangeListener 
     TextView discountTxt,subtotalTxt,taxTxt,totalTxt,backBtn, changeTxt;
     EditText couponCodeEdit, receivedEdit;
     RecyclerView recyclerView;
-    ConstraintLayout constraint, paymentCon,cashCon;
-    Button applyBtn ,cancelBtn, proceedBtn,cashBtn,creditBtn;
+    ConstraintLayout constraint, paymentCon,cashCon, creditConstraint;
+    Button applyBtn ,cancelBtn, proceedBtn,cashBtn,creditBtn,payBtn;
+    ScrollView scrollView;
     private Coupon appliedCoupon;
     String loginUserInfo;
     int passLength;
+    int method=-1;
+
+    double paymentAmt=0;
+
+    LoginResponse loginResponse;
 
 
     @Override
@@ -58,6 +82,7 @@ public class Cart extends Fragment implements MenuAdapter.OnOrderChangeListener 
             loginUserInfo = getArguments().getString("loginUserInfo");
             passLength= getArguments().getInt("passCount");
             shoppingCart = bundle.getParcelable("cart");
+            loginResponse = Utils.FromJson(loginUserInfo, LoginResponse.class);
         }
 
         appliedCoupon=new Coupon();
@@ -116,50 +141,142 @@ public class Cart extends Fragment implements MenuAdapter.OnOrderChangeListener 
                 couponCodeEdit.setEnabled(false);
                 recyclerView.setVisibility(View.GONE);
                 paymentCon.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.GONE);
+                proceedBtn.setEnabled(false);
 
-            }
-        });
-
-        cashBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Cash Button Clicked", Toast.LENGTH_SHORT).show();
-                // Check if this toast message appears
-            }
-        });
-
-        cashBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                paymentCon.setVisibility(View.GONE);
-                cashCon.setVisibility(View.VISIBLE);
-
-
-                receivedEdit = view.findViewById(R.id.cashEdit);
-                changeTxt = view.findViewById(R.id.textView20);
-
-
-                receivedEdit.addTextChangedListener(new TextWatcher() {
+                payBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    public void onClick(View v) {
+                        APIInterface api = POSAPISingleton.getOrCreateInstance();
+                        Call<ResponseBase<Void>> pay = api.addPayment(paymentAmt,
+                                1,
+                                method,
+                                "d",
+                                Double.parseDouble(String.format("%.2f", shoppingCart.getDiscountAmt()))
+                                );
+                        pay.enqueue(new APICallback<>(
+                                response -> {
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if (!s.toString().isEmpty()) {
-                            int receivedAmount = Integer.parseInt(s.toString());
-                            changeTxt.setText(String.valueOf(shoppingCart.calculateChange(receivedAmount)));
-                        } else {
-                            changeTxt.setText("₱0");
+                                },
+                                error -> {
+                                }
+                        ));
+
+
+                        Call<ResponseBase<Void>> ord = api.addOrder(loginResponse.username,shoppingCart.getTotal());
+                        ord.enqueue(new APICallback<>(
+                                response -> {
+                                },
+                                error -> {
+                                }
+                        ));
+
+                        for (Order order:shoppingCart.getOrders()){
+                            Call<ResponseBase<Void>> ordDeat = api.addOrderDetails(order.getProduct().getProductID(),
+                                    order.getQuantity(),
+                                    order.getOrderTotal());
+
+                            ordDeat.enqueue(new APICallback<>(
+                                    response -> {
+                                    },
+                                    error -> {
+                                    }
+                            ));
                         }
+
+                        shoppingCart.clearOrder();
+
+                        Toast.makeText(getActivity(), "Order has been processed!", Toast.LENGTH_SHORT).show();
+
+                        Bundle bundle=new Bundle();
+                        bundle.putParcelable("cart",shoppingCart);
+                        bundle.putString("loginUserInfo", loginUserInfo);
+                        bundle.putInt("passCount", passLength);
+
+                        Home home = new Home();
+                        home.setArguments(bundle);
+
+
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.fragmentContainerView, home)
+                                .setReorderingAllowed(true)
+                                .addToBackStack("name")
+                                .commit();
+
+
                     }
 
-                    @Override
-                    public void afterTextChanged(Editable s) {}
+
                 });
 
+                cashBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        method=0;
+
+                        proceedBtn.setVisibility(View.GONE);
+                        payBtn.setVisibility(View.VISIBLE);
+                        paymentCon.setVisibility(View.GONE);
+                        cashCon.setVisibility(View.VISIBLE);
+
+
+                        receivedEdit = view.findViewById(R.id.cashEdit);
+                        changeTxt = view.findViewById(R.id.textView27);
+
+
+                        receivedEdit.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                if (!s.toString().isEmpty()) {
+                                    int receivedAmount = Integer.parseInt(s.toString());
+                                    if (shoppingCart.calculateChange(receivedAmount)<0){
+                                        Toast.makeText(getActivity(), "Invalid Ammount!", Toast.LENGTH_SHORT).show();
+
+                                    }else{
+                                        paymentAmt=receivedAmount;
+                                        changeTxt.setText(String.format("₱%.2f",shoppingCart.calculateChange(receivedAmount)));
+                                    }
+
+
+
+                                } else {
+                                    changeTxt.setText("₱0");
+                                }
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {}
+                        });
+
+
+                    }
+                });
+
+                creditBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        method=1;
+                        proceedBtn.setVisibility(View.GONE);
+                        paymentCon.setVisibility(View.GONE);
+                        payBtn.setVisibility(View.VISIBLE);
+                        creditConstraint.setVisibility(View.VISIBLE);
+                        paymentAmt=shoppingCart.getTotal();
+
+
+
+
+                    }
+                });
 
             }
+
         });
+
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,9 +319,12 @@ public class Cart extends Fragment implements MenuAdapter.OnOrderChangeListener 
         taxTxt=view.findViewById(R.id.textView22);
         totalTxt=view.findViewById(R.id.textView23);
 
+        scrollView=view.findViewById(R.id.scrollView3);
+
         constraint=view.findViewById(R.id.ErrorLayout);
         paymentCon=view.findViewById(R.id.paymentCon);
         cashCon=view.findViewById(R.id.cashCon);
+        creditConstraint=view.findViewById(R.id.creditConstraint);
 
         couponCodeEdit=view.findViewById(R.id.editTextText4);
 
@@ -214,6 +334,7 @@ public class Cart extends Fragment implements MenuAdapter.OnOrderChangeListener 
         proceedBtn=view.findViewById(R.id.proceedTxt);
         cashBtn=view.findViewById(R.id.cashBtn);
         creditBtn=view.findViewById(R.id.creditBtn);
+        payBtn=view.findViewById(R.id.payTxt);
 
     }
 
@@ -267,6 +388,31 @@ public class Cart extends Fragment implements MenuAdapter.OnOrderChangeListener 
             }
         });
     }
+
+
+    private void printReceipt() {
+        PrintManager printManager = (PrintManager) requireActivity().getSystemService(Context.PRINT_SERVICE);
+        View receiptView = LayoutInflater.from(getActivity()).inflate(R.layout.receipt_layout, null);
+
+        RecyclerView rvReceiptItems = receiptView.findViewById(R.id.recyclerViewReceipt);
+        rvReceiptItems.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvReceiptItems.setAdapter(new ReceiptItemAdapter(shoppingCart.getOrders()));
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+
+        TextView cashier = receiptView.findViewById(R.id.textView34);
+        TextView tvDate = receiptView.findViewById(R.id.textView37);
+        TextView sub = receiptView.findViewById(R.id.textView50);
+        TextView vat = receiptView.findViewById(R.id.textView55);
+        TextView total = receiptView.findViewById(R.id.textView52);
+        cashier.setText(loginResponse.firstName + " "+ loginResponse.lastName);
+        tvDate.setText(timeStamp);
+        sub.setText(String.format("₱%.2f",shoppingCart.getSubtotal()));
+        vat.setText(String.format("₱%.2f",shoppingCart.getVat()));
+        total.setText(String.format("₱%.2f",shoppingCart.getTotal()));
+
+    }
+
 
 
     @Override

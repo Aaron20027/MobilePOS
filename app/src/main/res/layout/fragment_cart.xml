@@ -9,10 +9,45 @@
     android:background="@drawable/corner_image">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/creditConstraint"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/poppins"
+            android:text="Paying with Maya PoS Terminal"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cashCon"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14">
@@ -22,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/poppins"
             android:text="Change"
             android:textColor="@color/black"
@@ -44,7 +80,7 @@
         <EditText
             android:id="@+id/cashEdit"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/rounded_edittext"
@@ -63,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins"
             android:text="Enter cash amount received"
             android:textColor="@color/black"
@@ -197,6 +234,7 @@
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -224,35 +262,60 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/proceedTxt"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/black"
-            android:text="PROCEED"
-            android:textColor="@color/white"
-            app:cornerRadius="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/cancelTxt"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
             android:id="@+id/cancelTxt"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
             android:backgroundTint="@color/black"
             android:text="CANCEL"
             android:textColor="@color/white"
             app:cornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/proceedTxt"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/proceedTxt"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/black"
+            android:text="PROCEED"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/payTxt"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/black"
+            android:text="PAY"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:cornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -51,7 +51,7 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     {
         Product childItem = ChildItemList.get(position);
         childViewHolder.ChildItemTitle.setText(childItem.getProductName());
-        childViewHolder.imageView.setImageBitmap(childItem.decodeImage(childItem.getProductImage()));
+        //childViewHolder.imageView.setImageBitmap(childItem.getImage(childItem.getProductImage()));
         childViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

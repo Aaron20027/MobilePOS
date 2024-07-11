@@ -15,13 +15,29 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mobilepose.Model.API.APICallback;
 import com.example.mobilepose.Model.API.APIInterface;
+import com.example.mobilepose.Model.API.Entities.CategoryResponse;
+import com.example.mobilepose.Model.API.Entities.EmployeeReportResponse;
+import com.example.mobilepose.Model.API.Entities.EmployeeReportResponse1;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
+import com.example.mobilepose.Model.API.Entities.ProductReportResponse;
+import com.example.mobilepose.Model.API.Entities.ProductReportResponse1;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.example.mobilepose.Model.API.Entities.SalesResponse;
+import com.example.mobilepose.Model.API.Entities.SalesResponse1;
 import com.example.mobilepose.Model.API.POSAPISingleton;
+import com.example.mobilepose.Model.Category;
 import com.example.mobilepose.Model.Product;
 import com.example.mobilepose.R;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -41,20 +57,24 @@ public class Login extends AppCompatActivity {
         });
 
 
-
         APIInterface api = POSAPISingleton.getOrCreateInstance();
-        Call<ResponseBase<Void>> prod = api.addPayment(100,1,0,1,100,"Tt",23.0f); // 0, 1, 2, or null
-        prod.enqueue(new APICallback<>(
-                response -> {
-
+        Call<ResponseBase<EmployeeReportResponse1[]>> rep1 = api.getEmployee1(1);
+        rep1.enqueue(new APICallback<>(
+                response ->
+                {
+                    EmployeeReportResponse1[] employeeReportResponse1 = response;
+                    for (EmployeeReportResponse1 empReportResponse: employeeReportResponse1) {
+                        System.out.println(empReportResponse.acc);
+                        System.out.println(empReportResponse.disCount);
+                    }
 
                 },
-                error -> {
+                error ->
+                {
+
 
                 }
         ));
-
-
 
 
         userTxt = findViewById(R.id.usernameEdit);
@@ -73,6 +93,8 @@ public class Login extends AppCompatActivity {
         loginCall.enqueue(new APICallback<>(
                 response ->
                 {
+                    LoginResponse LOGIN= response;
+                    System.out.println(LOGIN.accountType);
                     Intent intent = new Intent(Login.this, homeView.class);
                     intent.putExtra("userinfo", Utils.ToJson(response));
                     intent.putExtra("passCount", password.length());

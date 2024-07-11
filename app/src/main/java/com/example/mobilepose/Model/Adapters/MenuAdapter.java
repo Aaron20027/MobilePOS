@@ -52,7 +52,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>{
 
         holder.qtyTxt.setText(String.valueOf(order.getQuantity()));
 
-        holder.menuImage.setImageBitmap(order.getProduct().decodeImage(order.getProduct().getProductImage()));
+        //holder.menuImage.setImageBitmap(order.getProduct().decodeImage(order.getProduct().getProductImage()));
 
         holder.minusTxt.setOnClickListener(new View.OnClickListener() {
             @Override

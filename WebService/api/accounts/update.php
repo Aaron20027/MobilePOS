@@ -46,7 +46,7 @@ try {
 function update_account($db, $username, $password, $fname, $lname, $accType, $accStatus)
 {
     $accountModule = new AccountRepository($db);
-    $result = $accountModule->update_account($username, md5($password), $fname, $lname, $accType, $accStatus);
+    $result = $accountModule->update_account($username, $password, $fname, $lname, $accType, $accStatus);
     return $result;
 }
 ?>

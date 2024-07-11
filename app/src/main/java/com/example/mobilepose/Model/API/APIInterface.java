@@ -2,19 +2,22 @@ package com.example.mobilepose.Model.API;
 
 import com.example.mobilepose.Model.API.Entities.CategoryResponse;
 import com.example.mobilepose.Model.API.Entities.DiscountResponse;
+import com.example.mobilepose.Model.API.Entities.EmployeeReportResponse;
+import com.example.mobilepose.Model.API.Entities.EmployeeReportResponse1;
 import com.example.mobilepose.Model.API.Entities.FetchProductResponse;
 import com.example.mobilepose.Model.API.Entities.FetchUserResponse;
 import com.example.mobilepose.Model.API.Entities.LoginResponse;
 import com.example.mobilepose.Model.API.Entities.PasswordResponse;
+import com.example.mobilepose.Model.API.Entities.ProductReportResponse;
+import com.example.mobilepose.Model.API.Entities.ProductReportResponse1;
 import com.example.mobilepose.Model.API.Entities.ResponseBase;
+import com.example.mobilepose.Model.API.Entities.SalesResponse;
+import com.example.mobilepose.Model.API.Entities.SalesResponse1;
 
-import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 
 public interface APIInterface {
 
@@ -170,13 +173,11 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("/api/orders/addPayment.php")
     Call<ResponseBase<Void>> addPayment(
-            @Field("payamnt") int payamnt,
+            @Field("payamnt") double payamnt,
             @Field("date") int date,
             @Field("method") int method,
-            @Field("discountId") int discountId,
-            @Field("discountAmt") int discountAmt,
-            @Field("accountId") String accountId,
-            @Field("orderTotal") float orderTotal
+            @Field("discountId") String discountId,
+            @Field("discountAmt") double discountAmt
 
     );
 
@@ -184,7 +185,63 @@ public interface APIInterface {
     @POST("/api/orders/addOrder.php")
     Call<ResponseBase<Void>> addOrder(
             @Field("accountId") String accountId,
-            @Field("orderTotal") float orderTotal
+            @Field("orderTotal") double orderTotal
 
     );
+
+    @FormUrlEncoded
+    @POST("/api/orders/addOrderDetails.php")
+    Call<ResponseBase<Void>> addOrderDetails(
+            @Field("productId") int productId,
+            @Field("orderQty") int orderQty,
+            @Field("orderCost") double orderCost
+
+    );
+
+    @FormUrlEncoded
+    @POST("/api/reports/getSales.php")
+    Call<ResponseBase<SalesResponse[]>> getSalesReport(
+            @Field("test") int test
+
+    );
+
+    @FormUrlEncoded
+    @POST("/api/reports/getSales1.php")
+    Call<ResponseBase<SalesResponse1[]>> getSalesReport1(
+            @Field("test") int test
+
+    );
+
+    @FormUrlEncoded
+    @POST("/api/reports/getProduct.php")
+    Call<ResponseBase<ProductReportResponse[]>> getSalesProduct(
+            @Field("test") int test
+
+    );
+
+
+    @FormUrlEncoded
+    @POST("/api/reports/getProduct1.php")
+    Call<ResponseBase<ProductReportResponse1[]>> getSalesProduct1(
+            @Field("test") int test
+
+    );
+
+    @FormUrlEncoded
+    @POST("/api/reports/getEmployee.php")
+    Call<ResponseBase<EmployeeReportResponse[]>> getEmployee(
+            @Field("test") int test
+
+    );
+
+    @FormUrlEncoded
+    @POST("/api/reports/getEmployee1.php")
+    Call<ResponseBase<EmployeeReportResponse1[]>> getEmployee1(
+            @Field("test") int test
+
+    );
+
+
+
+
 }

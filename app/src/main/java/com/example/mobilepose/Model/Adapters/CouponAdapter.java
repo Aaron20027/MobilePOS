@@ -68,14 +68,14 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView ammountTxt,codeTxt,dateTxt;
+        private TextView ammountTxt,codeTxt;
         private CardView cardView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ammountTxt=itemView.findViewById(R.id.ammountTxt);
             codeTxt=itemView.findViewById(R.id.codeTxt);
-            dateTxt=itemView.findViewById(R.id.dateTxt);
+
             cardView=itemView.findViewById(R.id.couponCard);
         }
     }

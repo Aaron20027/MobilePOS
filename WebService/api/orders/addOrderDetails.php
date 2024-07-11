@@ -5,15 +5,15 @@ include_once ('../../Entities/Response.php');
 include_once ('../../Modules/OrderRepository.php');
 
 /*
- * POST - /api/orders/addOrder.php
- * @accountId: str - [required]
- * @orderTotal: float - [required]
- *
+ * POST - /api/orders/addOrderDetails.php
+ * @productId: int - [required]
+ * @orderQty: int - [required]
+ * @orderCost: float - [required]
  * Return: [Response(Base)]
  */
 
 $dbInst = RestaurantDB::GetTransient();
-$postArgsIds = ["accountId", "orderTotal"];
+$postArgsIds = ["productId", "orderQty", "orderCost"];
 
 try {
     if (Utils::InitCheck($dbInst)) {
@@ -22,7 +22,7 @@ try {
             return Response::CreateFailResponse("One or more arguments are missing!");
         }
 
-        $addResult = AddCart($dbInst, $reqArgs[0], $reqArgs[1]);
+        $addResult = AddCart($dbInst, $reqArgs[0], $reqArgs[1], $reqArgs[2]);
         if ($addResult)
             return Response::CreateSuccessResponse("Payment is Successful!");
         else
@@ -34,11 +34,10 @@ try {
     $dbInst->close();
 }
 
-function AddCart($db, $accountId, $orderTotal)
+function AddCart($db, $productId, $orderQty, $orderCost)
 {
-    $orderTotal = (float) $orderTotal;
     $orderRepo = new OrderRepository($db);
-    $result = $orderRepo->AddOrder($accountId, $orderTotal);
+    $result = $orderRepo->AddOrderDetails($productId, $orderQty, $orderCost);
     return $result;
 }
 
